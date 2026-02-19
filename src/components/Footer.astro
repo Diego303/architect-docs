@@ -1,0 +1,68 @@
+---
+---
+<footer class="footer">
+    <div class="container footer-content">
+        <p>&copy; 2026 Architect Project. <span class="footer-tagline">Hecho con precisión.</span></p>
+        <div class="footer-links">
+            <a href="#" class="footer-link">0.8.0</a>
+        </div>
+    </div>
+</footer>
+
+<style>
+    .footer {
+        margin-top: auto;
+        border-top: 2px solid var(--arch-ink);
+        background-color: var(--arch-surface);
+        padding: 2.5rem 0;
+        z-index: 10;
+        position: relative;
+    }
+
+    .footer-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        color: var(--arch-ink-light);
+        font-size: 0.875rem;
+        font-weight: 500;
+    }
+
+    @media (min-width: 768px) {
+        .footer-content {
+            flex-direction: row;
+        }
+    }
+
+    .footer-tagline {
+        color: var(--arch-ink);
+        font-weight: 700;
+    }
+
+    .footer-links {
+        display: flex;
+        gap: 1.5rem;
+        margin-top: 1rem;
+    }
+
+    @media (min-width: 768px) {
+        .footer-links {
+            margin-top: 0;
+        }
+    }
+
+    .footer-link {
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        font-weight: 700;
+        color: var(--arch-ink);
+        text-decoration: none;
+        transition: color 0.2s;
+    }
+
+    .footer-link:hover {
+        color: var(--arch-brick);
+    }
+</style>

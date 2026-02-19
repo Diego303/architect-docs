@@ -1,0 +1,92 @@
+---
+interface Props {
+	title: string;
+	iconPath?: string; // SVG path data
+    href?: string;
+    class?: string;
+}
+
+const { title, iconPath, href = "#", class: className } = Astro.props;
+---
+
+<a href={href} class={`card-arch group ${className}`}>
+    <div class="card-corner"></div>
+    
+    <div class="card-icon-box">
+        {iconPath ? (
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2" d={iconPath}></path>
+            </svg>
+        ) : (
+            <slot name="icon" />
+        )}
+    </div>
+    
+    <h3 class="card-title">{title}</h3>
+    <div class="card-content">
+        <slot />
+    </div>
+</a>
+
+<style>
+    .card-arch {
+        display: block;
+        padding: 2rem;
+        background-color: var(--arch-surface);
+        border: 2px solid var(--arch-ink);
+        box-shadow: var(--shadow-draft);
+        position: relative;
+        text-decoration: none;
+        color: inherit;
+        transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .card-arch:hover {
+        transform: translate(4px, 4px); /* "Pressed" effect */
+        box-shadow: var(--shadow-draft-hover);
+    }
+
+    .card-corner {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 2rem;
+        height: 2rem;
+        background-color: var(--arch-brick-transparent);
+        border-bottom: 2px solid var(--arch-ink);
+        border-left: 2px solid var(--arch-ink);
+    }
+
+    .card-icon-box {
+        width: 3.5rem;
+        height: 3.5rem;
+        background-color: var(--arch-paper);
+        border: 2px solid var(--arch-ink);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1.5rem;
+        color: var(--arch-brick);
+    }
+
+    .w-7 { width: 1.75rem; }
+    .h-7 { height: 1.75rem; }
+
+    .card-title {
+        font-family: var(--font-heading);
+        font-weight: 700;
+        font-size: 1.25rem;
+        color: var(--arch-ink);
+        margin-bottom: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-top: 0;
+    }
+
+    .card-content {
+        color: var(--arch-ink-light);
+        font-size: 1rem;
+        line-height: 1.6;
+        font-weight: 500;
+    }
+</style>

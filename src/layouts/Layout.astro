@@ -1,0 +1,22 @@
+---
+import { ClientRouter } from 'astro:transitions';
+import "../styles/global.css";
+---
+
+<!doctype html>
+<html lang="es" class="scroll-smooth">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL}favicon.svg`} />
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@300;400;500;600&family=Outfit:wght@400;500;700;800&display=swap" rel="stylesheet">
+		<meta name="generator" content={Astro.generator} />
+		<title>Architect | Documentación Oficial</title>
+		<ClientRouter />
+	</head>
+	<body>
+		<slot />
+	</body>
+</html>

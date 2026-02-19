@@ -1,0 +1,142 @@
+---
+import type { MarkdownHeading } from 'astro';
+
+interface Props {
+    headings: MarkdownHeading[];
+    title: string;
+}
+
+const { headings, title } = Astro.props;
+---
+
+<aside class="docs-sidebar">
+    <div class="sidebar-content">
+        <div class="mb-12">
+            <a href={import.meta.env.BASE_URL} class="back-link">
+                <svg class="back-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                </svg>
+                Volver al Inicio
+            </a>
+        </div>
+
+        <div class="sidebar-header">
+            <span class="sidebar-title">Índice: {title}</span>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <ul class="nav-list">
+                {headings.map((heading) => (
+                    <li class={`heading-depth-${heading.depth}`}>
+                        <a 
+                            href={`#${heading.slug}`} 
+                            class="nav-item"
+                        >
+                            {heading.text}
+                        </a>
+                    </li>
+                ))}
+            </ul>
+        </nav>
+    </div>
+</aside>
+
+<style>
+    .docs-sidebar {
+        width: 100%;
+        background-color: var(--arch-paper);
+        border-bottom: 2px solid var(--arch-ink);
+        height: auto;
+    }
+
+    @media (min-width: 1024px) {
+        .docs-sidebar {
+            width: 20rem; /* Increased slightly for TOC readability */
+            height: calc(100vh - 74px);
+            position: sticky;
+            top: 74px;
+            border-bottom: none;
+            border-right: 2px solid var(--arch-ink);
+            overflow-y: auto;
+        }
+    }
+
+    .sidebar-content {
+        padding: 1.5rem;
+    }
+
+    .back-link {
+        display: inline-flex;
+        align-items: center;
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        color: var(--arch-ink-light);
+        text-decoration: none;
+        transition: color 0.2s;
+        white-space: nowrap; /* Prevent wrapping */
+    }
+
+    .back-link:hover {
+        color: var(--arch-brick);
+    }
+
+    .back-icon {
+        width: 1rem;
+        height: 1rem;
+        margin-right: 0.5rem;
+    }
+
+    .sidebar-header {
+        margin-bottom: 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid var(--arch-line);
+    }
+
+    .sidebar-title {
+        font-family: var(--font-heading);
+        font-weight: 800;
+        text-transform: uppercase;
+        color: var(--arch-ink);
+        font-size: 0.8rem;
+        letter-spacing: 0.05em;
+        line-height: 1.4;
+        display: block;
+    }
+
+    .nav-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+
+    .nav-item {
+        display: block;
+        padding: 0.25rem 0.5rem;
+        font-family: var(--font-body);
+        font-size: 0.875rem;
+        color: var(--arch-ink-light);
+        text-decoration: none;
+        border-radius: 2px;
+        transition: all 0.2s;
+        border-left: 2px solid transparent;
+        line-height: 1.4;
+    }
+
+    .nav-item:hover {
+        color: var(--arch-brick);
+        background-color: rgba(231, 229, 223, 0.3);
+    }
+
+    /* Indentation for H2, H3, etc */
+    .heading-depth-1 { margin-left: 0; font-weight: 600; }
+    .heading-depth-2 { margin-left: 0; font-weight: 600; }
+    .heading-depth-3 { margin-left: 1rem; font-size: 0.8125rem; }
+    .heading-depth-4 { margin-left: 2rem; font-size: 0.8125rem; }
+
+    .mb-12 { margin-bottom: 3rem; }
+</style>

@@ -1,0 +1,267 @@
+---
+import { getCollection } from 'astro:content';
+import Button from './ui/Button.astro';
+import Card from './ui/Card.astro';
+
+const docs = await getCollection('docs');
+const sortedDocs = docs.sort((a, b) => {
+    if (a.data.order && b.data.order) {
+        return a.data.order - b.data.order;
+    }
+    return a.slug.localeCompare(b.slug);
+});
+---
+
+<main class="landing-main">
+    <div class="bg-shape"></div>
+
+    <div class="hero-section">
+        <!-- Search would go here if implemented -->
+        
+        <h1 class="hero-title">
+            Planifica y ejecuta tareas con <br />
+            <span class="highlight-brick">Precisión Agéntica</span>
+        </h1>
+        
+        <p class="hero-subtitle">
+            La documentación oficial de <strong class="text-ink">Architect</strong>. La herramienta CLI
+            para diseñar, planificar y ejecutar obras complejas de software orquestadas por LLMs.
+        </p>
+
+        <!-- Code Block Simulation -->
+        <div class="code-figure">
+            <div class="code-figure-header">
+                <span class="code-figure-title">TERMINAL 1 — USER@ARCHITECT</span>
+                <div class="w-2 h-2 rounded-full bg-arch-ink opacity-20"></div>
+            </div>
+            <div class="code-figure-content">
+                <div><span class="prompt font-bold">$ </span><span class="font-bold">architect run "Analiza este proyecto y refactoriza el módulo de..."</span></div>
+                <div class="mt-4"><span class="text-arch-ink-light">[INFO]</span> agent.loop.start  agent=build step_timeout=0</div>
+                <div><span class="text-arch-ink-light">[INFO]</span> agent.step.start  step=1</div>
+                <div><span class="text-arch-brick">[DEBUG]</span> llm.completion.start  model=gpt-4o-mini messages=3 tools=4</div>
+                <div><span class="text-arch-ink-light">[INFO]</span> agent.tool_call.execute  tool=read_file path=src/main.py</div>
+                <div><span class="text-arch-brick">[DEBUG]</span> tool.execute.args     tool=write_file path=src/utils.py content="def foo():..."</div>
+                <div><span class="text-arch-ink-light">[INFO]</span> agent.tool_call.complete tool=read_file success=True chars=1243</div>
+                <div><span class="text-arch-brick">[DEBUG]</span> tool.execute.result   output="Archivo sobrescrito (234 bytes)"</div>
+                <div><span class="text-arch-ink-light">[INFO]</span> agent.step.start  step=2</div>
+                <div class="flex items-center">
+                    <span class="text-arch-ink-light">[INFO]</span> <span class="ml-2">agent.complete     status=success steps=2</span> <span class="cursor"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="cta-group">
+            <Button href={`${import.meta.env.BASE_URL}docs/readme`}>VER DOCS</Button>
+            <Button variant="secondary" href="https://github.com/Diego303/architect-cli" target="_blank">GITHUB</Button>
+        </div>
+    </div>
+
+    <section id="concepts" class="concepts-section">
+        <div class="section-header">
+            <h2 class="section-title">Manual de Construcción</h2>
+            <div class="section-line"></div>
+        </div>
+
+        <div class="card-grid">
+            {sortedDocs.map(doc => (
+                <Card 
+                    title={doc.data.title || doc.slug} 
+                    href={`${import.meta.env.BASE_URL}docs/${doc.slug}`}
+                    iconPath={doc.data.icon}
+                    class="h-full"
+                >
+                    {doc.data.description || "Documentación técnica detallada sobre este módulo del sistema Architect."}
+                </Card>
+            ))}
+        </div>
+    </section>
+</main>
+
+<style>
+    .landing-main {
+        position: relative;
+        padding-bottom: 5rem;
+        overflow-x: hidden; /* Prevent horizontal scroll from absolute shape */
+    }
+
+    .bg-shape {
+        position: absolute;
+        top: -100px;
+        right: -5%;
+        width: 800px;
+        height: 800px;
+        background-color: var(--arch-shape);
+        border: 1px solid var(--arch-line);
+        border-radius: 50% 50% 0 0;
+        z-index: -1;
+        opacity: 0.6;
+        pointer-events: none;
+    }
+
+    .hero-section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 5rem 1.5rem;
+        max-width: 80rem;
+        margin: 0 auto;
+    }
+
+    .hero-title {
+        font-family: var(--font-heading);
+        font-weight: 800;
+        font-size: 3rem;
+        line-height: 1.1;
+        color: var(--arch-ink);
+        margin-bottom: 1.5rem;
+    }
+
+    @media (min-width: 768px) {
+        .hero-title {
+            font-size: 4.5rem;
+        }
+    }
+
+    .highlight-brick {
+        position: relative;
+        display: inline-block;
+        color: var(--arch-brick);
+    }
+    
+    .highlight-brick::after {
+        content: '';
+        position: absolute;
+        bottom: 8px;
+        left: 0;
+        width: 100%;
+        height: 12px;
+        background-color: var(--arch-brick-transparent);
+        z-index: -1;
+        transform: skewX(-15deg);
+    }
+
+    .hero-subtitle {
+        font-size: 1.125rem;
+        color: var(--arch-ink-light);
+        max-width: 42rem;
+        margin-bottom: 3rem;
+        line-height: 1.6;
+    }
+    
+    @media (min-width: 768px) {
+        .hero-subtitle {
+            font-size: 1.25rem;
+        }
+    }
+
+    .text-ink { color: var(--arch-ink); }
+
+    /* Code Figure */
+    .code-figure {
+        width: 100%;
+        max-width: 48rem;
+        background-color: var(--arch-surface);
+        border: 2px solid var(--arch-ink);
+        box-shadow: var(--shadow-draft);
+        text-align: left;
+        margin-bottom: 4rem;
+        overflow: hidden;
+    }
+
+    .code-figure-header {
+        background-color: var(--arch-paper);
+        border-bottom: 2px solid var(--arch-ink);
+        padding: 0.75rem 1.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .code-figure-title {
+        font-family: var(--font-mono);
+        color: var(--arch-ink);
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+    }
+
+    .code-figure-content {
+        padding: 1.5rem;
+        font-family: var(--font-mono);
+        font-size: 0.875rem;
+        color: var(--arch-ink);
+        line-height: 1.7;
+        overflow-x: auto;
+    }
+    
+    .prompt { color: var(--arch-ink-light); user-select: none; }
+    .comment { color: var(--arch-brick-light); font-style: italic; margin-top: 0.5rem; padding-left: 0.75rem; border-left: 2px solid var(--arch-brick); }
+    .status-marker { display: inline-block; width: 0.5rem; height: 0.5rem; margin-right: 0.5rem; }
+    .status-marker.done { background-color: var(--arch-brick); }
+    .status-marker.active { border: 2px solid var(--arch-brick); }
+    .status-text { font-weight: 700; margin-left: 0.5rem; }
+    .cursor { display: inline-block; width: 0.5rem; height: 1rem; background-color: var(--arch-brick); vertical-align: middle; animation: blink 1s infinite; margin-left: 0.25rem; }
+
+    @keyframes blink { 50% { opacity: 0; } }
+
+    /* CTA */
+    .cta-group {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        width: 100%;
+        max-width: 30rem;
+    }
+
+    @media (min-width: 640px) {
+        .cta-group {
+            flex-direction: row;
+            justify-content: center;
+        }
+    }
+
+    /* Concepts Section */
+    .concepts-section {
+        max-width: 80rem;
+        margin: 0 auto;
+        padding: 6rem 1.5rem;
+    }
+
+    .section-header {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        margin-bottom: 3rem;
+    }
+
+    .section-title {
+        font-family: var(--font-heading);
+        font-size: 1.875rem;
+        color: var(--arch-ink);
+        font-weight: 800;
+        margin: 0;
+        white-space: nowrap;
+    }
+
+    .section-line {
+        height: 4px; /* Slightly thicker than design system for visibility */
+        background-color: var(--arch-ink);
+        flex-grow: 1;
+    }
+
+    .card-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    @media (min-width: 768px) {
+        .card-grid {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+
+    .font-bold { font-weight: 700; }
+</style>
