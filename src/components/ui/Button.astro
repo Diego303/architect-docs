@@ -1,0 +1,57 @@
+---
+interface Props {
+	variant?: 'primary' | 'secondary';
+	href?: string;
+    class?: string;
+}
+
+const { variant = 'primary', href, class: className } = Astro.props;
+
+const Tag = href ? 'a' : 'button';
+---
+
+<Tag href={href} class={`btn-arch btn-${variant} ${className}`}>
+    <slot />
+</Tag>
+
+<style>
+    .btn-arch {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem 2rem;
+        font-family: var(--font-heading);
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        border: 2px solid var(--arch-ink);
+        box-shadow: var(--shadow-draft);
+        cursor: pointer;
+        text-decoration: none;
+        transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        font-size: 1rem;
+    }
+
+    .btn-arch:hover {
+        transform: translate(2px, 2px);
+        box-shadow: var(--shadow-draft-hover);
+    }
+
+    .btn-primary {
+        background-color: var(--arch-brick);
+        color: var(--arch-surface);
+    }
+    
+    .btn-primary:hover {
+        /* Optional: slightly lighter brick or keeps same */
+    }
+
+    .btn-secondary {
+        background-color: var(--arch-surface);
+        color: var(--arch-ink);
+    }
+
+    .btn-secondary:hover {
+        background-color: var(--arch-paper);
+    }
+</style>

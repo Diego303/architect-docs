@@ -1,0 +1,156 @@
+---
+---
+<div class="prose-arch">
+    <slot />
+</div>
+
+<style>
+    .prose-arch {
+        max-width: 65ch; /* Comfortable reading width */
+        color: var(--arch-ink);
+        font-family: var(--font-body);
+        line-height: 1.75;
+    }
+
+    /* Headings */
+    .prose-arch :global(h1),
+    .prose-arch :global(h2),
+    .prose-arch :global(h3),
+    .prose-arch :global(h4) {
+        color: var(--arch-ink);
+        font-family: var(--font-heading);
+        font-weight: 700;
+        margin-top: 2.5em;
+        margin-bottom: 1em;
+        line-height: 1.3;
+        scroll-margin-top: 6rem; /* For sticky header anchor offset */
+    }
+
+    .prose-arch :global(h1) {
+        font-size: 2.25rem;
+        margin-top: 0;
+        font-weight: 800;
+        border-bottom: 2px solid var(--arch-line);
+        padding-bottom: 0.5em;
+    }
+
+    .prose-arch :global(h2) {
+        font-size: 1.75rem;
+        padding-bottom: 0.3em;
+        border-bottom: 1px solid var(--arch-line);
+    }
+
+    .prose-arch :global(h3) {
+        font-size: 1.375rem;
+    }
+
+    /* Text elements */
+    .prose-arch :global(p) {
+        margin-bottom: 1.5em;
+    }
+
+    .prose-arch :global(strong) {
+        font-weight: 600;
+        color: var(--arch-ink); /* Darker than body sometimes */
+    }
+
+    .prose-arch :global(a) {
+        color: var(--arch-brick);
+        text-decoration: underline;
+        text-decoration-thickness: 1px;
+        text-underline-offset: 4px;
+        transition: all 0.2s;
+    }
+
+    .prose-arch :global(a:hover) {
+        color: var(--arch-brick);
+        text-decoration-thickness: 2px;
+        background-color: var(--arch-brick-transparent);
+    }
+
+    .prose-arch :global(ul), 
+    .prose-arch :global(ol) {
+        margin-bottom: 1.5rem;
+        padding-left: 1.5rem;
+    }
+
+    .prose-arch :global(li) {
+        margin-bottom: 0.5em;
+    }
+
+    .prose-arch :global(blockquote) {
+        border-left: 4px solid var(--arch-brick);
+        padding-left: 1.5rem;
+        margin: 1.5rem 0;
+        font-style: italic;
+        color: var(--arch-ink-light);
+        background-color: var(--arch-shape);
+        padding: 1rem 1rem 1rem 1.5rem;
+    }
+
+    /* Code */
+    .prose-arch :global(code) {
+        font-family: var(--font-mono);
+        color: var(--arch-brick);
+        background-color: var(--arch-shape);
+        padding: 0.2em 0.4em;
+        border-radius: 3px;
+        font-size: 0.875em;
+    }
+
+    .prose-arch :global(pre) {
+        background-color: var(--arch-ink) !important; /* Force dark background */
+        color: var(--arch-paper) !important;
+        padding: 1.5rem;
+        border-radius: 0;
+        border: 2px solid var(--arch-ink);
+        box-shadow: var(--shadow-draft);
+        overflow-x: auto;
+        margin: 2rem 0;
+    }
+
+    .prose-arch :global(pre code) {
+        color: inherit;
+        background-color: transparent;
+        padding: 0;
+        font-size: 0.875em;
+    }
+
+    /* Images */
+    .prose-arch :global(img) {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 2rem auto;
+        border: 2px solid var(--arch-ink);
+        box-shadow: var(--shadow-draft);
+    }
+
+    .prose-arch :global(hr) {
+        border: 0;
+        border-top: 2px solid var(--arch-line);
+        margin: 3rem 0;
+    }
+    
+    .prose-arch :global(table) {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 2rem 0;
+        font-size: 0.9em;
+    }
+    
+    .prose-arch :global(th),
+    .prose-arch :global(td) {
+        border: 1px solid var(--arch-line);
+        padding: 0.75rem;
+        text-align: left;
+    }
+    
+    .prose-arch :global(th) {
+        background-color: var(--arch-shape);
+        font-weight: 600;
+        font-family: var(--font-heading);
+        text-transform: uppercase;
+        font-size: 0.8rem;
+    }
+</style>

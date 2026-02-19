@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Architect | Documentación Oficial</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@300;400;500;600&family=Outfit:wght@400;500;700;800&display=swap"
+        rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Outfit', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace'],
+                    },
+                    colors: {
+                        arch: {
+                            paper: '#FDFBF7',    /* Crema claro */
+                            surface: '#FFFFFF',  /* Blanco puro para tarjetas */
+                            ink: '#292524',      /* Grafito oscuro (Stone 800) */
+                            inkLight: '#57534E', /* Grafito medio */
+                            line: '#E7E5DF',     /* Líneas de boceto */
+                            brick: '#C85A32',    /* Terracota / Ladrillo */
+                            brickLight: '#E87D57'
+                        }
+                    },
+                    boxShadow: {
+                        'draft': '6px 6px 0px 0px rgba(41, 37, 36, 1)', /* Sombra dura estilo editorial */
+                        'draft-hover': '2px 2px 0px 0px rgba(41, 37, 36, 1)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Fondo con textura sutil de papel de dibujo arquitectónico */
+        body {
+            background-color: #FDFBF7;
+            background-image:
+                linear-gradient(#E7E5DF 1px, transparent 1px),
+                linear-gradient(90deg, #E7E5DF 1px, transparent 1px);
+            background-size: 60px 60px;
+            background-position: center center;
+            color: #292524;
+        }
+
+        /* Forma geométrica decorativa de fondo (estilo arco arquitectónico) */
+        .bg-arch-shape {
+            position: absolute;
+            top: -10%;
+            right: -5%;
+            width: 800px;
+            height: 800px;
+            background-color: #F3EFE6;
+            border-radius: 50% 50% 0 0;
+            z-index: -1;
+            opacity: 0.6;
+            border: 1px solid #E7E5DF;
+        }
+
+        /* Simulación de marcador o subrayado de plano */
+        .highlight-brick {
+            position: relative;
+            display: inline-block;
+            color: #C85A32;
+        }
+
+        .highlight-brick::after {
+            content: '';
+            position: absolute;
+            bottom: 4px;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background-color: rgba(200, 90, 50, 0.15);
+            z-index: -1;
+            transform: skewX(-15deg);
+        }
+    </style>
+</head>
+
+<body class="antialiased min-h-screen flex flex-col font-sans relative overflow-x-hidden">
+
+    <!-- Elemento decorativo de fondo -->
+    <div class="bg-arch-shape hidden lg:block"></div>
+
+    <!-- Navegación -->
+    <nav class="border-b-2 border-arch-ink bg-arch-paper/90 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <!-- Logo Abstracto (Escuadra/Compás) en color grafito -->
+                <svg class="w-8 h-8 text-arch-brick" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2.5"
+                        d="M12 3L3 21h18L12 3zm0 7l4 9H8l4-9z"></path>
+                </svg>
+                <span
+                    class="text-2xl font-heading font-extrabold tracking-tight text-arch-ink uppercase">Architect</span>
+                <span class="bg-arch-ink text-arch-paper text-xs font-mono px-2 py-0.5 rounded-sm ml-2">v1.2.0</span>
+            </div>
+
+            <!-- Buscador Integrado en Nav -->
+            <div class="hidden md:flex flex-1 max-w-md mx-8 relative group opacity-0 pointer-events-none transition-opacity duration-300"
+                id="nav-search">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <svg class="h-4 w-4 text-arch-inkLight" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                </div>
+                <input type="text"
+                    class="block w-full pl-10 pr-3 py-2 bg-arch-surface border-2 border-arch-ink rounded-none text-sm text-arch-ink placeholder-arch-inkLight focus:outline-none focus:ring-0 focus:border-arch-brick transition-colors"
+                    placeholder="Buscar en planos...">
+            </div>
+
+            <div
+                class="hidden md:flex items-center space-x-8 text-sm font-semibold font-heading uppercase tracking-wide text-arch-inkLight">
+                <a href="#" class="text-arch-ink hover:text-arch-brick transition-colors">Docs</a>
+                <a href="#" class="hover:text-arch-brick transition-colors">API Ref</a>
+                <a href="#" class="hover:text-arch-brick transition-colors">Comunidad</a>
+                <a href="#" class="hover:text-arch-ink transition-colors flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                        <path
+                            d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <main class="flex-grow flex flex-col justify-center items-center px-6 py-20 text-center relative z-10">
+        <!-- Buscador Principal tipo "Cajetín de plano" -->
+        <div class="w-full max-w-2xl mb-16 relative group" id="hero-search">
+            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                <svg class="h-6 w-6 text-arch-inkLight group-focus-within:text-arch-brick transition-colors" fill="none"
+                    viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+            </div>
+            <input type="text"
+                class="block w-full pl-14 pr-4 py-5 bg-arch-surface border-2 border-arch-ink shadow-draft text-lg text-arch-ink placeholder-arch-inkLight focus:outline-none focus:border-arch-brick focus:translate-y-[4px] focus:translate-x-[4px] focus:shadow-draft-hover transition-all"
+                placeholder="Buscar en la documentación... (Ej: 'cimientos', 'andamios')">
+            <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
+                <kbd
+                    class="hidden sm:inline-block border-2 border-arch-ink/20 rounded-sm px-2 py-1 text-xs font-mono font-bold text-arch-inkLight bg-arch-paper">Ctrl
+                    K</kbd>
+            </div>
+        </div>
+
+        <h1 class="text-5xl md:text-7xl font-heading font-extrabold tracking-tight mb-6 text-arch-ink">
+            Levanta infraestructuras con <br />
+            <span class="highlight-brick">Precisión Agéntica</span>
+        </h1>
+        <p class="text-lg md:text-xl text-arch-inkLight max-w-3xl mx-auto mb-12 font-medium">
+            La documentación oficial de <strong class="text-arch-ink font-bold">Architect</strong>. La herramienta CLI
+            para diseñar, planificar y ejecutar obras complejas de software orquestadas por LLMs.
+        </p>
+
+        <!-- Bloque de Código Estilo "Manual Impreso" -->
+        <div
+            class="w-full max-w-3xl bg-arch-surface border-2 border-arch-ink shadow-draft overflow-hidden text-left mb-16">
+            <div class="flex items-center justify-between px-6 py-3 border-b-2 border-arch-ink bg-arch-paper">
+                <div class="text-xs text-arch-ink font-mono font-bold uppercase tracking-widest">FIGURA 1:
+                    CLI_EXECUTION.SH</div>
+                <button class="text-arch-inkLight hover:text-arch-brick transition-colors" title="Copiar código"
+                    onclick="alert('Código copiado (simulado)')">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2"
+                            d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z">
+                        </path>
+                    </svg>
+                </button>
+            </div>
+            <div class="p-6 font-mono text-sm leading-relaxed overflow-x-auto text-arch-ink">
+                <div><span class="text-arch-inkLight select-none">$ </span>npm install -g @architect/cli</div>
+                <div class="mt-1"><span class="text-arch-inkLight select-none">$ </span>architect init --blueprint
+                    "Despliegue microservicios"</div>
+                <div class="text-arch-inkLight mt-4 border-l-2 border-arch-brick pl-3 italic"># Analizando planos
+                    estructurales...</div>
+                <div class="text-arch-inkLight border-l-2 border-arch-brick pl-3 italic"># Planificador activado.
+                    Generando mapa de obra.</div>
+                <div class="mt-4 flex items-center gap-2">
+                    <div class="w-2 h-2 bg-arch-brick"></div>[1/3] Cimentando arquitectura cloud... <span
+                        class="text-arch-ink font-bold ml-2">HECHO</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <div class="w-2 h-2 bg-arch-brick"></div>[2/3] Levantando andamiaje de red... <span
+                        class="text-arch-ink font-bold ml-2">HECHO</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <div class="w-2 h-2 border-2 border-arch-brick"></div>[3/3] Ejecutando cuadrilla de agentes... <span
+                        class="animate-pulse bg-arch-brick w-2 h-4 ml-1 inline-block align-middle"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-6">
+            <a href="#concepts"
+                class="px-8 py-4 bg-arch-brick text-arch-surface font-heading font-bold uppercase tracking-wider border-2 border-arch-ink shadow-draft hover:translate-y-[2px] hover:translate-x-[2px] hover:shadow-draft-hover transition-all">
+                Iniciar Obra
+            </a>
+            <a href="#"
+                class="px-8 py-4 bg-arch-surface text-arch-ink font-heading font-bold uppercase tracking-wider border-2 border-arch-ink shadow-draft hover:bg-arch-paper hover:translate-y-[2px] hover:translate-x-[2px] hover:shadow-draft-hover transition-all">
+                Ver Planos (Docs)
+            </a>
+        </div>
+    </main>
+
+    <!-- Grid de Secciones (Cimientos) -->
+    <section class="max-w-7xl mx-auto px-6 py-24 w-full relative z-10" id="concepts">
+        <div class="flex items-center gap-6 mb-12">
+            <h2 class="text-3xl font-heading font-extrabold text-arch-ink uppercase tracking-tight">Manual de
+                Construcción</h2>
+            <div class="h-1 bg-arch-ink flex-grow"></div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Card 1 -->
+            <a href="#"
+                class="block p-8 bg-arch-surface border-2 border-arch-ink shadow-draft hover:-translate-y-1 hover:-translate-x-1 transition-transform group relative">
+                <!-- Esquina decorativa tipo "cinta de papel" -->
+                <div class="absolute top-0 right-0 w-8 h-8 bg-arch-brick/10 border-b-2 border-l-2 border-arch-ink">
+                </div>
+
+                <div
+                    class="w-14 h-14 bg-arch-paper border-2 border-arch-ink flex items-center justify-center mb-6 text-arch-brick">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2"
+                            d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10">
+                        </path>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-heading font-bold text-arch-ink mb-3 uppercase tracking-wide">Los Cimientos</h3>
+                <p class="text-arch-inkLight text-base leading-relaxed font-medium">Conceptos básicos para integrar
+                    Architect en tu entorno. Comandos fundamentales y preparación del terreno antes de empezar a
+                    construir.</p>
+            </a>
+
+            <!-- Card 2 -->
+            <a href="#"
+                class="block p-8 bg-arch-surface border-2 border-arch-ink shadow-draft hover:-translate-y-1 hover:-translate-x-1 transition-transform group relative">
+                <div class="absolute top-0 right-0 w-8 h-8 bg-arch-brick/10 border-b-2 border-l-2 border-arch-ink">
+                </div>
+
+                <div
+                    class="w-14 h-14 bg-arch-paper border-2 border-arch-ink flex items-center justify-center mb-6 text-arch-brick">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2"
+                            d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z">
+                        </path>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-heading font-bold text-arch-ink mb-3 uppercase tracking-wide">El Planificador
+                </h3>
+                <p class="text-arch-inkLight text-base leading-relaxed font-medium">Cómo redactar los planos. Define
+                    objetivos de alto nivel y deja que los agentes LLM tracen los pasos necesarios para levantar el
+                    proyecto.</p>
+            </a>
+
+            <!-- Card 3 -->
+            <a href="#"
+                class="block p-8 bg-arch-surface border-2 border-arch-ink shadow-draft hover:-translate-y-1 hover:-translate-x-1 transition-transform group relative">
+                <div class="absolute top-0 right-0 w-8 h-8 bg-arch-brick/10 border-b-2 border-l-2 border-arch-ink">
+                </div>
+
+                <div
+                    class="w-14 h-14 bg-arch-paper border-2 border-arch-ink flex items-center justify-center mb-6 text-arch-brick">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2"
+                            d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-heading font-bold text-arch-ink mb-3 uppercase tracking-wide">Catálogo de
+                    Materiales</h3>
+                <p class="text-arch-inkLight text-base leading-relaxed font-medium">Referencia exhaustiva (API/CLI).
+                    Todos los comandos, herramientas, <i>flags</i> y modelos LLM soportados por el motor de Architect.
+                </p>
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="mt-auto border-t-2 border-arch-ink bg-arch-surface py-10 z-10">
+        <div
+            class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between text-sm font-medium text-arch-inkLight">
+            <p>&copy; 2026 Architect Project. <span class="text-arch-ink font-bold">Hecho con precisión.</span></p>
+            <div class="flex space-x-6 mt-4 md:mt-0 font-mono text-xs uppercase font-bold text-arch-ink">
+                <a href="#" class="hover:text-arch-brick transition-colors">v1.2.0</a>
+                <a href="#" class="hover:text-arch-brick transition-colors">Changelog</a>
+                <a href="#" class="hover:text-arch-brick transition-colors">Reportar Grieta</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Script para mostrar/ocultar buscador en nav -->
+    <script>
+        const navSearch = document.getElementById('nav-search');
+        const heroSearch = document.getElementById('hero-search');
+
+        window.addEventListener('scroll', () => {
+            const heroRect = heroSearch.getBoundingClientRect();
+            if (heroRect.bottom < 0) {
+                navSearch.classList.remove('opacity-0', 'pointer-events-none');
+            } else {
+                navSearch.classList.add('opacity-0', 'pointer-events-none');
+            }
+        });
+    </script>
+</body>
+
+</html>

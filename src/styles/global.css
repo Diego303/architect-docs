@@ -1,0 +1,168 @@
+:root {
+  /* 2. Paleta de Colores (Tokens) */
+
+  /* 2.1 Fondos y Superficies (Papel) */
+  --arch-paper: #FDFBF7;
+  --arch-surface: #FFFFFF;
+  --arch-shape: #F3EFE6;
+
+  /* 2.2 Tintas (Texto y Líneas) */
+  --arch-ink: #292524;
+  /* Stone 800 */
+  --arch-ink-light: #57534E;
+  /* Stone 600 */
+  --arch-line: #E7E5DF;
+
+  /* 2.3 Acentos (Materiales) */
+  --arch-brick: #C85A32;
+  --arch-brick-light: #E87D57;
+  --arch-brick-transparent: rgba(200, 90, 50, 0.15);
+
+  /* 3. Tipografía */
+  --font-heading: 'Outfit', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'Fira Code', monospace;
+
+  /* 4. Lenguaje Visual */
+
+  /* 4.1 Sombras Brutalistas */
+  --shadow-draft: 6px 6px 0px 0px rgba(41, 37, 36, 1);
+  --shadow-draft-hover: 2px 2px 0px 0px rgba(41, 37, 36, 1);
+}
+
+/* Reset básico y configuración global */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-body);
+  background-color: var(--arch-paper);
+  color: var(--arch-ink);
+  min-height: 100vh;
+
+  /* 4.3 Fondos y Texturas - Cuadrícula (Grid) */
+  background-image:
+    linear-gradient(var(--arch-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--arch-line) 1px, transparent 1px);
+  background-size: 60px 60px;
+  background-position: center center;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading);
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  /* Tracking tight */
+}
+
+code,
+pre,
+kbd {
+  font-family: var(--font-mono);
+}
+
+/* 4.2 Bordes globales utilitarios */
+.border-arch {
+  border: 2px solid var(--arch-ink);
+}
+
+/* Clases de utilidad inspiradas en el sistema */
+.text-ink {
+  color: var(--arch-ink);
+}
+
+.text-ink-light {
+  color: var(--arch-ink-light);
+}
+
+.text-brick {
+  color: var(--arch-brick);
+}
+
+.bg-paper {
+  background-color: var(--arch-paper);
+}
+
+.bg-surface {
+  background-color: var(--arch-surface);
+}
+
+.bg-brick {
+  background-color: var(--arch-brick);
+}
+
+/* Sombras */
+.shadow-draft {
+  box-shadow: var(--shadow-draft);
+}
+
+/* Hover effects (Física de objetos) */
+.hover-press {
+  transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  cursor: pointer;
+}
+
+.hover-press:hover {
+  transform: translate(2px, 2px);
+  /* Slightly less movement */
+  box-shadow: var(--shadow-draft-hover);
+}
+
+/* Focus styles */
+:focus-visible {
+  outline: 2px solid var(--arch-brick);
+  outline-offset: 2px;
+}
+
+/* Utility Layout classes */
+.container {
+  max-width: 80rem;
+  /* 7xl approx */
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.gap-2 {
+  gap: 0.5rem;
+}
+
+.gap-4 {
+  gap: 1rem;
+}
+
+.gap-6 {
+  gap: 1.5rem;
+}
+
+/* Scroll smoothness */
+html {
+  scroll-behavior: smooth;
+}
