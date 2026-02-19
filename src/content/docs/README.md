@@ -11,14 +11,14 @@ order: 1
 
 | Sección | Descripción |
 |---------|-------------|
-| [**Uso**](/docs/usage) | Formas de uso: flags, logging, configs, CI/CD, scripts, agentes custom, multi-proyecto |
-| [**Arquitectura**](/docs/architecture) | Visión general, diagrama de componentes y flujo completo de ejecución |
-| [**Core Loop**](/docs/core-loop) | El loop de agente paso a paso, streaming, shutdown y timeout |
-| [**Modelos de Datos**](/docs/data-models) | Todos los modelos de datos: Pydantic, dataclasses, jerarquía de errores |
-| [**Herramientas**](/docs/tools-and-execution) | Sistema de tools, validación de paths, políticas de confirmación, ExecutionEngine |
-| [**Agentes y Modos**](/docs/agents-and-modes) | Agentes por defecto, registry, mixed mode, prompts del sistema |
-| [**Configuración**](/docs/config-reference) | Schema completo de configuración, precedencia, variables de entorno |
-| [**Guía IA**](/docs/ai-guide) | Guía para IA: invariantes críticos, patrones, dónde añadir cosas, trampas |
+| [**Uso**](usage) | Formas de uso: flags, logging, configs, CI/CD, scripts, agentes custom, multi-proyecto |
+| [**Arquitectura**](architecture) | Visión general, diagrama de componentes y flujo completo de ejecución |
+| [**Core Loop**](core-loop) | El loop de agente paso a paso, streaming, shutdown y timeout |
+| [**Modelos de Datos**](data-models) | Todos los modelos de datos: Pydantic, dataclasses, jerarquía de errores |
+| [**Herramientas**](tools-and-execution) | Sistema de tools, validación de paths, políticas de confirmación, ExecutionEngine |
+| [**Agentes y Modos**](agents-and-modes) | Agentes por defecto, registry, mixed mode, prompts del sistema |
+| [**Configuración**](config-reference) | Schema completo de configuración, precedencia, variables de entorno |
+| [**Guía IA**](ai-guide) | Guía para IA: invariantes críticos, patrones, dónde añadir cosas, trampas |
 
 ---
 
