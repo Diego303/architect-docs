@@ -51,7 +51,7 @@ const sortedDocs = docs.sort((a, b) => {
         </div>
 
         <div class="cta-group">
-            <Button href={`${import.meta.env.BASE_URL}docs/readme`}>VER DOCS</Button>
+            <Button href={`${import.meta.env.BASE_URL}docs/`}>VER DOCS</Button>
             <Button variant="secondary" href="https://github.com/Diego303/architect-cli" target="_blank">GITHUB</Button>
         </div>
     </div>
@@ -66,7 +66,7 @@ const sortedDocs = docs.sort((a, b) => {
             {sortedDocs.map(doc => (
                 <Card 
                     title={doc.data.title || doc.slug} 
-                    href={`${import.meta.env.BASE_URL}docs/${doc.slug}`}
+                    href={`${import.meta.env.BASE_URL}docs/${doc.slug === 'index' ? '' : doc.slug}`}
                     iconPath={doc.data.icon}
                     class="h-full"
                 >
