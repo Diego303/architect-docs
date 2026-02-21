@@ -1,0 +1,226 @@
+---
+import CodeFigure from '../ui/CodeFigure.astro';
+
+const devCases = [
+    { label: "Implementar features", cmd: 'architect run "Añade un endpoint GET /v1/users/{id}/orders\ncon paginación y filtro por status"' },
+    { label: "Fix de bugs", cmd: 'architect run "El endpoint /payments/webhook lanza 500 cuando\nStipe envía un evento charge.refunded"' },
+    { label: "Generar tests", cmd: 'architect run "Escribe tests completos para\nsrc/services/payment_service.py"' },
+    { label: "Refactoring", cmd: 'architect run "Extrae la lógica de validación de\nwebhooks a src/services/webhook_validator.py"' },
+];
+
+const ciCases = [
+    { label: "Review automático en PRs", cmd: 'architect run "Revisa estos cambios buscando\nbugs y security issues" --agent review --budget 0.15' },
+    { label: "Fix automático de lint", cmd: 'architect run "Corrige todos los errores de lint"\n--confirm-mode yolo --budget 0.30' },
+    { label: "Generación de changelogs", cmd: 'architect run "Genera changelog desde v1.2.0"\n--agent plan' },
+];
+---
+
+<section id="use-cases" class="usecases-section">
+    <div class="usecases-container">
+        <div class="section-header">
+            <h2 class="section-title">Casos de Uso</h2>
+            <div class="section-line"></div>
+        </div>
+
+        <div class="usecases-grid">
+            <!-- For Developers -->
+            <div class="usecase-block">
+                <div class="usecase-label">
+                    <div class="usecase-marker"></div>
+                    <h3 class="usecase-title">Para Developers</h3>
+                </div>
+                <p class="usecase-desc">Un comando, una tarea, código verificado. Describe lo que necesitas y architect
+                    lo implementa, testea y valida.</p>
+                <div class="usecase-commands">
+                    {devCases.map(c => (
+                        <div class="cmd-item">
+                            <span class="cmd-label">{c.label}</span>
+                            <code class="cmd-code">$ {c.cmd}</code>
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            <!-- For CI/CD -->
+            <div class="usecase-block">
+                <div class="usecase-label">
+                    <div class="usecase-marker"></div>
+                    <h3 class="usecase-title">Para CI/CD</h3>
+                </div>
+                <p class="usecase-desc">Integra architect en tus pipelines. Review automático, fix de lint,
+                    generación de changelogs — todo headless.</p>
+                <div class="usecase-commands">
+                    {ciCases.map(c => (
+                        <div class="cmd-item">
+                            <span class="cmd-label">{c.label}</span>
+                            <code class="cmd-code">$ {c.cmd}</code>
+                        </div>
+                    ))}
+                </div>
+
+                <CodeFigure title="Figura 2 — GitHub Actions" class="usecase-code">
+                    <div><span class="yaml-key">- run:</span> |</div>
+                    <div class="yaml-indent">architect run "Revisa los cambios de este PR" \</div>
+                    <div class="yaml-indent2">--agent review \</div>
+                    <div class="yaml-indent2">--confirm-mode yolo \</div>
+                    <div class="yaml-indent2">--budget 0.15</div>
+                </CodeFigure>
+            </div>
+
+            <!-- For DevOps -->
+            <div class="usecase-block">
+                <div class="usecase-label">
+                    <div class="usecase-marker"></div>
+                    <h3 class="usecase-title">Para DevOps</h3>
+                </div>
+                <p class="usecase-desc">Genera IaC, actualiza manifests, documenta módulos. Define agentes
+                    custom con permisos acotados para cada tarea.</p>
+                <div class="usecase-commands">
+                    <div class="cmd-item">
+                        <span class="cmd-label">Generar K8s manifests</span>
+                        <code class="cmd-code">$ architect run "Crea los manifests de K8s para el servicio de notificaciones" --agent deploy</code>
+                    </div>
+                    <div class="cmd-item">
+                        <span class="cmd-label">Documentación</span>
+                        <code class="cmd-code">$ architect run "Documenta el módulo src/services/" --agent docs</code>
+                    </div>
+                    <div class="cmd-item">
+                        <span class="cmd-label">Cron automatizado</span>
+                        <code class="cmd-code">0 6 * * 1 cd /app && architect run "Actualiza dependencias" --timeout 600</code>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .usecases-section {
+        max-width: 80rem;
+        margin: 0 auto;
+        padding: 5rem 1.5rem;
+        border-top: 2px solid var(--arch-line);
+    }
+
+    .section-header {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        margin-bottom: 3rem;
+    }
+
+    .section-title {
+        font-family: var(--font-heading);
+        font-size: 1.875rem;
+        color: var(--arch-ink);
+        font-weight: 800;
+        margin: 0;
+        white-space: nowrap;
+    }
+
+    .section-line {
+        height: 4px;
+        background-color: var(--arch-ink);
+        flex-grow: 1;
+    }
+
+    .usecases-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+    }
+
+    @media (min-width: 1024px) {
+        .usecases-grid {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+
+    .usecase-block {
+        background-color: var(--arch-surface);
+        border: 2px solid var(--arch-ink);
+        padding: 2rem;
+    }
+
+    .usecase-label {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+    }
+
+    .usecase-marker {
+        width: 0.75rem;
+        height: 0.75rem;
+        min-width: 0.75rem;
+        background-color: var(--arch-brick);
+    }
+
+    .usecase-title {
+        font-family: var(--font-heading);
+        font-size: 1.125rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--arch-ink);
+        margin: 0;
+    }
+
+    .usecase-desc {
+        font-size: 0.9375rem;
+        line-height: 1.6;
+        color: var(--arch-ink-light);
+        margin: 0 0 1.5rem 0;
+    }
+
+    .usecase-commands {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .cmd-item {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+
+    .cmd-label {
+        font-family: var(--font-heading);
+        font-size: 0.6875rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--arch-brick);
+    }
+
+    .cmd-code {
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        color: var(--arch-ink);
+        background-color: var(--arch-shape);
+        padding: 0.5rem 0.75rem;
+        border: 1px solid var(--arch-line);
+        line-height: 1.5;
+        white-space: pre-wrap;
+        word-break: break-word;
+    }
+
+    .usecase-code {
+        margin-top: 1.5rem;
+    }
+
+    /* YAML styling inside CodeFigure */
+    .yaml-key {
+        color: var(--arch-brick);
+        font-weight: 500;
+    }
+
+    .yaml-indent {
+        padding-left: 1.5rem;
+    }
+
+    .yaml-indent2 {
+        padding-left: 3rem;
+    }
+</style>

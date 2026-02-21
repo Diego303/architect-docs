@@ -1,7 +1,7 @@
 ---
-title: Tools y Ejecución
-description: Sistema de tools, validación de paths y ejecución segura.
-icon: M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z
+title: "Tools y Ejecución"
+description: "Sistema de tools y pipeline de ejecución."
+icon: "M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z M15 12a3 3 0 11-6 0 3 3 0 016 0z"
 order: 5
 ---
 
@@ -39,25 +39,255 @@ El `get_schema()` produce el formato que LiteLLM/OpenAI espera para tool calling
 
 ---
 
+## Resumen de todas las tools disponibles
+
+| Tool | Clase | `sensitive` | Módulo | Propósito |
+|------|-------|-------------|--------|-----------|
+| `read_file` | `ReadFileTool` | No | `filesystem.py` | Lee un archivo como texto UTF-8 |
+| `write_file` | `WriteFileTool` | **Sí** | `filesystem.py` | Escribe o añade contenido a un archivo |
+| `delete_file` | `DeleteFileTool` | **Sí** | `filesystem.py` | Elimina un archivo (requiere `allow_delete=true`) |
+| `list_files` | `ListFilesTool` | No | `filesystem.py` | Lista archivos con glob y recursión opcionales |
+| `edit_file` | `EditFileTool` | **Sí** | `filesystem.py` | Sustituye un bloque exacto de texto en un archivo |
+| `apply_patch` | `ApplyPatchTool` | **Sí** | `patch.py` | Aplica un unified diff a un archivo |
+| `search_code` | `SearchCodeTool` | No | `search.py` | Busca patrones con regex en el código fuente |
+| `grep` | `GrepTool` | No | `search.py` | Busca texto literal (usa rg/grep del sistema si está disponible) |
+| `find_files` | `FindFilesTool` | No | `search.py` | Encuentra archivos por nombre o patrón glob |
+| `run_command` | `RunCommandTool` | **Dinámico** | `commands.py` | Ejecuta comandos del sistema con 4 capas de seguridad (F13) |
+
+---
+
 ## Tools del filesystem
 
 Todas viven en `tools/filesystem.py`. Reciben `workspace_root: Path` en `__init__` y lo pasan a `validate_path()` en cada operación.
 
-| Clase | name | sensitive | Operación |
-|-------|------|-----------|-----------|
-| `ReadFileTool` | `read_file` | `False` | Lee el archivo como texto UTF-8 |
-| `WriteFileTool` | `write_file` | `True` | Escribe o añade (overwrite/append); crea directorios padres |
-| `DeleteFileTool` | `delete_file` | `True` | Elimina el archivo; falla si `allow_delete=False` |
-| `ListFilesTool` | `list_files` | `False` | Lista archivos; soporta glob y recursión |
+### `read_file`
 
-`DeleteFileTool` tiene una verificación adicional de `allow_delete`:
+```
+ReadFileArgs:
+  path: str    # relativo al workspace root
+```
+
+Lee el archivo como texto UTF-8. Si el archivo no existe o es un directorio, devuelve `ToolResult(success=False)`.
+
+### `write_file`
+
+```
+WriteFileArgs:
+  path:    str
+  content: str
+  mode:    str = "overwrite"   # "overwrite" | "append"
+```
+
+Crea directorios padres automáticamente si no existen. `sensitive=True`.
+
+**Cuándo usar**: archivos nuevos o reescrituras completas. Para cambios parciales, usar `edit_file` o `apply_patch`.
+
+### `delete_file`
+
+```
+DeleteFileArgs:
+  path: str
+```
+
+Tiene una doble verificación:
+1. `allow_delete` en `WorkspaceConfig` (apagado por defecto).
+2. `validate_path()` para prevenir traversal.
+
 ```python
-def execute(self, path: str) -> ToolResult:
-    if not self.allow_delete:
-        return ToolResult(success=False,
-                         output="Error: eliminación de archivos deshabilitada.",
-                         error="allow_delete=False en WorkspaceConfig")
-    ...
+if not self.allow_delete:
+    return ToolResult(success=False, output="Error: eliminación deshabilitada.",
+                      error="allow_delete=False en WorkspaceConfig")
+```
+
+### `list_files`
+
+```
+ListFilesArgs:
+  path:      str       = "."
+  pattern:   str|None  = None   # glob (ej: "*.py", "**/*.md", "src/**/*.ts")
+  recursive: bool      = False
+```
+
+Retorna una lista de paths relativos al workspace root.
+
+---
+
+## Tools de edición incremental (F9)
+
+Preferir estas tools sobre `write_file` para modificar archivos existentes. Consumen menos tokens y tienen menos riesgo de introducir errores.
+
+### `edit_file` — sustitución exacta de texto
+
+```
+EditFileArgs:
+  path:    str   # archivo a modificar
+  old_str: str   # texto exacto a reemplazar (debe ser único en el archivo)
+  new_str: str   # texto de reemplazo
+```
+
+**Comportamiento**:
+- Valida que `old_str` aparezca **exactamente una vez** en el archivo.
+- Si aparece 0 veces → `ToolResult(success=False, "old_str no encontrado")`.
+- Si aparece más de una vez → `ToolResult(success=False, "old_str no es único")`.
+- Si tiene éxito → devuelve el unified diff del cambio.
+- `sensitive=True`.
+
+**Cuándo usar**: cambiar una función, una clase, un bloque de código. El `old_str` debe ser suficientemente largo para ser único (incluir contexto si es necesario).
+
+```python
+# Ejemplo de uso del agente
+edit_file(
+    path="src/utils.py",
+    old_str="def calculate(a, b):\n    return a + b",
+    new_str="def calculate(a: int, b: int) -> int:\n    \"\"\"Suma dos enteros.\"\"\"\n    return a + b",
+)
+```
+
+### `apply_patch` — unified diff completo
+
+```
+ApplyPatchArgs:
+  path:  str   # archivo a modificar
+  patch: str   # unified diff con uno o más hunks
+```
+
+**Formato del patch**:
+```
+--- a/src/utils.py
++++ b/src/utils.py
+@@ -10,7 +10,10 @@
+ def foo():
+-    return 1
++    return 2
++
++def bar():
++    return 3
+```
+
+**Comportamiento**:
+1. Intenta parsear y aplicar el diff con el parser puro-Python interno.
+2. Si falla (contexto no coincide, numeración incorrecta), intenta con el comando `patch` del sistema.
+3. Si ambos fallan → `ToolResult(success=False)` con descripción del error.
+- `sensitive=True`.
+
+**Cuándo usar**: múltiples cambios en un archivo (varios hunks), o cuando el LLM tiene el diff completo listo.
+
+### Jerarquía de edición (BUILD_PROMPT)
+
+El system prompt del agente `build` incluye esta guía explícita:
+
+```
+1. edit_file   — cambio de un único bloque contiguo (preferido)
+2. apply_patch — múltiples cambios en un archivo o diff preexistente
+3. write_file  — archivos nuevos o reorganizaciones completas del archivo
+```
+
+---
+
+## Tools de búsqueda (F10)
+
+Viven en `tools/search.py`. Reciben `workspace_root: Path`. Todas son `sensitive=False` (solo lectura).
+
+### `search_code` — regex con contexto
+
+```
+SearchCodeArgs:
+  pattern:        str            # expresión regular
+  path:           str = "."      # directorio donde buscar (relativo al workspace)
+  file_pattern:   str = "*.py"   # glob para filtrar archivos
+  context_lines:  int = 2        # líneas antes y después de cada match
+  max_results:    int = 50       # límite de resultados
+```
+
+Usa el módulo `re` de Python. Devuelve matches con número de línea y contexto.
+
+```bash
+# Agente buscando todos los uses de validate_path
+search_code(pattern="validate_path", file_pattern="*.py", context_lines=3)
+```
+
+### `grep` — búsqueda de texto literal
+
+```
+GrepArgs:
+  pattern:       str            # texto literal (no regex)
+  path:          str = "."
+  file_pattern:  str = "*"
+  recursive:     bool = True
+  case_sensitive: bool = True
+  max_results:   int = 100
+```
+
+**Implementación**: usa `rg` (ripgrep) si está instalado, luego `grep`, luego Python puro como fallback. El agente siempre recibe resultados independientemente del sistema.
+
+```bash
+# Agente buscando imports de un módulo específico
+grep(pattern="from architect.core import", file_pattern="*.py")
+```
+
+### `find_files` — buscar archivos por nombre
+
+```
+FindFilesArgs:
+  pattern:   str         # glob de nombre de archivo (ej: "*.yaml", "test_*.py", "README*")
+  path:      str = "."   # directorio raíz de búsqueda
+  recursive: bool = True
+```
+
+```bash
+# Agente buscando todos los archivos de configuración
+find_files(pattern="*.yaml")
+find_files(pattern="*.env*")
+find_files(pattern="conftest.py")
+```
+
+---
+
+## Tool `run_command` — ejecución de código (F13)
+
+Vive en `tools/commands.py`. Disponible solo para el agente `build` por defecto. Se habilita/deshabilita con `commands.enabled` en config o los flags `--allow-commands`/`--no-commands`.
+
+```
+RunCommandArgs:
+  command: str          # comando a ejecutar (shell string)
+  cwd:     str | None   # directorio de trabajo relativo al workspace (default: workspace root)
+  timeout: int = 30     # segundos (1-600; override del default_timeout de config)
+  env:     dict | None  # variables de entorno adicionales (se suman a las del proceso)
+```
+
+### 4 capas de seguridad
+
+**Capa 1 — Blocklist** (`BLOCKED_PATTERNS`): regexes que bloquean comandos destructivos **siempre**, independientemente del modo de confirmación. Incluye: `rm -rf /`, `rm -rf ~`, `sudo`, `su`, `chmod 777`, `curl|bash`, `wget|bash`, `dd of=/dev/`, `> /dev/sd*`, `mkfs`, fork bomb, `pkill -9 -f`, `killall -9`.
+
+**Capa 2 — Clasificación dinámica** (`classify_sensitivity()`): cada comando se clasifica en:
+- `'safe'` — comandos de solo lectura/consulta: `ls`, `cat`, `head`, `tail`, `wc`, `grep`, `rg`, `tree`, `file`, `which`, `echo`, `pwd`, `env`, `date`, `python --version`, `git status`, `git log`, `git diff`, `git show`, `git branch` (vista), `npm list`, `cargo check`, etc.
+- `'dev'` — herramientas de desarrollo: `pytest`, `python -m pytest`, `mypy`, `ruff`, `black`, `eslint`, `make`, `cargo build`, `go build`, `mvn`, `gradle`, `tsc`, `npm run`, `pnpm run`, `yarn run`, `docker ps`, `kubectl get`, etc.
+- `'dangerous'` — cualquier comando no reconocido explícitamente como safe o dev.
+
+**Capa 3 — Timeouts + output limit**: `subprocess.run(..., timeout=N, stdin=subprocess.DEVNULL)`. El proceso es headless (sin stdin). La salida se trunca a `max_output_lines` preservando inicio y final.
+
+**Capa 4 — Directory sandboxing**: el `cwd` del subproceso se valida con `validate_path()` — siempre dentro del workspace.
+
+### Tabla de confirmación dinámica
+
+La sensibilidad de `run_command` no es estática (`tool.sensitive`). `ExecutionEngine._should_confirm_command()` consulta `classify_sensitivity()` en tiempo real:
+
+| Clasificación | `yolo` | `confirm-sensitive` | `confirm-all` |
+|---------------|--------|---------------------|---------------|
+| `safe` | No | No | Sí |
+| `dev` | No | **Sí** | Sí |
+| `dangerous` | **Sí** | **Sí** | Sí |
+
+El modo `yolo` solo confirma comandos `dangerous` (no `safe` ni `dev`). Esto permite que `pytest`, `mypy`, `ruff` etc. se ejecuten sin interrupciones en modo `yolo`.
+
+### `allowed_only`
+
+Si `commands.allowed_only: true`, los comandos clasificados como `dangerous` se rechazan en `execute()` sin llegar a la confirmación. Útil en CI donde solo se quiere permitir un whitelist estricto.
+
+```python
+# Ejemplo con allowed_only=True:
+run_command(command="npm install --global malicious-pkg")
+# → ToolResult(success=False, "Comando clasificado como 'dangerous' y allowed_only=True")
 ```
 
 ---
@@ -78,6 +308,7 @@ El truco es `Path.resolve()`:
 - Colapsa `../..` → ruta absoluta real.
 - Resuelve symlinks → previene escapes vía symlinks.
 - Hace que `../../etc/passwd` → `/etc/passwd`, que claramente no es `is_relative_to(workspace)`.
+- Paths absolutos como `/etc/passwd` también fallan (Python ignora workspace_root con paths absolutos, y luego `is_relative_to` falla).
 
 **Todos los paths del usuario pasan por `validate_path()` antes de cualquier operación de I/O.**
 
@@ -111,6 +342,42 @@ class ToolRegistry:
 
 `get_schemas(allowed_tools)` es el método crítico que se llama en cada iteración del loop para obtener los schemas que se envían al LLM.
 
+### Función `register_all_tools()`
+
+`tools/setup.py` define cómo se registran todas las tools:
+
+```python
+def register_filesystem_tools(registry, workspace_config):
+    root = workspace_config.root.resolve()
+    registry.register(ReadFileTool(root))
+    registry.register(WriteFileTool(root))
+    registry.register(DeleteFileTool(root, workspace_config.allow_delete))
+    registry.register(ListFilesTool(root))
+    registry.register(EditFileTool(root))
+    registry.register(ApplyPatchTool(root))
+
+def register_search_tools(registry, workspace_config):
+    root = workspace_config.root.resolve()
+    registry.register(SearchCodeTool(root))
+    registry.register(GrepTool(root))
+    registry.register(FindFilesTool(root))
+
+def register_command_tools(registry, workspace_config, commands_config):
+    if not commands_config.enabled:
+        return
+    root = workspace_config.root.resolve()
+    registry.register(RunCommandTool(root, commands_config))
+
+def register_all_tools(registry, workspace_config, commands_config=None):
+    register_filesystem_tools(registry, workspace_config)
+    register_search_tools(registry, workspace_config)
+    if commands_config is None:
+        commands_config = CommandsConfig()
+    register_command_tools(registry, workspace_config, commands_config)
+```
+
+La CLI usa `register_all_tools()` — todas las tools siempre están disponibles en el registry. El filtrado por agente se hace a través de `allowed_tools` en `AgentConfig`. La tool `run_command` se registra solo si `commands_config.enabled=True`.
+
 ---
 
 ## ExecutionEngine — el pipeline de ejecución
@@ -123,11 +390,12 @@ class ExecutionEngine:
     config:    AppConfig
     dry_run:   bool = False
     policy:    ConfirmationPolicy
+    hooks:     PostEditHooks | None = None
 
     def execute_tool_call(self, tool_name: str, args: dict) -> ToolResult:
 ```
 
-### Los 7 pasos del pipeline
+### Los 8 pasos del pipeline
 
 ```
 1. registry.get(tool_name)
@@ -147,9 +415,13 @@ class ExecutionEngine:
 5. tool.execute(**validated_args.model_dump())
    (tool.execute() no lanza — si hay excepción interna, la tool la captura)
 
-6. log resultado (structlog)
+6. run_post_edit_hooks(tool_name, args)  → si tool es edit_file/write_file/apply_patch
+   → ejecuta hooks configurados
+   → añade output de hooks al ToolResult
 
-7. return ToolResult
+7. log resultado (structlog)
+
+8. return ToolResult
 ```
 
 Hay un `try/except Exception` exterior que captura cualquier error inesperado del paso 5 y lo convierte en `ToolResult(success=False)`.
@@ -186,9 +458,72 @@ class ConfirmationPolicy:
 ```
 
 Sensibilidad por defecto de cada tool:
-- `read_file`, `list_files` → `sensitive=False`
-- `write_file`, `delete_file` → `sensitive=True`
-- Todas las tools MCP → `sensitive=True`
+
+| Tool | `sensitive` | Requiere confirmación en `confirm-sensitive` |
+|------|-------------|----------------------------------------------|
+| `read_file`, `list_files`, `search_code`, `grep`, `find_files` | No | No |
+| `write_file`, `delete_file`, `edit_file`, `apply_patch` | **Sí** | **Sí** |
+| Todas las tools MCP | **Sí** | **Sí** |
+| `run_command` (safe) | Dinámico | No |
+| `run_command` (dev) | Dinámico | **Sí** |
+| `run_command` (dangerous) | Dinámico | **Sí** (y también en `yolo`) |
+
+Para `run_command`, `ExecutionEngine` llama a `_should_confirm_command()` que consulta `tool.classify_sensitivity(command)` en lugar de usar el atributo estático `tool.sensitive`.
+
+---
+
+## PostEditHooks -- verificacion automatica post-edicion (v3-M4)
+
+Cuando el agente edita un archivo (`edit_file`, `write_file`, `apply_patch`), los hooks configurados se ejecutan automaticamente. El resultado vuelve al LLM como parte del tool result para que pueda auto-corregir errores.
+
+```python
+EDIT_TOOLS = {"edit_file", "write_file", "apply_patch"}
+```
+
+Configuracion en YAML:
+
+```yaml
+hooks:
+  post_edit:
+    - name: python-lint
+      command: "ruff check {file} --no-fix"
+      file_patterns: ["*.py"]
+      timeout: 15
+    - name: python-typecheck
+      command: "mypy {file} --no-error-summary"
+      file_patterns: ["*.py"]
+      timeout: 30
+```
+
+El placeholder `{file}` se reemplaza con el path del archivo editado. La variable de entorno `ARCHITECT_EDITED_FILE` tambien contiene el path.
+
+Si un hook falla (exit code != 0), su output se añade al resultado. En el log HUMAN se muestra con iconos:
+
+```
+      🔍 Hook python-lint: ⚠️
+```
+
+Y en el tool result que recibe el LLM:
+
+```
+[Hook python-lint: FALLO (exit 1)]
+src/main.py:15:5: F841 local variable 'x' is assigned to but never used
+```
+
+Si un hook tiene timeout, retorna:
+
+```
+[Hook python-lint: FALLO (exit -1)]
+Timeout despues de 15s
+```
+
+Si un hook tiene éxito, el log HUMAN muestra:
+
+```
+      🔍 Hook python-lint: ✓
+```
+
+Los hooks solo se ejecutan si el `PostEditHooks` fue configurado y pasado al `ExecutionEngine` via el parametro `hooks`. Si `hooks` es `None`, el paso 6 del pipeline se omite.
 
 ---
 
@@ -229,26 +564,34 @@ Campos opcionales → `(type | None, None)` (Pydantic optional con default None)
 ## Ciclo de vida de una tool call
 
 ```
-LLMResponse.tool_calls = [ToolCall(id="call_abc", name="write_file", arguments={...})]
+LLMResponse.tool_calls = [ToolCall(id="call_abc", name="edit_file", arguments={...})]
                               │
                               ▼
-ExecutionEngine.execute_tool_call("write_file", {path:"main.py", content:"..."})
+ExecutionEngine.execute_tool_call("edit_file", {path:"main.py", old_str:"...", new_str:"..."})
   │
-  ├─ registry.get("write_file")            → WriteFileTool
-  ├─ validate_args({path:..., content:...}) → WriteFileArgs(path="main.py", content="...")
-  ├─ policy.should_confirm(write_file)      → True (sensitive=True, mode=confirm-sensitive)
-  ├─ request_confirmation("write_file", ...) → user: y
-  ├─ write_file.execute(path="main.py", content="...", mode="overwrite")
+  ├─ registry.get("edit_file")               → EditFileTool
+  ├─ validate_args({path:..., old_str:..., new_str:...}) → EditFileArgs(...)
+  ├─ policy.should_confirm(edit_file)         → True (sensitive=True, mode=confirm-sensitive)
+  ├─ request_confirmation("edit_file", ...)   → user: y
+  ├─ edit_file.execute(path="main.py", old_str="...", new_str="...")
   │     └─ validate_path("main.py", workspace) → /workspace/main.py ✓
-  │     └─ /workspace/main.py.write_text("...")
-  │     └─ ToolResult(success=True, output="Archivo main.py sobrescrito (42 bytes)")
+  │     └─ file.read_text() → content
+  │     └─ assert old_str aparece exactamente 1 vez
+  │     └─ content.replace(old_str, new_str, 1)
+  │     └─ file.write_text(new_content)
+  │     └─ ToolResult(success=True, output="[unified diff del cambio]")
+  ├─ run_post_edit_hooks("edit_file", {path:"main.py", ...})
+  │     └─ "edit_file" in EDIT_TOOLS → True
+  │     └─ hook "python-lint": ruff check /workspace/main.py --no-fix
+  │     └─ hook "python-typecheck": mypy /workspace/main.py --no-error-summary
+  │     └─ resultado de hooks se añade al ToolResult.output
   └─ return ToolResult
 
 ContextBuilder.append_tool_results(messages, [ToolCall(...)], [ToolResult(...)])
   → messages += [
       {"role":"assistant", "tool_calls":[{"id":"call_abc","function":{...}}]},
-      {"role":"tool", "tool_call_id":"call_abc", "content":"Archivo main.py sobrescrito..."}
+      {"role":"tool", "tool_call_id":"call_abc", "content":"[diff + hook results...]"}
     ]
 ```
 
-El resultado de la tool (éxito o error) siempre vuelve al LLM como mensaje `tool`. El LLM decide qué hacer a continuación.
+El resultado de la tool (éxito o error) siempre vuelve al LLM como mensaje `tool`, incluyendo la salida de los hooks post-edicion si aplican. El LLM decide qué hacer a continuación y puede auto-corregir errores detectados por los hooks.

@@ -1,0 +1,229 @@
+---
+import Button from '../ui/Button.astro';
+import CodeFigure from '../ui/CodeFigure.astro';
+---
+
+<section id="quickstart" class="quickstart-section">
+    <div class="quickstart-container">
+        <div class="section-header">
+            <h2 class="section-title">Empieza en 30 Segundos</h2>
+            <div class="section-line"></div>
+        </div>
+
+        <div class="quickstart-grid">
+            <div class="quickstart-steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h4 class="step-title">Instalar</h4>
+                        <span class="step-note">Requiere Python 3.12+</span>
+                        <code class="step-cmd">git clone -b main --single-branch https://github.com/Diego303/architect-cli.git</code>
+                        <code class="step-cmd">cd architect-cli && python -m pip install -e .</code>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h4 class="step-title">Configurar</h4>
+                        <code class="step-cmd">export OPENAI_API_KEY=sk-...</code>
+                        <span class="step-note">O ANTHROPIC_API_KEY, GOOGLE_API_KEY, etc.</span>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h4 class="step-title">Tu primera tarea</h4>
+                        <code class="step-cmd">architect run "Añade un endpoint GET /health"</code>
+                    </div>
+                </div>
+            </div>
+
+            <CodeFigure title="Figura 3 — Más ejemplos">
+                <div class="example-line"><span class="ex-comment"># Con un modelo específico</span></div>
+                <div class="example-line"><span class="ex-prompt">$ </span>architect run "Corrige los errores de lint" --model claude-sonnet-4</div>
+                <div class="example-spacer"></div>
+                <div class="example-line"><span class="ex-comment"># Solo planificar, sin tocar código</span></div>
+                <div class="example-line"><span class="ex-prompt">$ </span>architect run "Analiza cómo refactorizar el módulo auth" --agent plan</div>
+                <div class="example-spacer"></div>
+                <div class="example-line"><span class="ex-comment"># En modo headless para CI</span></div>
+                <div class="example-line"><span class="ex-prompt">$ </span>architect run "Añade tests para auth.py" --confirm-mode yolo --budget 0.30</div>
+                <div class="example-spacer"></div>
+                <div class="example-line"><span class="ex-comment"># Exit codes semánticos</span></div>
+                <div class="example-line"><span class="ex-prompt">$ </span>echo $?</div>
+                <div class="example-line"><span class="ex-result"># 0 = success, 1 = failed, 2 = partial</span></div>
+            </CodeFigure>
+        </div>
+
+        <div class="cta-final">
+            <p class="cta-text">
+                Open source. Sin suscripciones. Pagas solo los costes de API del LLM que elijas.
+            </p>
+            <div class="cta-buttons">
+                <Button href={`${import.meta.env.BASE_URL}docs/`}>Ver Documentación</Button>
+                <Button variant="secondary" href="https://github.com/Diego303/architect-cli" target="_blank">GitHub</Button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .quickstart-section {
+        max-width: 80rem;
+        margin: 0 auto;
+        padding: 5rem 1.5rem 6rem;
+        border-top: 2px solid var(--arch-line);
+    }
+
+    .section-header {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        margin-bottom: 3rem;
+    }
+
+    .section-title {
+        font-family: var(--font-heading);
+        font-size: 1.875rem;
+        color: var(--arch-ink);
+        font-weight: 800;
+        margin: 0;
+        white-space: nowrap;
+    }
+
+    .section-line {
+        height: 4px;
+        background-color: var(--arch-ink);
+        flex-grow: 1;
+    }
+
+    .quickstart-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+        margin-bottom: 4rem;
+    }
+
+    @media (min-width: 1024px) {
+        .quickstart-grid {
+            grid-template-columns: 1fr 1fr;
+            align-items: start;
+        }
+    }
+
+    .quickstart-steps {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .step {
+        display: flex;
+        gap: 1.25rem;
+        align-items: flex-start;
+        background-color: var(--arch-surface);
+        border: 2px solid var(--arch-ink);
+        padding: 1.5rem;
+    }
+
+    .step-number {
+        font-family: var(--font-heading);
+        font-weight: 800;
+        font-size: 1.5rem;
+        color: var(--arch-brick);
+        width: 2.5rem;
+        height: 2.5rem;
+        min-width: 2.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 2px solid var(--arch-ink);
+        background-color: var(--arch-paper);
+    }
+
+    .step-content {
+        display: flex;
+        flex-direction: column;
+        gap: 0.375rem;
+    }
+
+    .step-title {
+        font-family: var(--font-heading);
+        font-size: 0.875rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--arch-ink);
+        margin: 0;
+    }
+
+    .step-cmd {
+        font-family: var(--font-mono);
+        font-size: 0.8125rem;
+        color: var(--arch-ink);
+        background-color: var(--arch-shape);
+        padding: 0.375rem 0.75rem;
+        border: 1px solid var(--arch-line);
+        word-break: break-all;
+    }
+
+    .step-note {
+        font-size: 0.75rem;
+        color: var(--arch-ink-light);
+        font-style: italic;
+    }
+
+    /* Examples inside CodeFigure */
+    .example-line {
+        padding: 0.0625rem 0;
+    }
+
+    .ex-comment {
+        color: var(--arch-ink-light);
+        font-style: italic;
+    }
+
+    .ex-prompt {
+        color: var(--arch-ink-light);
+        user-select: none;
+    }
+
+    .ex-result {
+        color: var(--arch-brick);
+    }
+
+    .example-spacer {
+        height: 0.75rem;
+    }
+
+    /* Final CTA */
+    .cta-final {
+        text-align: center;
+        padding: 3rem 2rem;
+        background-color: var(--arch-surface);
+        border: 2px solid var(--arch-ink);
+        box-shadow: var(--shadow-draft);
+    }
+
+    .cta-text {
+        font-size: 1.125rem;
+        color: var(--arch-ink-light);
+        margin: 0 0 2rem 0;
+        line-height: 1.6;
+    }
+
+    .cta-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        align-items: center;
+        justify-content: center;
+    }
+
+    @media (min-width: 640px) {
+        .cta-buttons {
+            flex-direction: row;
+        }
+    }
+</style>
