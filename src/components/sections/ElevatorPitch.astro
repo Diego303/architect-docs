@@ -1,0 +1,211 @@
+---
+const badges = [
+    "Multi-modelo",
+    "Loop inteligente",
+    "Verificación auto",
+    "MCP nativo",
+    "Headless-first",
+    "Human logs",
+    "Cost tracking",
+    "Agentes custom",
+    "Self-eval",
+    "Prompt caching",
+];
+---
+
+<section id="about" class="elevator-section">
+    <div class="elevator-container">
+        <div class="section-header">
+            <h2 class="section-title">Qué es Architect</h2>
+            <div class="section-line"></div>
+        </div>
+
+        <div class="elevator-grid">
+            <div class="elevator-text">
+                <p class="elevator-lead">
+                    Una herramienta CLI que orquesta agentes de IA para leer, analizar, y modificar código
+                    automáticamente. Dale una tarea en lenguaje natural, y architect planifica los cambios,
+                    los implementa, ejecuta lint y tests para verificarlos, y te devuelve un resultado limpio
+                    — <strong>todo sin intervención humana.</strong>
+                </p>
+                <p class="elevator-body">
+                    A diferencia de los asistentes que viven dentro de un editor, architect está diseñada para
+                    ejecutarse donde el código realmente se construye: en terminales, Makefiles, y pipelines
+                    de CI/CD. Es la pieza que falta entre <em>"tengo una IA que sugiere código"</em> y
+                    <em>"tengo una IA que entrega código verificado"</em>.
+                </p>
+                <p class="elevator-body">
+                    Funciona con cualquier LLM: OpenAI, Anthropic, Google, DeepSeek, Mistral, modelos locales
+                    con Ollama — más de 100 proveedores soportados. Tú eliges el modelo, architect hace el trabajo.
+                </p>
+            </div>
+
+            <div class="elevator-values">
+                <div class="value-item">
+                    <div class="value-marker"></div>
+                    <div>
+                        <h4 class="value-title">Headless-first</h4>
+                        <p class="value-desc">No es un chat con superpoderes. Es una herramienta de automatización que habla con LLMs.</p>
+                    </div>
+                </div>
+                <div class="value-item">
+                    <div class="value-marker"></div>
+                    <div>
+                        <h4 class="value-title">Se verifica a sí mismo</h4>
+                        <p class="value-desc">Post-edit hooks, self-evaluation, errores como feedback. Tres capas para entregar código que funciona.</p>
+                    </div>
+                </div>
+                <div class="value-item">
+                    <div class="value-marker"></div>
+                    <div>
+                        <h4 class="value-title">Transparencia total</h4>
+                        <p class="value-desc">Cada acción del agente se registra con human logs legibles y JSON estructurado. Sin cajas negras.</p>
+                    </div>
+                </div>
+                <div class="value-item">
+                    <div class="value-marker"></div>
+                    <div>
+                        <h4 class="value-title">Open source, sin sorpresas</h4>
+                        <p class="value-desc">Sin suscripciones ni features bloqueadas. Pagas solo los costes de API del LLM que elijas.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="badge-strip">
+            {badges.map(badge => (
+                <span class="badge">{badge}</span>
+            ))}
+        </div>
+    </div>
+</section>
+
+<style>
+    .elevator-section {
+        max-width: 80rem;
+        margin: 0 auto;
+        padding: 4rem 1.5rem 5rem;
+    }
+
+    .section-header {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        margin-bottom: 3rem;
+    }
+
+    .section-title {
+        font-family: var(--font-heading);
+        font-size: 1.875rem;
+        color: var(--arch-ink);
+        font-weight: 800;
+        margin: 0;
+        white-space: nowrap;
+    }
+
+    .section-line {
+        height: 4px;
+        background-color: var(--arch-ink);
+        flex-grow: 1;
+    }
+
+    .elevator-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 3rem;
+        margin-bottom: 3rem;
+    }
+
+    @media (min-width: 1024px) {
+        .elevator-grid {
+            grid-template-columns: 1.2fr 1fr;
+            gap: 4rem;
+        }
+    }
+
+    .elevator-lead {
+        font-size: 1.125rem;
+        line-height: 1.7;
+        color: var(--arch-ink);
+        margin: 0 0 1.5rem 0;
+        font-weight: 400;
+    }
+
+    .elevator-lead strong {
+        color: var(--arch-brick);
+        font-weight: 600;
+    }
+
+    .elevator-body {
+        font-size: 1rem;
+        line-height: 1.7;
+        color: var(--arch-ink-light);
+        margin: 0 0 1rem 0;
+    }
+
+    .elevator-body em {
+        color: var(--arch-ink);
+        font-style: normal;
+        font-weight: 500;
+    }
+
+    .elevator-values {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .value-item {
+        display: flex;
+        gap: 1rem;
+        align-items: flex-start;
+        padding: 1.25rem;
+        background-color: var(--arch-surface);
+        border: 2px solid var(--arch-ink);
+    }
+
+    .value-marker {
+        width: 0.75rem;
+        height: 0.75rem;
+        min-width: 0.75rem;
+        background-color: var(--arch-brick);
+        margin-top: 0.25rem;
+    }
+
+    .value-title {
+        font-family: var(--font-heading);
+        font-size: 0.875rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--arch-ink);
+        margin: 0 0 0.375rem 0;
+    }
+
+    .value-desc {
+        font-size: 0.875rem;
+        line-height: 1.5;
+        color: var(--arch-ink-light);
+        margin: 0;
+    }
+
+    .badge-strip {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        justify-content: center;
+        padding-top: 1rem;
+    }
+
+    .badge {
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        font-weight: 500;
+        color: var(--arch-ink);
+        background-color: var(--arch-surface);
+        border: 2px solid var(--arch-ink);
+        padding: 0.375rem 0.875rem;
+        letter-spacing: 0.02em;
+        text-transform: uppercase;
+    }
+</style>

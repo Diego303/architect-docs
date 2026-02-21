@@ -1,11 +1,11 @@
 ---
-title: Agentes y Modos
-description: Agentes por defecto, registry y prompts del sistema.
-icon: M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z
+title: "Agentes y Modos"
+description: "Agentes por defecto, registry y modos de ejecución."
+icon: "M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
 order: 6
 ---
 
-# Agentes, Modos y Promptso
+# Sistema de agentes y modos de ejecución
 
 ---
 
@@ -15,10 +15,12 @@ Definidos en `agents/registry.py` como `DEFAULT_AGENTS: dict[str, AgentConfig]`.
 
 | Agente | Tools disponibles | confirm_mode | max_steps | Propósito |
 |--------|-------------------|--------------|-----------|-----------|
-| `plan` | `read_file`, `list_files` | `confirm-all` | 10 | Analiza la tarea y genera un plan estructurado. Solo lectura. |
-| `build` | `read_file`, `write_file`, `delete_file`, `list_files` | `confirm-sensitive` | 20 | Ejecuta tareas: crea y modifica archivos. |
-| `resume` | `read_file`, `list_files` | `yolo` | 10 | Lee y resume información. Solo lectura, sin confirmaciones. |
-| `review` | `read_file`, `list_files` | `yolo` | 15 | Revisa código y da feedback. Solo lectura, sin confirmaciones. |
+| `plan` | `read_file`, `list_files`, `search_code`, `grep`, `find_files` | `yolo` | 20 | Analiza la tarea y genera un plan estructurado. Solo lectura. (v3: yolo porque plan no modifica archivos) |
+| `build` | todas las tools (filesystem + edición + búsqueda + `run_command`) | `confirm-sensitive` | 50 | Ejecuta tareas: crea y modifica archivos con herramientas completas. (v3: safety net, no driver del loop) |
+| `resume` | `read_file`, `list_files`, `search_code`, `grep`, `find_files` | `yolo` | 15 | Lee y resume información. Solo lectura, sin confirmaciones. |
+| `review` | `read_file`, `list_files`, `search_code`, `grep`, `find_files` | `yolo` | 20 | Revisa código y da feedback. Solo lectura, sin confirmaciones. |
+
+Las tools de búsqueda (`search_code`, `grep`, `find_files`) están disponibles para todos los agentes desde F10. El agente `build` tiene acceso adicional a `edit_file` y `apply_patch` para edición incremental.
 
 ---
 
@@ -28,11 +30,16 @@ Definidos en `agents/registry.py` como `DEFAULT_AGENTS: dict[str, AgentConfig]`.
 - Rol: analista y planificador.
 - **Nunca ejecuta acciones** — su output es el plan, no los cambios.
 - Formato de output esperado: `## Resumen / ## Pasos / ## Archivos afectados / ## Consideraciones`.
+- Incluye guía de herramientas de búsqueda (cuándo usar `search_code` vs `grep` vs `find_files`).
 - Ideal para: entender el alcance de una tarea antes de ejecutarla.
 
 ### `BUILD_PROMPT`
 - Rol: ejecutor cuidadoso.
 - Flujo: lee el código primero, luego modifica, luego verifica.
+- **Jerarquía de edición explícita**:
+  1. `edit_file` — cambio de un único bloque contiguo (preferido).
+  2. `apply_patch` — múltiples cambios o diff preexistente.
+  3. `write_file` — archivos nuevos o reorganizaciones completas.
 - Cambios incrementales y conservadores.
 - Al terminar: resume los cambios realizados.
 - Ideal para: crear, modificar o refactorizar código.
@@ -41,6 +48,7 @@ Definidos en `agents/registry.py` como `DEFAULT_AGENTS: dict[str, AgentConfig]`.
 - Rol: analista de sólo-lectura.
 - Nunca modifica archivos.
 - Output estructurado con bullets.
+- Puede usar `search_code` para encontrar implementaciones específicas.
 - Ideal para: entender un proyecto rápidamente.
 
 ### `REVIEW_PROMPT`
@@ -48,6 +56,7 @@ Definidos en `agents/registry.py` como `DEFAULT_AGENTS: dict[str, AgentConfig]`.
 - Prioriza issues: crítico / importante / menor.
 - Categorías: bugs, seguridad, performance, código limpio.
 - Nunca modifica archivos.
+- Puede usar `grep` para buscar patrones problemáticos a lo largo del proyecto.
 - Ideal para: auditar calidad de código.
 
 ---
@@ -84,13 +93,15 @@ return config
 agents:
   deploy:
     system_prompt: |
-      Eres un agente de deployment...
+      Eres un agente de deployment especializado.
+      Verifica tests, revisa CI/CD, genera reporte antes de actuar.
     allowed_tools:
       - read_file
       - list_files
+      - search_code
       - write_file
     confirm_mode: confirm-all
-    max_steps: 10
+    max_steps: 15
 ```
 
 ### Override parcial de un default
@@ -105,24 +116,29 @@ agents:
 
 ## Modos de ejecución
 
-### Single-agent (`-a nombre`)
+### Single-agent — modo por defecto
+
+El agente `build` se usa por defecto si no se especifica `-a`. Con `-a nombre` se puede seleccionar cualquier otro agente.
 
 ```
-AgentLoop(llm, engine, agent_config, ctx, shutdown, step_timeout)
+AgentLoop(llm, engine, agent_config, ctx, shutdown, step_timeout, context_manager, cost_tracker, timeout)
   └─ run(prompt, stream, on_stream_chunk)
 ```
 
 El agente especificado ejecuta el prompt directamente. El `engine` usa el `confirm_mode` del agente (a menos que `--mode` lo sobreescriba).
 
-### Modo mixto (sin `-a`)
+### Modo mixto (sin `-a`) — legacy
 
-El modo por defecto. Ejecuta dos agentes en secuencia.
+Ya no es el modo por defecto desde v0.15.0 (v3-M3). El agente `build` se usa directamente como default.
+
+Si se necesita el modo mixto plan→build, se puede invocar `MixedModeRunner` programáticamente, pero la CLI ya no lo usa como default. Para un flujo plan→build desde CLI, ejecutar primero `-a plan` y luego `-a build`.
 
 ```
-MixedModeRunner(llm, plan_engine, plan_config, build_engine, build_config, ...)
+MixedModeRunner(llm, engine, plan_config, build_config, context_builder,
+                shutdown, step_timeout, context_manager, cost_tracker)
   └─ run(prompt, stream, on_stream_chunk)
        │
-       ├─ FASE 1: plan (sin streaming, confirm-all)
+       ├─ FASE 1: plan (sin streaming, yolo)
        │     plan_loop.run(prompt, stream=False)
        │     → plan_state.final_output = "## Pasos\n1. Leer main.py\n2. ..."
        │
@@ -145,11 +161,9 @@ MixedModeRunner(llm, plan_engine, plan_config, build_engine, build_config, ...)
 
 El plan enriquece el contexto del build agent. El build agent no parte de cero — ya sabe qué hacer y en qué orden.
 
-**Nota importante**: En modo mixto se crean **dos `ExecutionEngine` distintos**:
-- `plan_engine` con `confirm_mode="confirm-all"` y tools `read_file`, `list_files`.
-- `build_engine` con `confirm_mode="confirm-sensitive"` y todas las tools.
+**Nota importante**: En modo mixto se crean **dos `AgentLoop` distintos** pero comparten el mismo `ExecutionEngine`. Cada loop usa su propia `AgentConfig` (plan o build), lo que determina las tools disponibles y el confirm_mode.
 
-Esto permite que el usuario configure `--mode yolo` solo para el build sin afectar el plan, que nunca modifica archivos y por tanto puede usar confirm-all sin peligro.
+El `ContextManager` se **comparte** entre ambas fases para mantener una contabilidad coherente del contexto. El `CostTracker` se comparte entre ambas fases para que el presupuesto sea global. El `SelfEvaluator` se aplica sobre el resultado final del `build_loop`.
 
 ---
 
@@ -160,10 +174,30 @@ Esto permite que el usuario configure `--mode yolo` solo para el build sin afect
 ```python
 tools_schema = registry.get_schemas(agent_config.allowed_tools or None)
 # [] o None → todas las tools registradas
-# ["read_file", "list_files"] → solo esas dos
+# ["read_file", "list_files", "search_code"] → solo esas tres
 ```
 
-Si el LLM intenta llamar a una tool no permitida (ej: `write_file` cuando solo tiene `read_file`), el `ExecutionEngine` la rechaza con `ToolNotFoundError` convertido en `ToolResult(success=False)`. El error vuelve al LLM como mensaje de tool, y el LLM puede adaptar su estrategia.
+Si el LLM intenta llamar a una tool no permitida (ej: `edit_file` cuando solo tiene `read_file`), el `ExecutionEngine` la rechaza con `ToolNotFoundError` convertido en `ToolResult(success=False)`. El error vuelve al LLM como mensaje de tool, y el LLM puede adaptar su estrategia.
+
+### Tools disponibles por agente (con alias)
+
+```
+Agente plan / resume / review:
+  ✓ read_file       — leer cualquier archivo
+  ✓ list_files      — listar directorio
+  ✓ search_code     — buscar con regex en código
+  ✓ grep            — buscar texto literal
+  ✓ find_files      — buscar archivos por nombre
+
+Agente build (+ todo lo anterior):
+  ✓ write_file      — crear o sobrescribir archivos
+  ✓ edit_file       — edición incremental (str-replace)
+  ✓ apply_patch     — aplicar unified diff
+  ✓ delete_file     — eliminar (requiere allow_delete=true)
+  ✓ run_command     — ejecutar comandos del sistema (F13)
+
+Agentes custom: definidos explícitamente en allowed_tools
+```
 
 ---
 
@@ -174,14 +208,14 @@ El subcomando `architect agents` muestra todos los agentes disponibles:
 ```bash
 $ architect agents
 Agentes disponibles:
-  plan    [confirm-all]       Analiza y planifica sin ejecutar
+  plan    [yolo]              Analiza y planifica sin ejecutar
   build   [confirm-sensitive] Crea y modifica archivos del workspace
   resume  [yolo]              Lee y resume información del proyecto
   review  [yolo]              Revisa código y genera feedback
 
 $ architect agents -c config.yaml
 Agentes disponibles:
-  plan    [confirm-all]       Analiza y planifica sin ejecutar
+  plan    [yolo]              Analiza y planifica sin ejecutar
   build * [confirm-all]       Crea y modifica archivos del workspace  ← override
   resume  [yolo]              Lee y resume información del proyecto
   review  [yolo]              Revisa código y genera feedback
@@ -189,3 +223,37 @@ Agentes disponibles:
 ```
 
 El `*` indica que ese agente tiene un override en el YAML (algún campo del default fue sobreescrito).
+
+---
+
+## Indexer y system prompt (F10)
+
+Cuando el `RepoIndexer` está habilitado (`indexer.enabled=true`), el `ContextBuilder` inyecta automáticamente el árbol del proyecto en el system prompt de cada agente:
+
+```
+Eres un agente de build especializado...
+
+## Estructura del Proyecto
+
+Workspace: /home/user/mi-proyecto
+Archivos: 47 archivos | 3,241 líneas
+
+Lenguajes: Python (23), YAML (8), Markdown (6), JSON (4)
+
+src/
+├── architect/
+│   ├── cli.py              Python    412 líneas
+│   ├── config/
+│   │   ├── loader.py       Python    156 líneas
+│   │   └── schema.py       Python    220 líneas
+│   └── core/
+│       ├── context.py      Python    287 líneas
+│       ├── evaluator.py    Python    387 líneas
+│       └── loop.py         Python    201 líneas
+└── tests/
+    └── test_core.py        Python     89 líneas
+```
+
+Esto permite que el agente conozca la estructura del proyecto **antes de leer ningún archivo**, reduciendo el número de llamadas a `list_files` y mejorando la calidad de los planes.
+
+Para repositorios > 300 archivos, se usa una vista compacta agrupada por directorio raíz para no saturar el system prompt.

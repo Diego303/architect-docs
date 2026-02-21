@@ -1,52 +1,51 @@
 ---
-import { getCollection } from 'astro:content';
 import Button from './ui/Button.astro';
-import Card from './ui/Card.astro';
-
-const docs = await getCollection('docs');
-const sortedDocs = docs.sort((a, b) => {
-    if (a.data.order && b.data.order) {
-        return a.data.order - b.data.order;
-    }
-    return a.slug.localeCompare(b.slug);
-});
+import ElevatorPitch from './sections/ElevatorPitch.astro';
+import KillerFeatures from './sections/KillerFeatures.astro';
+import Comparison from './sections/Comparison.astro';
+import UseCases from './sections/UseCases.astro';
+import QuickStart from './sections/QuickStart.astro';
 ---
 
 <main class="landing-main">
     <div class="bg-shape"></div>
 
     <div class="hero-section">
-        <!-- Search would go here if implemented -->
-        
         <h1 class="hero-title">
             Planifica y ejecuta tareas con <br />
             <span class="highlight-brick">Precisión Agéntica</span>
         </h1>
-        
+
         <p class="hero-subtitle">
             La documentación oficial de <strong class="text-ink">Architect</strong>. La herramienta CLI
             para diseñar, planificar y ejecutar obras complejas de software orquestadas por LLMs.
         </p>
 
-        <!-- Code Block Simulation -->
+        <!-- Code Block — Real Human Logs -->
         <div class="code-figure">
             <div class="code-figure-header">
-                <span class="code-figure-title">TERMINAL 1 — USER@ARCHITECT</span>
-                <div class="w-2 h-2 rounded-full bg-arch-ink opacity-20"></div>
+                <span class="code-figure-title">TERMINAL — HUMAN LOG OUTPUT</span>
+                <div class="code-figure-dot"></div>
             </div>
             <div class="code-figure-content">
-                <div><span class="prompt font-bold">$ </span><span class="font-bold">architect run "Analiza este proyecto y refactoriza el módulo de..."</span></div>
-                <div class="mt-4"><span class="text-arch-ink-light">[INFO]</span> agent.loop.start  agent=build step_timeout=0</div>
-                <div><span class="text-arch-ink-light">[INFO]</span> agent.step.start  step=1</div>
-                <div><span class="text-arch-brick">[DEBUG]</span> llm.completion.start  model=gpt-4o-mini messages=3 tools=4</div>
-                <div><span class="text-arch-ink-light">[INFO]</span> agent.tool_call.execute  tool=read_file path=src/main.py</div>
-                <div><span class="text-arch-brick">[DEBUG]</span> tool.execute.args     tool=write_file path=src/utils.py content="def foo():..."</div>
-                <div><span class="text-arch-ink-light">[INFO]</span> agent.tool_call.complete tool=read_file success=True chars=1243</div>
-                <div><span class="text-arch-brick">[DEBUG]</span> tool.execute.result   output="Archivo sobrescrito (234 bytes)"</div>
-                <div><span class="text-arch-ink-light">[INFO]</span> agent.step.start  step=2</div>
-                <div class="flex items-center">
-                    <span class="text-arch-ink-light">[INFO]</span> <span class="ml-2">agent.complete     status=success steps=2</span> <span class="cursor"></span>
-                </div>
+                <div><span class="prompt font-bold">$ </span><span class="font-bold">architect run "Refactoriza el módulo auth del proyecto"</span></div>
+                <div class="log-spacer"></div>
+                <div class="log-step"><span class="log-icon">&#x1F504;</span> Paso 1 &#x2192; Llamada al LLM (5 mensajes)</div>
+                <div class="log-detail"><span class="log-check">&#x2713;</span> LLM respondió con 2 tool calls</div>
+                <div class="log-spacer-sm"></div>
+                <div class="log-tool"><span class="log-icon">&#x1F527;</span> read_file &#x2192; src/main.py</div>
+                <div class="log-result"><span class="log-check">&#x2713;</span> OK</div>
+                <div class="log-spacer-sm"></div>
+                <div class="log-tool"><span class="log-icon">&#x1F527;</span> edit_file &#x2192; src/main.py (3&#x2192;5 líneas)</div>
+                <div class="log-result"><span class="log-check">&#x2713;</span> OK</div>
+                <div class="log-result"><span class="log-icon-sm">&#x1F50D;</span> Hook python-lint: <span class="log-check">&#x2713;</span></div>
+                <div class="log-spacer"></div>
+                <div class="log-step"><span class="log-icon">&#x1F504;</span> Paso 2 &#x2192; Llamada al LLM (9 mensajes)</div>
+                <div class="log-detail"><span class="log-check">&#x2713;</span> LLM respondió con texto final</div>
+                <div class="log-spacer"></div>
+                <div class="log-done"><span class="log-icon">&#x2705;</span> Agente completado (2 pasos)</div>
+                <div class="log-meta">Razón: LLM decidió que terminó</div>
+                <div class="log-meta">Coste: <span class="text-arch-brick">$0.0042</span> <span class="cursor"></span></div>
             </div>
         </div>
 
@@ -56,32 +55,20 @@ const sortedDocs = docs.sort((a, b) => {
         </div>
     </div>
 
-    <section id="concepts" class="concepts-section">
-        <div class="section-header">
-            <h2 class="section-title">Manual de Construcción</h2>
-            <div class="section-line"></div>
-        </div>
+    <!-- New marketing sections -->
+    <ElevatorPitch />
+    <KillerFeatures />
+    <Comparison />
+    <UseCases />
+    <QuickStart />
 
-        <div class="card-grid">
-            {sortedDocs.map(doc => (
-                <Card 
-                    title={doc.data.title || doc.slug} 
-                    href={`${import.meta.env.BASE_URL}docs/${doc.slug === 'index' ? '' : doc.slug}`}
-                    iconPath={doc.data.icon}
-                    class="h-full"
-                >
-                    {doc.data.description || "Documentación técnica detallada sobre este módulo del sistema Architect."}
-                </Card>
-            ))}
-        </div>
-    </section>
 </main>
 
 <style>
     .landing-main {
         position: relative;
         padding-bottom: 5rem;
-        overflow-x: hidden; /* Prevent horizontal scroll from absolute shape */
+        overflow-x: hidden;
     }
 
     .bg-shape {
@@ -128,7 +115,7 @@ const sortedDocs = docs.sort((a, b) => {
         display: inline-block;
         color: var(--arch-brick);
     }
-    
+
     .highlight-brick::after {
         content: '';
         position: absolute;
@@ -148,7 +135,7 @@ const sortedDocs = docs.sort((a, b) => {
         margin-bottom: 3rem;
         line-height: 1.6;
     }
-    
+
     @media (min-width: 768px) {
         .hero-subtitle {
             font-size: 1.25rem;
@@ -187,6 +174,14 @@ const sortedDocs = docs.sort((a, b) => {
         text-transform: uppercase;
     }
 
+    .code-figure-dot {
+        width: 0.5rem;
+        height: 0.5rem;
+        border-radius: 50%;
+        background-color: var(--arch-ink);
+        opacity: 0.2;
+    }
+
     .code-figure-content {
         padding: 1.5rem;
         font-family: var(--font-mono);
@@ -195,16 +190,61 @@ const sortedDocs = docs.sort((a, b) => {
         line-height: 1.7;
         overflow-x: auto;
     }
-    
+
     .prompt { color: var(--arch-ink-light); user-select: none; }
-    .comment { color: var(--arch-brick-light); font-style: italic; margin-top: 0.5rem; padding-left: 0.75rem; border-left: 2px solid var(--arch-brick); }
-    .status-marker { display: inline-block; width: 0.5rem; height: 0.5rem; margin-right: 0.5rem; }
-    .status-marker.done { background-color: var(--arch-brick); }
-    .status-marker.active { border: 2px solid var(--arch-brick); }
-    .status-text { font-weight: 700; margin-left: 0.5rem; }
     .cursor { display: inline-block; width: 0.5rem; height: 1rem; background-color: var(--arch-brick); vertical-align: middle; animation: blink 1s infinite; margin-left: 0.25rem; }
 
     @keyframes blink { 50% { opacity: 0; } }
+
+    /* Human Log Styles */
+    .log-spacer { height: 0.75rem; }
+    .log-spacer-sm { height: 0.25rem; }
+
+    .log-step {
+        color: var(--arch-ink);
+        font-weight: 600;
+    }
+
+    .log-detail {
+        padding-left: 1.5rem;
+        color: var(--arch-ink-light);
+    }
+
+    .log-tool {
+        padding-left: 1.5rem;
+        color: var(--arch-ink);
+    }
+
+    .log-result {
+        padding-left: 3rem;
+        color: var(--arch-ink-light);
+    }
+
+    .log-done {
+        color: var(--arch-ink);
+        font-weight: 700;
+    }
+
+    .log-meta {
+        padding-left: 1.5rem;
+        color: var(--arch-ink-light);
+        font-size: 0.8125rem;
+    }
+
+    .log-icon {
+        margin-right: 0.375rem;
+    }
+
+    .log-icon-sm {
+        margin-right: 0.25rem;
+        font-size: 0.75rem;
+    }
+
+    .log-check {
+        color: var(--arch-ink);
+        font-weight: 700;
+        margin-right: 0.25rem;
+    }
 
     /* CTA */
     .cta-group {
@@ -219,47 +259,6 @@ const sortedDocs = docs.sort((a, b) => {
         .cta-group {
             flex-direction: row;
             justify-content: center;
-        }
-    }
-
-    /* Concepts Section */
-    .concepts-section {
-        max-width: 80rem;
-        margin: 0 auto;
-        padding: 6rem 1.5rem;
-    }
-
-    .section-header {
-        display: flex;
-        align-items: center;
-        gap: 1.5rem;
-        margin-bottom: 3rem;
-    }
-
-    .section-title {
-        font-family: var(--font-heading);
-        font-size: 1.875rem;
-        color: var(--arch-ink);
-        font-weight: 800;
-        margin: 0;
-        white-space: nowrap;
-    }
-
-    .section-line {
-        height: 4px; /* Slightly thicker than design system for visibility */
-        background-color: var(--arch-ink);
-        flex-grow: 1;
-    }
-
-    .card-grid {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 2rem;
-    }
-
-    @media (min-width: 768px) {
-        .card-grid {
-            grid-template-columns: repeat(3, 1fr);
         }
     }
 

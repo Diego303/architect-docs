@@ -1,0 +1,90 @@
+---
+interface Props {
+    title: string;
+    iconPath?: string;
+    class?: string;
+}
+
+const { title, iconPath, class: className } = Astro.props;
+---
+
+<div class={`feature-card ${className ?? ''}`}>
+    <div class="feature-card-corner"></div>
+
+    <div class="feature-card-icon-box">
+        {iconPath ? (
+            <svg class="feature-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2" d={iconPath}></path>
+            </svg>
+        ) : (
+            <slot name="icon" />
+        )}
+    </div>
+
+    <h3 class="feature-card-title">{title}</h3>
+
+    <div class="feature-card-body">
+        <slot />
+    </div>
+</div>
+
+<style>
+    .feature-card {
+        position: relative;
+        background-color: var(--arch-surface);
+        border: 2px solid var(--arch-ink);
+        box-shadow: var(--shadow-draft);
+        padding: 2rem;
+        transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                    box-shadow 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .feature-card:hover {
+        transform: translate(4px, 4px);
+        box-shadow: var(--shadow-draft-hover);
+    }
+
+    .feature-card-corner {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 2rem;
+        height: 2rem;
+        background-color: var(--arch-brick-transparent);
+        border-bottom: 2px solid var(--arch-ink);
+        border-left: 2px solid var(--arch-ink);
+    }
+
+    .feature-card-icon-box {
+        width: 3.5rem;
+        height: 3.5rem;
+        background-color: var(--arch-paper);
+        border: 2px solid var(--arch-ink);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1.25rem;
+        color: var(--arch-brick);
+    }
+
+    .feature-icon {
+        width: 1.75rem;
+        height: 1.75rem;
+    }
+
+    .feature-card-title {
+        font-family: var(--font-heading);
+        font-weight: 700;
+        font-size: 1.125rem;
+        color: var(--arch-ink);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin: 0 0 0.75rem 0;
+    }
+
+    .feature-card-body {
+        color: var(--arch-ink-light);
+        font-size: 0.9375rem;
+        line-height: 1.6;
+    }
+</style>

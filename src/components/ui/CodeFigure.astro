@@ -1,0 +1,63 @@
+---
+interface Props {
+    title: string;
+    class?: string;
+}
+
+const { title, class: className } = Astro.props;
+---
+
+<div class={`code-fig ${className ?? ''}`}>
+    <div class="code-fig-header">
+        <span class="code-fig-label">{title}</span>
+        <div class="code-fig-dot"></div>
+    </div>
+    <div class="code-fig-body">
+        <slot />
+    </div>
+</div>
+
+<style>
+    .code-fig {
+        width: 100%;
+        background-color: var(--arch-surface);
+        border: 2px solid var(--arch-ink);
+        box-shadow: var(--shadow-draft);
+        overflow: hidden;
+    }
+
+    .code-fig-header {
+        background-color: var(--arch-paper);
+        border-bottom: 2px solid var(--arch-ink);
+        padding: 0.625rem 1.25rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .code-fig-label {
+        font-family: var(--font-mono);
+        color: var(--arch-ink);
+        font-size: 0.6875rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+    }
+
+    .code-fig-dot {
+        width: 0.5rem;
+        height: 0.5rem;
+        border-radius: 50%;
+        background-color: var(--arch-ink);
+        opacity: 0.2;
+    }
+
+    .code-fig-body {
+        padding: 1.25rem;
+        font-family: var(--font-mono);
+        font-size: 0.8125rem;
+        color: var(--arch-ink);
+        line-height: 1.7;
+        overflow-x: auto;
+    }
+</style>

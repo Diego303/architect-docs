@@ -1,7 +1,7 @@
 ---
-title: Referencia de Configuración
-description: Schema completo, precedencia y variables de entorno.
-icon: M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z
+title: "Referencia de Configuración"
+description: "Schema completo de configuración, precedencia y variables de entorno."
+icon: "M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z M15 12a3 3 0 11-6 0 3 3 0 016 0z"
 order: 7
 ---
 
@@ -54,6 +54,12 @@ El `deep_merge()` de `config/loader.py` combina las capas de forma recursiva: lo
 | `-v / -vv / -vvv` | `logging.verbose` (count) |
 | `--log-level LEVEL` | `logging.level` |
 | `--log-file PATH` | `logging.file` |
+| `--self-eval MODE` | `evaluation.mode` (off/basic/full) |
+| `--allow-commands` | `commands.enabled = True` |
+| `--no-commands` | `commands.enabled = False` |
+| `--budget FLOAT` | `costs.budget_usd` |
+| `--cache` | `llm_cache.enabled = True` |
+| `--no-cache` | `llm_cache.enabled = False` |
 
 ---
 
@@ -75,6 +81,7 @@ llm:
   timeout: 60              # segundos por llamada al LLM
   retries: 2               # reintentos en errores transitorios (no auth)
   stream: true             # streaming por defecto; desactivado con --no-stream/--json/--quiet
+  prompt_caching: false    # marca system prompt con cache_control → ahorro 50-90% en Anthropic/OpenAI
 
 # ==============================================================================
 # Agentes (custom o overrides de defaults)
@@ -101,8 +108,9 @@ agents:
 # Logging
 # ==============================================================================
 logging:
-  level: info              # "debug" | "info" | "warn" | "error"
-  verbose: 0               # 0=warn, 1=info, 2=debug, 3+=all (equiv. -v, -vv, -vvv)
+  level: human             # "debug" | "info" | "human" | "warn" | "error"
+                           # v3: "human" muestra la trazabilidad del agente
+  verbose: 0               # 0=solo human logs, 1=info, 2=debug, 3+=all
   # file: logs/architect.jsonl   # JSON Lines; DEBUG completo siempre
 
 # ==============================================================================
@@ -129,6 +137,103 @@ mcp:
     # - name: internal
     #   url: http://internal:8080
     #   token: "hardcoded-token"
+
+# ==============================================================================
+# Indexer — árbol del repositorio en el system prompt (F10)
+# ==============================================================================
+indexer:
+  enabled: true            # false = sin árbol en el prompt; las search tools siguen disponibles
+  max_file_size: 1000000   # bytes; archivos más grandes se omiten del índice
+  exclude_dirs: []         # dirs adicionales a excluir (además de .git, node_modules, etc.)
+  # exclude_dirs:
+  #   - vendor
+  #   - .terraform
+  exclude_patterns: []     # patrones adicionales a excluir (además de *.pyc, *.min.js, etc.)
+  # exclude_patterns:
+  #   - "*.generated.py"
+  #   - "*.pb.go"
+  use_cache: true          # caché del índice en disco, TTL de 5 minutos
+
+# ==============================================================================
+# Context — gestión del context window (F11)
+# ==============================================================================
+context:
+  # Nivel 1: truncar tool results largos
+  max_tool_result_tokens: 2000   # ~4 chars/token; 0 = desactivar truncado
+
+  # Nivel 2: comprimir pasos antiguos con el LLM
+  summarize_after_steps: 8       # 0 = desactivar compresión
+  keep_recent_steps: 4           # pasos recientes a preservar íntegros
+
+  # Nivel 3: hard limit del context window total
+  max_context_tokens: 80000      # 0 = sin límite (peligroso para tareas largas)
+  # Referencia: gpt-4o/mini → 80000, claude-sonnet-4-6 → 150000
+
+  # Tool calls paralelas
+  parallel_tools: true           # false = siempre secuencial
+
+# ==============================================================================
+# Evaluation — auto-evaluación del resultado (F12)
+# ==============================================================================
+evaluation:
+  mode: off                # "off" | "basic" | "full"
+                           # Override desde CLI: --self-eval basic|full
+  max_retries: 2           # reintentos en modo "full" (rango: 1-5)
+  confidence_threshold: 0.8  # umbral de confianza para aceptar resultado (0.0-1.0)
+
+# ==============================================================================
+# Commands — ejecución de comandos del sistema (F13)
+# ==============================================================================
+commands:
+  enabled: true            # false = no registrar run_command; --allow-commands/--no-commands
+  default_timeout: 30      # segundos por defecto (1-600)
+  max_output_lines: 200    # líneas de stdout/stderr antes de truncar (10-5000)
+  blocked_patterns: []     # regexes extra a bloquear (además de los built-in)
+  # blocked_patterns:
+  #   - "git push --force"
+  #   - "docker rm"
+  safe_commands: []        # comandos adicionales clasificados como 'safe'
+  allowed_only: false      # si true, solo safe/dev; dangerous rechazados en execute()
+
+# ==============================================================================
+# Costs — seguimiento de costes de llamadas al LLM (F14)
+# ==============================================================================
+costs:
+  enabled: true            # false = sin tracking de costes
+  # prices_file: my_prices.json  # precios custom (mismo formato que default_prices.json)
+  # budget_usd: 1.0        # detener si se superan $1.00; Override: --budget 1.0
+  # warn_at_usd: 0.5       # log warning al alcanzar $0.50
+
+# ==============================================================================
+# LLM Cache — cache local de respuestas LLM para desarrollo (F14)
+# ==============================================================================
+llm_cache:
+  enabled: false           # true = activar; Override: --cache / --no-cache
+  dir: ~/.architect/cache  # directorio donde guardar las entradas
+  ttl_hours: 24            # validez de cada entrada (1-8760 horas)
+
+# ==============================================================================
+# Hooks — verificacion automatica post-edicion (v3-M4)
+# ==============================================================================
+hooks:
+  post_edit:
+    # Cada hook se ejecuta cuando el agente edita un archivo que coincide con file_patterns
+    - name: python-lint
+      command: "ruff check {file} --no-fix"   # {file} se reemplaza con el path editado
+      file_patterns: ["*.py"]                   # patrones glob
+      timeout: 15                               # segundos (1-300, default: 15)
+      enabled: true                             # false = ignorar este hook
+
+    - name: python-typecheck
+      command: "mypy {file} --no-error-summary"
+      file_patterns: ["*.py"]
+      timeout: 30
+
+    # Hook para TypeScript
+    # - name: ts-lint
+    #   command: "eslint {file} --no-color"
+    #   file_patterns: ["*.ts", "*.tsx"]
+    #   timeout: 15
 ```
 
 ---
@@ -191,6 +296,9 @@ llm:
   model: claude-sonnet-4-6
   api_key_env: ANTHROPIC_API_KEY
   stream: true
+
+context:
+  max_context_tokens: 150000   # Claude tiene ventana más grande
 ```
 
 ### Ollama (local, sin API key)
@@ -200,6 +308,10 @@ llm:
   model: ollama/llama3
   api_base: http://localhost:11434
   retries: 0    # local, sin necesidad de reintentos
+  timeout: 300  # modelos locales pueden ser lentos
+
+context:
+  parallel_tools: false   # sin paralelismo en modelos locales lentos
 ```
 
 ### LiteLLM Proxy (equipos)
@@ -212,13 +324,14 @@ llm:
   api_key_env: LITELLM_PROXY_KEY
 ```
 
-### CI/CD (modo yolo, sin confirmaciones)
+### CI/CD (modo yolo, sin confirmaciones, con evaluación)
 
 ```yaml
 llm:
   model: gpt-4o-mini
   timeout: 120
   retries: 3
+  stream: false
 
 workspace:
   root: .
@@ -226,10 +339,120 @@ workspace:
 logging:
   verbose: 0
   level: warn
+
+evaluation:
+  mode: basic              # evalúa el resultado en CI
+  confidence_threshold: 0.7  # menos estricto que en interactivo
 ```
 
 ```bash
 architect run "actualiza imports obsoletos en src/" \
   --mode yolo --quiet --json \
   -c ci/architect.yaml
+```
+
+### Repos grandes (con optimización de contexto)
+
+```yaml
+indexer:
+  exclude_dirs:
+    - vendor
+    - .terraform
+    - coverage
+  exclude_patterns:
+    - "*.generated.py"
+    - "*.pb.go"
+  use_cache: true
+
+context:
+  max_tool_result_tokens: 1000   # más agresivo en repos grandes
+  summarize_after_steps: 5       # comprimir más rápido
+  keep_recent_steps: 3
+  max_context_tokens: 60000      # más conservador
+  parallel_tools: true
+```
+
+### Con ejecución de comandos (F13) y costes (F14)
+
+```yaml
+llm:
+  model: claude-sonnet-4-6
+  api_key_env: ANTHROPIC_API_KEY
+  prompt_caching: true     # ahorra tokens en llamadas repetidas al mismo system prompt
+
+commands:
+  enabled: true
+  default_timeout: 60
+  max_output_lines: 200
+  safe_commands:
+    - "pnpm test"
+    - "cargo check"
+
+costs:
+  enabled: true
+  budget_usd: 2.0          # máximo $2 por ejecución
+  warn_at_usd: 1.0         # aviso al alcanzar $1
+
+# Cache local para desarrollo: evita llamadas repetidas al LLM
+llm_cache:
+  enabled: false           # activar con --cache en CLI durante desarrollo
+  ttl_hours: 24
+```
+
+```bash
+# Con cache local activo y presupuesto desde CLI
+architect run "PROMPT" -a build --cache --budget 1.5 --show-costs
+```
+
+### Con hooks post-edit (v3-M4)
+
+```yaml
+hooks:
+  post_edit:
+    - name: python-lint
+      command: "ruff check {file} --no-fix"
+      file_patterns: ["*.py"]
+      timeout: 15
+    - name: python-typecheck
+      command: "mypy {file} --no-error-summary"
+      file_patterns: ["*.py"]
+      timeout: 30
+```
+
+```bash
+# Los hooks se ejecutan automaticamente — el LLM ve el output de lint/typecheck
+# y puede auto-corregir errores
+architect run "refactoriza utils.py" -a build --mode yolo -c config.yaml
+```
+
+### Config completa con self-eval
+
+```yaml
+llm:
+  model: gpt-4o
+  api_key_env: OPENAI_API_KEY
+  timeout: 120
+
+workspace:
+  root: .
+
+indexer:
+  enabled: true
+  use_cache: true
+
+context:
+  max_tool_result_tokens: 2000
+  summarize_after_steps: 8
+  max_context_tokens: 80000
+  parallel_tools: true
+
+evaluation:
+  mode: full               # reintentar automáticamente si falla
+  max_retries: 2
+  confidence_threshold: 0.85
+```
+
+```bash
+# O usar solo el flag de CLI (ignora evaluation.mode del YAML)
+architect run "genera tests para src/auth.py" -a build --self-eval full
 ```

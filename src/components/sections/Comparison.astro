@@ -1,0 +1,223 @@
+---
+const rows = [
+    { label: "Modo principal", claude: "Terminal interactiva", cursor: "IDE (VS Code)", aider: "Terminal interactiva", architect: "Headless / CI" },
+    { label: "Multi-modelo", claude: "Solo Claude", cursor: "Multi (con config)", aider: "Multi", architect: "Multi (LiteLLM, 100+)" },
+    { label: "Sin supervisión", claude: "Parcial", cursor: "No", aider: "Parcial", architect: "Nativo" },
+    { label: "Exit codes CI", claude: "No", cursor: "No", aider: "No", architect: "Semánticos" },
+    { label: "MCP nativo", claude: "Sí", cursor: "No", aider: "No", architect: "Sí" },
+    { label: "Post-edit hooks", claude: "Manuales", cursor: "Parcial", aider: "No", architect: "Auto y configurables" },
+    { label: "Self-eval", claude: "No", cursor: "No", aider: "No", architect: "Basic + Full" },
+    { label: "Cost tracking", claude: "Limitado", cursor: "No", aider: "Parcial", architect: "Completo + budget" },
+    { label: "Custom agents", claude: "No", cursor: "No", aider: "No", architect: "Sí (YAML)" },
+    { label: "Open source", claude: "No", cursor: "No", aider: "Sí", architect: "Sí" },
+    { label: "Coste", claude: "$20/mes", cursor: "$20/mes", aider: "API costs", architect: "API costs (gratis)" },
+];
+---
+
+<section id="comparison" class="comparison-section">
+    <div class="comparison-container">
+        <div class="section-header">
+            <h2 class="section-title">Por qué Architect</h2>
+            <div class="section-line"></div>
+        </div>
+
+        <div class="comparison-intro">
+            <p>
+                architect no compite con Claude Code ni con Cursor en su terreno. Compite donde ellos
+                no llegan: <strong>ejecución sin supervisión, CI/CD, automatización, scripts.</strong>
+            </p>
+        </div>
+
+        <div class="table-wrapper">
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th class="col-label"></th>
+                        <th>Claude Code</th>
+                        <th>Cursor</th>
+                        <th>Aider</th>
+                        <th class="col-architect">architect</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {rows.map(row => (
+                        <tr>
+                            <td class="row-label">{row.label}</td>
+                            <td>{row.claude}</td>
+                            <td>{row.cursor}</td>
+                            <td>{row.aider}</td>
+                            <td class="cell-architect">{row.architect}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="quotes-grid">
+            <blockquote class="comparison-quote">
+                <p><strong>vs Claude Code:</strong> Claude Code es el mejor agente interactivo en terminal.
+                architect es para cuando quieres que el agente trabaje solo. Claude Code es tu copiloto;
+                architect es tu <em>piloto automático</em>.</p>
+            </blockquote>
+            <blockquote class="comparison-quote">
+                <p><strong>vs Cursor:</strong> Cursor vive dentro de VS Code. architect vive donde el código
+                se construye y se despliega: en terminales, en CI, en scripts.</p>
+            </blockquote>
+            <blockquote class="comparison-quote">
+                <p><strong>vs Aider:</strong> Aider fue pionero en agentes CLI. architect lleva la idea más
+                lejos con verificación automática, self-evaluation, MCP, y una arquitectura pensada para
+                ejecutarse sin supervisión.</p>
+            </blockquote>
+        </div>
+    </div>
+</section>
+
+<style>
+    .comparison-section {
+        max-width: 80rem;
+        margin: 0 auto;
+        padding: 5rem 1.5rem;
+        border-top: 2px solid var(--arch-line);
+    }
+
+    .section-header {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        margin-bottom: 3rem;
+    }
+
+    .section-title {
+        font-family: var(--font-heading);
+        font-size: 1.875rem;
+        color: var(--arch-ink);
+        font-weight: 800;
+        margin: 0;
+        white-space: nowrap;
+    }
+
+    .section-line {
+        height: 4px;
+        background-color: var(--arch-ink);
+        flex-grow: 1;
+    }
+
+    .comparison-intro {
+        max-width: 48rem;
+        margin-bottom: 2.5rem;
+    }
+
+    .comparison-intro p {
+        font-size: 1.0625rem;
+        line-height: 1.7;
+        color: var(--arch-ink-light);
+        margin: 0;
+    }
+
+    .comparison-intro strong {
+        color: var(--arch-ink);
+        font-weight: 600;
+    }
+
+    .table-wrapper {
+        overflow-x: auto;
+        margin-bottom: 3rem;
+        border: 2px solid var(--arch-ink);
+        box-shadow: var(--shadow-draft);
+    }
+
+    .comparison-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.875rem;
+        background-color: var(--arch-surface);
+    }
+
+    .comparison-table th {
+        font-family: var(--font-heading);
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        font-size: 0.8125rem;
+        color: var(--arch-ink);
+        background-color: var(--arch-shape);
+        padding: 1rem 1.25rem;
+        text-align: left;
+        border-bottom: 2px solid var(--arch-ink);
+        white-space: nowrap;
+    }
+
+    .comparison-table td {
+        padding: 0.75rem 1.25rem;
+        border-bottom: 1px solid var(--arch-line);
+        color: var(--arch-ink-light);
+        vertical-align: top;
+    }
+
+    .comparison-table tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    .row-label {
+        font-family: var(--font-heading);
+        font-weight: 600;
+        font-size: 0.8125rem;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        color: var(--arch-ink);
+        white-space: nowrap;
+    }
+
+    .col-architect {
+        font-weight: 700;
+        color: var(--arch-brick);
+        background-color: var(--arch-brick-transparent);
+    }
+
+    .cell-architect {
+        font-weight: 600;
+        color: var(--arch-brick);
+        background-color: var(--arch-brick-transparent);
+    }
+
+    /* Quotes */
+    .quotes-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    @media (min-width: 768px) {
+        .quotes-grid {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+
+    .comparison-quote {
+        margin: 0;
+        padding: 1.5rem;
+        border-left: 4px solid var(--arch-brick);
+        background-color: var(--arch-surface);
+        border-top: 2px solid var(--arch-ink);
+        border-right: 2px solid var(--arch-ink);
+        border-bottom: 2px solid var(--arch-ink);
+    }
+
+    .comparison-quote p {
+        font-size: 0.9375rem;
+        line-height: 1.6;
+        color: var(--arch-ink-light);
+        margin: 0;
+    }
+
+    .comparison-quote strong {
+        color: var(--arch-ink);
+        font-weight: 700;
+    }
+
+    .comparison-quote em {
+        color: var(--arch-brick);
+        font-style: normal;
+        font-weight: 600;
+    }
+</style>
