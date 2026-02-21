@@ -15,16 +15,16 @@ order: 1
 
 | Archivo | Contenido |
 |---------|-----------|
-| [`usage.md`](usage) | **Formas de uso**: flags, logging, configs, CI/CD, scripts, agentes custom, multi-proyecto |
-| [`architecture.md`](architecture) | Visión general, diagrama de componentes y flujo completo de ejecución |
-| [`core-loop.md`](core-loop) | El loop while True, safety nets, StopReason, graceful close, hooks post-edit, human logging, ContextManager, parallel tools, SelfEvaluator |
-| [`data-models.md`](data-models) | Todos los modelos de datos: Pydantic, dataclasses, jerarquía de errores |
-| [`tools-and-execution.md`](tools-and-execution) | Sistema de tools: filesystem, edición, búsqueda, MCP, ExecutionEngine |
-| [`agents-and-modes.md`](agents-and-modes) | Agentes por defecto, registry, prompts del sistema |
-| [`config-reference.md`](config-reference) | Schema completo de configuración, precedencia, variables de entorno |
-| [`logging.md`](logging) | **Sistema de logging**: 3 pipelines, nivel HUMAN, iconos, HumanFormatter, structlog |
-| [`ai-guide.md`](ai-guide) | Guía para IA: invariantes críticos, patrones, dónde añadir cosas, trampas |
-| [`testing.md`](testing) | Mapa de tests: ~597 tests en 25 archivos, cobertura por módulo |
+| [`usage.md`](../usage) | **Formas de uso**: flags, logging, configs, CI/CD, scripts, agentes custom, multi-proyecto |
+| [`architecture.md`](../architecture) | Visión general, diagrama de componentes y flujo completo de ejecución |
+| [`core-loop.md`](../core-loop) | El loop while True, safety nets, StopReason, graceful close, hooks post-edit, human logging, ContextManager, parallel tools, SelfEvaluator |
+| [`data-models.md`](../data-models) | Todos los modelos de datos: Pydantic, dataclasses, jerarquía de errores |
+| [`tools-and-execution.md`](../tools-and-execution) | Sistema de tools: filesystem, edición, búsqueda, MCP, ExecutionEngine |
+| [`agents-and-modes.md`](../agents-and-modes) | Agentes por defecto, registry, prompts del sistema |
+| [`config-reference.md`](../config-reference) | Schema completo de configuración, precedencia, variables de entorno |
+| [`logging.md`](../logging) | **Sistema de logging**: 3 pipelines, nivel HUMAN, iconos, HumanFormatter, structlog |
+| [`ai-guide.md`](../ai-guide) | Guía para IA: invariantes críticos, patrones, dónde añadir cosas, trampas |
+| [`testing.md`](../testing) | Mapa de tests: ~597 tests en 25 archivos, cobertura por módulo |
 
 ---
 
