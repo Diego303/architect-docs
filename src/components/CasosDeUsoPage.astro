@@ -1,0 +1,152 @@
+---
+import { getEntry } from 'astro:content';
+import Prose from './Prose.astro';
+import UseCasesTOC from './UseCasesTOC.astro';
+
+const entry = await getEntry('pages', 'casos-de-uso');
+const { Content, headings } = await entry.render();
+---
+
+<section class="casos-de-uso-page">
+    <div class="casos-hero">
+        <div class="section-header">
+            <h1 class="hero-title">Casos de Uso</h1>
+            <div class="section-line"></div>
+        </div>
+        <p class="hero-subtitle">
+            Guía práctica de integración de <code>architect</code> en flujos de trabajo reales: desarrollo diario, CI/CD, DevOps, QA, documentación y arquitecturas avanzadas.
+        </p>
+    </div>
+
+    <div class="casos-layout">
+        <main class="casos-content">
+            <Prose>
+                <Content />
+            </Prose>
+        </main>
+        <UseCasesTOC headings={headings} />
+    </div>
+</section>
+
+<style>
+    .casos-de-uso-page {
+        max-width: 80rem;
+        margin: 0 auto;
+        width: 100%;
+    }
+
+    /* Hero */
+    .casos-hero {
+        padding: 3rem 1.5rem 2rem;
+        border-bottom: 2px solid var(--arch-line);
+    }
+
+    .section-header {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .hero-title {
+        font-family: var(--font-heading);
+        font-size: 2.25rem;
+        color: var(--arch-ink);
+        font-weight: 800;
+        margin: 0;
+        white-space: nowrap;
+    }
+
+    .section-line {
+        height: 4px;
+        background-color: var(--arch-ink);
+        flex-grow: 1;
+    }
+
+    .hero-subtitle {
+        font-size: 1.125rem;
+        color: var(--arch-ink-light);
+        line-height: 1.6;
+        margin: 0;
+        max-width: 60ch;
+    }
+
+    .hero-subtitle code {
+        font-family: var(--font-mono);
+        color: var(--arch-brick);
+        background-color: var(--arch-shape);
+        padding: 0.15em 0.4em;
+        border-radius: 3px;
+        font-size: 0.9em;
+    }
+
+    /* Layout 2 columnas */
+    .casos-layout {
+        display: flex;
+        flex-direction: column;
+    }
+
+    @media (min-width: 1024px) {
+        .casos-layout {
+            flex-direction: row;
+        }
+    }
+
+    .casos-content {
+        flex: 1;
+        min-width: 0;
+        padding: 2rem 1.5rem 5rem;
+    }
+
+    @media (min-width: 1024px) {
+        .casos-content {
+            padding: 2.5rem 3rem 5rem;
+        }
+    }
+
+    /* Overrides de Prose para esta página */
+    .casos-content :global(.prose-arch) {
+        max-width: 100%;
+    }
+
+    /* H2 con patrón título + línea */
+    .casos-content :global(.prose-arch h2) {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        border-bottom: none;
+        padding-bottom: 0;
+        font-size: 1.5rem;
+        font-weight: 800;
+    }
+
+    .casos-content :global(.prose-arch h2)::after {
+        content: '';
+        height: 3px;
+        background-color: var(--arch-ink);
+        flex-grow: 1;
+    }
+
+    /* Tablas brutalistas */
+    .casos-content :global(.prose-arch table) {
+        border: 2px solid var(--arch-ink);
+        box-shadow: 4px 4px 0 var(--arch-line);
+    }
+
+    .casos-content :global(.prose-arch th) {
+        background-color: var(--arch-ink);
+        color: var(--arch-paper);
+        border-color: var(--arch-ink-light);
+        font-size: 0.75rem;
+        letter-spacing: 0.05em;
+    }
+
+    .casos-content :global(.prose-arch td) {
+        border-color: var(--arch-line);
+    }
+
+    /* Bloques de código — mejor overflow en tablas anchas */
+    .casos-content :global(.prose-arch pre) {
+        font-size: 0.8125rem;
+    }
+</style>
