@@ -7,7 +7,7 @@ order: 3
 
 # El loop de agente (core/loop.py)
 
-El `AgentLoop` es el corazón del sistema. Ver también [`logging.md`](../logging) para detalles del sistema de logging.
+El `AgentLoop` es el corazón del sistema. Ver también [`logging.md`](/architect-docs/docs/logging) para detalles del sistema de logging.
 
 Usa un bucle `while True` — el LLM decide cuándo terminar (deja de pedir tools). Los safety nets (max_steps, budget, timeout, context) son watchdogs que piden un cierre limpio al LLM en lugar de cortar abruptamente.
 
