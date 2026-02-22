@@ -11,45 +11,56 @@ Architect es una CLI headless que conecta un LLM a herramientas de sistema de ar
 ```
 src/
 ├── components/
-│   ├── sections/          # Secciones de la landing page
+│   ├── sections/              # Secciones de la landing page
 │   │   ├── Comparison.astro
 │   │   ├── ElevatorPitch.astro
 │   │   ├── KillerFeatures.astro
 │   │   ├── QuickStart.astro
 │   │   └── UseCases.astro
-│   ├── ui/                # Componentes reutilizables
+│   ├── ui/                    # Componentes reutilizables
 │   │   ├── Button.astro
 │   │   ├── Card.astro
 │   │   ├── CodeFigure.astro
 │   │   └── FeatureCard.astro
-│   ├── DocsSidebar.astro  # Sidebar con indice de navegacion
+│   ├── CasosDeUsoPage.astro   # Pagina de casos de uso
+│   ├── DocsSidebar.astro      # Sidebar con indice de navegacion
 │   ├── Footer.astro
 │   ├── LandingPage.astro
 │   ├── Navbar.astro
-│   └── Prose.astro        # Wrapper de estilos para contenido markdown
+│   ├── Prose.astro            # Wrapper de estilos para contenido markdown
+│   ├── RoadmapPage.astro      # Pagina de roadmap (timeline visual)
+│   ├── UseCasesTOC.astro      # TOC lateral para casos de uso
+│   └── VersionSelector.astro  # Desplegable de version en hub de docs
+├── config/
+│   └── versions.ts            # Configuracion centralizada de versiones
 ├── content/
-│   └── docs/              # Documentacion en markdown
-│       ├── introduccion.md
-│       ├── usage.md
-│       ├── architecture.md
-│       ├── core-loop.md
-│       ├── data-models.md
-│       ├── tools-and-execution.md
-│       ├── agents-and-modes.md
-│       ├── config-reference.md
-│       ├── logging.md
-│       ├── ai-guide.md
-│       └── testing.md
+│   ├── docs/                  # Documentacion versionada en markdown
+│   │   ├── v0-15-3/           # Docs de Architect v0.15.3
+│   │   └── v0-16-1/           # Docs de Architect v0.16.1
+│   └── pages/                 # Paginas de contenido standalone
+│       └── casos-de-uso.md
 ├── layouts/
 │   └── Layout.astro
 └── pages/
-    ├── index.astro        # Landing page
+    ├── index.astro            # Landing page
+    ├── casos-de-uso.astro     # Pagina de casos de uso
+    ├── roadmap.astro          # Pagina de roadmap
     └── docs/
-        ├── index.astro    # Hub de documentacion
-        └── [...slug].astro # Paginas de documentacion dinamicas
+        ├── index.astro        # Hub de documentacion con selector de version
+        └── [...slug].astro    # Paginas de documentacion dinamicas
 ```
 
-## Documentacion incluida
+## Paginas
+
+| Pagina | Ruta | Descripcion |
+|--------|------|-------------|
+| Landing | `/` | Presentacion del proyecto, features y quick start |
+| Docs Hub | `/docs/` | Hub con tarjetas de documentacion, buscador y selector de version |
+| Docs | `/docs/v0-16-1/*` | Documentacion tecnica versionada (16 secciones por version) |
+| Casos de Uso | `/casos-de-uso/` | Guia practica de integracion en flujos reales: CI/CD, DevOps, QA, MCP |
+| Roadmap | `/roadmap/` | Timeline visual de fases de desarrollo: completadas, en curso y futuras |
+
+## Documentacion incluida (por version)
 
 | Seccion | Descripcion |
 |---------|-------------|
@@ -63,7 +74,18 @@ src/
 | Config Reference | Schema de configuracion, precedencia, variables de entorno |
 | Logging | 3 pipelines, nivel HUMAN, HumanFormatter, structlog |
 | AI Guide | Guia para IA: invariantes, patrones, trampas |
-| Testing | Mapa de tests (~597 tests en 25 archivos) |
+| Security | Capas defensivas, path traversal, sandboxing |
+| Containers | Docker, rootless, Kubernetes, CI runners |
+| Testing | Mapa de tests, cobertura, fixtures |
+| MCP Server | Architect como servidor MCP |
+| Good Practices | Patrones recomendados y antipatrones |
+| Fast Usage | Referencia rapida de comandos |
+
+## Sistema de versiones
+
+La documentacion soporta multiples versiones de Architect. Cada version vive en su propio subdirectorio (`src/content/docs/v0-16-1/`, `src/content/docs/v0-15-3/`). El hub de docs incluye un selector de version junto al buscador. La configuracion de versiones esta centralizada en `src/config/versions.ts`.
+
+Para añadir una nueva version: crear la carpeta con los docs, añadir una entrada en `versions.ts` y marcarla como `isLatest: true`.
 
 ## Requisitos
 

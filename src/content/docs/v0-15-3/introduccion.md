@@ -15,21 +15,21 @@ order: 1
 
 | Archivo | Contenido |
 |---------|-----------|
-| [`usage.md`](/architect-docs/docs/usage) | **Formas de uso**: flags, logging, configs, CI/CD, scripts, agentes custom, multi-proyecto |
-| [`architecture.md`](/architect-docs/docs/architecture) | Visión general, diagrama de componentes y flujo completo de ejecución |
-| [`core-loop.md`](/architect-docs/docs/core-loop) | El loop while True, safety nets, StopReason, graceful close, hooks post-edit, human logging, ContextManager, parallel tools, SelfEvaluator |
-| [`data-models.md`](/architect-docs/docs/data-models) | Todos los modelos de datos: Pydantic, dataclasses, jerarquía de errores |
-| [`tools-and-execution.md`](/architect-docs/docs/tools-and-execution) | Sistema de tools: filesystem, edición, búsqueda, MCP, ExecutionEngine |
-| [`agents-and-modes.md`](/architect-docs/docs/agents-and-modes) | Agentes por defecto, registry, prompts del sistema |
-| [`config-reference.md`](/architect-docs/docs/config-reference) | Schema completo de configuración, precedencia, variables de entorno |
-| [`logging.md`](/architect-docs/docs/logging) | **Sistema de logging**: 3 pipelines, nivel HUMAN, iconos, HumanFormatter, structlog |
-| [`ai-guide.md`](/architect-docs/docs/ai-guide) | Guía para IA: invariantes críticos, patrones, dónde añadir cosas, trampas |
-| [`testing.md`](/architect-docs/docs/testing) | Mapa de tests: ~597 tests en 25 archivos, cobertura por módulo |
-| [`security.md`](/architect-docs/docs/security) | **Modelo de seguridad**: capas defensivas, modelo de amenazas, superficie de ataque, hardening |
-| [`mcp-server.md`](/architect-docs/docs/mcp-server) | **Crear un MCP Server**: guía para exponer architect como herramienta remota via JSON-RPC 2.0 |
-| [`containers.md`](/architect-docs/docs/containers) | **Contenedores**: ejecución en Docker, Kubernetes y Red Hat OpenShift |
-| [`good-practices.md`](/architect-docs/docs/good-practices) | **Buenas prácticas**: prompts efectivos, optimización de costes, hooks, errores comunes |
-| [`fast-usage.md`](/architect-docs/docs/fast-usage) | **Guía rápida**: instalación, configuración mínima y comandos esenciales |
+| [`usage.md`](/architect-docs/docs/v0-15-3/usage) | **Formas de uso**: flags, logging, configs, CI/CD, scripts, agentes custom, multi-proyecto |
+| [`architecture.md`](/architect-docs/docs/v0-15-3/architecture) | Visión general, diagrama de componentes y flujo completo de ejecución |
+| [`core-loop.md`](/architect-docs/docs/v0-15-3/core-loop) | El loop while True, safety nets, StopReason, graceful close, hooks post-edit, human logging, ContextManager, parallel tools, SelfEvaluator |
+| [`data-models.md`](/architect-docs/docs/v0-15-3/data-models) | Todos los modelos de datos: Pydantic, dataclasses, jerarquía de errores |
+| [`tools-and-execution.md`](/architect-docs/docs/v0-15-3/tools-and-execution) | Sistema de tools: filesystem, edición, búsqueda, MCP, ExecutionEngine |
+| [`agents-and-modes.md`](/architect-docs/docs/v0-15-3/agents-and-modes) | Agentes por defecto, registry, prompts del sistema |
+| [`config-reference.md`](/architect-docs/docs/v0-15-3/config-reference) | Schema completo de configuración, precedencia, variables de entorno |
+| [`logging.md`](/architect-docs/docs/v0-15-3/logging) | **Sistema de logging**: 3 pipelines, nivel HUMAN, iconos, HumanFormatter, structlog |
+| [`ai-guide.md`](/architect-docs/docs/v0-15-3/ai-guide) | Guía para IA: invariantes críticos, patrones, dónde añadir cosas, trampas |
+| [`testing.md`](/architect-docs/docs/v0-15-3/testing) | Mapa de tests: ~597 tests en 25 archivos, cobertura por módulo |
+| [`security.md`](/architect-docs/docs/v0-15-3/security) | **Modelo de seguridad**: capas defensivas, modelo de amenazas, superficie de ataque, hardening |
+| [`mcp-server.md`](/architect-docs/docs/v0-15-3/mcp-server) | **Crear un MCP Server**: guía para exponer architect como herramienta remota via JSON-RPC 2.0 |
+| [`containers.md`](/architect-docs/docs/v0-15-3/containers) | **Contenedores**: ejecución en Docker, Kubernetes y Red Hat OpenShift |
+| [`good-practices.md`](/architect-docs/docs/v0-15-3/good-practices) | **Buenas prácticas**: prompts efectivos, optimización de costes, hooks, errores comunes |
+| [`fast-usage.md`](/architect-docs/docs/v0-15-3/fast-usage) | **Guía rápida**: instalación, configuración mínima y comandos esenciales |
 
 ---
 

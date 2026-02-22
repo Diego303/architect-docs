@@ -1,13 +1,13 @@
 ---
 title: "Core Loop"
-description: "El bucle de ejecución principal del agente."
+description: "El AgentLoop: safety nets, StopReason, graceful close, hooks lifecycle."
 icon: "M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
 order: 3
 ---
 
 # El loop de agente (core/loop.py)
 
-El `AgentLoop` es el corazón del sistema. Ver también [`logging.md`](/architect-docs/docs/logging) para detalles del sistema de logging.
+El `AgentLoop` es el corazón del sistema. Ver también [`logging.md`](/architect-docs/docs/v0-16-1/logging) para detalles del sistema de logging.
 
 Usa un bucle `while True` — el LLM decide cuándo terminar (deja de pedir tools). Los safety nets (max_steps, budget, timeout, context) son watchdogs que piden un cierre limpio al LLM en lugar de cortar abruptamente.
 

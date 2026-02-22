@@ -1,9 +1,16 @@
 ---
 title: "Modelo de Seguridad"
-description: "Capas de seguridad, modelo de amenazas, superficie de ataque y recomendaciones de hardening."
+description: "19 capas defensivas, modelo de amenazas, path traversal, command security, hardening."
 icon: "M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
 order: 12
 ---
+
+# Modelo de Seguridad — Architect CLI
+
+Documentación exhaustiva de las capas de seguridad, modelo de amenazas, superficie de ataque y recomendaciones de hardening.
+
+---
+
 ## Modelo de amenazas
 
 Architect da control al LLM sobre herramientas reales del sistema: lectura/escritura de archivos, ejecución de comandos y conexión a servidores remotos (MCP). Esto implica riesgos concretos que el sistema mitiga con múltiples capas defensivas.
@@ -605,7 +612,7 @@ ENV HOME=/tmp
 RUN chgrp -R 0 /opt/architect-cli && chmod -R g=u /opt/architect-cli
 ```
 
-Ver [`containers.md`](/architect-docs/docs/containers) para Containerfiles completos.
+Ver [`containers.md`](/architect-docs/docs/v0-16-1/containers) para Containerfiles completos.
 
 ---
 

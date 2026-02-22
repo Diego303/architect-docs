@@ -1,17 +1,30 @@
 ---
 import { getCollection } from 'astro:content';
+import { VERSIONS, getDocSlug } from '../../config/versions';
 import Layout from '../../layouts/Layout.astro';
 import Navbar from '../../components/Navbar.astro';
 import Footer from '../../components/Footer.astro';
 import Card from '../../components/ui/Card.astro';
+import VersionSelector from '../../components/VersionSelector.astro';
 
-const docs = await getCollection('docs');
-const sortedDocs = docs.sort((a, b) => {
-    if (a.data.order && b.data.order) {
-        return a.data.order - b.data.order;
-    }
-    return a.slug.localeCompare(b.slug);
-});
+const allDocs = await getCollection('docs');
+
+// DEBUG: Remove after verifying
+console.log('=== DEBUG: All docs ===');
+console.log(`Total docs: ${allDocs.length}`);
+allDocs.forEach(doc => console.log(`  id="${doc.id}" slug="${doc.slug}" title="${doc.data.title}"`));
+console.log('=== END DEBUG ===');
+
+const docsByVersion: Record<string, typeof allDocs> = {};
+for (const version of VERSIONS) {
+    docsByVersion[version.id] = allDocs
+        .filter(doc => doc.slug.startsWith(version.id + '/'))
+        .sort((a, b) => {
+            if (a.data.order && b.data.order) return a.data.order - b.data.order;
+            return a.slug.localeCompare(b.slug);
+        });
+    console.log(`DEBUG: Version ${version.id} has ${docsByVersion[version.id].length} docs`);
+}
 ---
 
 <Layout>
@@ -24,34 +37,43 @@ const sortedDocs = docs.sort((a, b) => {
                 <div class="hub-line"></div>
             </div>
 
-            <div class="search-wrapper">
-                <input
-                    type="text"
-                    id="docs-search"
-                    class="search-input"
-                    placeholder="Buscar en la documentaci&oacute;n..."
-                    autocomplete="off"
-                />
+            <div class="hub-controls">
+                <div class="search-wrapper">
+                    <input
+                        type="text"
+                        id="docs-search"
+                        class="search-input"
+                        placeholder="Buscar en la documentaci&oacute;n..."
+                        autocomplete="off"
+                    />
+                </div>
+                <VersionSelector />
             </div>
 
-            <div class="card-grid" id="docs-grid">
-                {sortedDocs.map(doc => (
-                    <div
-                        class="card-wrapper"
-                        data-title={doc.data.title || doc.slug}
-                        data-description={doc.data.description || ''}
-                    >
-                        <Card
-                            title={doc.data.title || doc.slug}
-                            href={`${import.meta.env.BASE_URL}docs/${doc.slug}`}
-                            iconPath={doc.data.icon}
-                            class="h-full"
+            {VERSIONS.map(version => (
+                <div
+                    class="card-grid version-grid"
+                    data-version={version.id}
+                    style={version.isLatest ? '' : 'display: none;'}
+                >
+                    {docsByVersion[version.id].map(doc => (
+                        <div
+                            class="card-wrapper"
+                            data-title={doc.data.title || getDocSlug(doc.slug)}
+                            data-description={doc.data.description || ''}
                         >
-                            {doc.data.description || "Documentaci\u00f3n t\u00e9cnica detallada sobre este m\u00f3dulo del sistema Architect."}
-                        </Card>
-                    </div>
-                ))}
-            </div>
+                            <Card
+                                title={doc.data.title || getDocSlug(doc.slug)}
+                                href={`${import.meta.env.BASE_URL}docs/${doc.slug}`}
+                                iconPath={doc.data.icon}
+                                class="h-full"
+                            >
+                                {doc.data.description || "Documentaci\u00f3n t\u00e9cnica detallada sobre este m\u00f3dulo del sistema Architect."}
+                            </Card>
+                        </div>
+                    ))}
+                </div>
+            ))}
 
             <p class="no-results" id="no-results">No se encontraron resultados.</p>
         </div>
@@ -63,14 +85,25 @@ const sortedDocs = docs.sort((a, b) => {
 <script>
 document.addEventListener('astro:page-load', () => {
     const input = document.getElementById('docs-search') as HTMLInputElement | null;
-    const grid = document.getElementById('docs-grid');
     const noResults = document.getElementById('no-results');
-    if (!input || !grid || !noResults) return;
+    const versionSelect = document.getElementById('version-select') as HTMLSelectElement | null;
+    const grids = document.querySelectorAll<HTMLElement>('.version-grid');
 
-    const cards = Array.from(grid.querySelectorAll<HTMLElement>('.card-wrapper'));
+    if (!input || !noResults || !versionSelect) return;
 
-    input.addEventListener('input', () => {
-        const query = input.value.toLowerCase().trim();
+    function getActiveGrid(): HTMLElement | null {
+        for (const grid of grids) {
+            if (grid.style.display !== 'none') return grid;
+        }
+        return null;
+    }
+
+    function filterCards() {
+        const query = input!.value.toLowerCase().trim();
+        const grid = getActiveGrid();
+        if (!grid) return;
+
+        const cards = Array.from(grid.querySelectorAll<HTMLElement>('.card-wrapper'));
         let visible = 0;
 
         cards.forEach(card => {
@@ -81,8 +114,18 @@ document.addEventListener('astro:page-load', () => {
             if (match) visible++;
         });
 
-        noResults.style.display = visible === 0 ? '' : 'none';
+        noResults!.style.display = visible === 0 ? '' : 'none';
+    }
+
+    versionSelect.addEventListener('change', () => {
+        const selected = versionSelect!.value;
+        grids.forEach(grid => {
+            grid.style.display = grid.dataset.version === selected ? '' : 'none';
+        });
+        filterCards();
     });
+
+    input.addEventListener('input', filterCards);
 });
 </script>
 
@@ -119,9 +162,18 @@ document.addEventListener('astro:page-load', () => {
         flex-grow: 1;
     }
 
-    /* Search */
-    .search-wrapper {
+    /* Controls row: search + version selector */
+    .hub-controls {
+        display: flex;
+        align-items: flex-start;
+        gap: 1.5rem;
         margin-bottom: 3rem;
+        flex-wrap: wrap;
+    }
+
+    .search-wrapper {
+        flex: 1;
+        min-width: 16rem;
         max-width: 36rem;
     }
 
