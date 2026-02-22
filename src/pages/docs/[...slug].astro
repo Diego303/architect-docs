@@ -1,5 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
+import { VERSIONS, getVersionFromSlug } from '../../config/versions';
 import Layout from '../../layouts/Layout.astro';
 import Navbar from '../../components/Navbar.astro';
 import Footer from '../../components/Footer.astro';
@@ -16,14 +17,17 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content, headings } = await entry.render();
+const versionId = getVersionFromSlug(entry.slug);
+const versionConfig = VERSIONS.find(v => v.id === versionId);
+const versionLabel = versionConfig?.label;
 ---
 
 <Layout>
     <div class="docs-layout">
         <Navbar />
-        
+
         <div class="docs-container container">
-            <DocsSidebar headings={headings} title={entry.data.title || entry.slug} />
+            <DocsSidebar headings={headings} title={entry.data.title || entry.slug} versionLabel={versionLabel} />
             
             <main class="docs-content">
                 <Prose>

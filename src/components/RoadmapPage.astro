@@ -1,0 +1,946 @@
+---
+// No markdown dependency — fully custom timeline component
+---
+
+<section class="roadmap-page">
+    <!-- Hero -->
+    <div class="roadmap-hero">
+        <div class="section-header">
+            <h1 class="hero-title">Planos de <span class="highlight-brick">Expansión</span></h1>
+            <div class="section-line"></div>
+        </div>
+        <p class="hero-subtitle">
+            Hoja de ruta técnica de <code>architect</code>. Fases de construcción, herramientas en desarrollo
+            y el futuro de la orquestación agéntica.
+        </p>
+    </div>
+
+    <!-- Timeline -->
+    <div class="roadmap-layout">
+        <main class="timeline-container">
+            <div class="timeline">
+
+                <!-- FASE A: COMPLETADA -->
+                <div class="timeline-item" id="fase-a">
+                    <div class="timeline-node node-completed"></div>
+                    <div class="timeline-connector"></div>
+
+                    <div class="timeline-card card-completed">
+                        <div class="card-header">
+                            <div>
+                                <span class="card-phase">Fase A</span>
+                                <h2 class="card-title">Fundamentos de Extensibilidad</h2>
+                            </div>
+                            <div class="status-badge badge-completed">
+                                <svg class="badge-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                COMPLETADA
+                            </div>
+                        </div>
+
+                        <p class="card-description">
+                            La infraestructura sobre la que todo lo demás se apoya. Hooks, guardrails, skills y memoria
+                            procedural forman la columna vertebral de extensibilidad del agente.
+                        </p>
+
+                        <ul class="checklist">
+                            <li class="check-item check-done">
+                                <span class="check-mark">[x]</span>
+                                <span><strong>Sistema de Hooks Completo</strong> — 10 eventos de lifecycle, bloqueo/modificación de acciones, ejecución async y timeouts.</span>
+                            </li>
+                            <li class="check-item check-done">
+                                <span class="check-mark">[x]</span>
+                                <span><strong>Guardrails de Primera Clase</strong> — Archivos protegidos, comandos bloqueados, límites de edición, code rules y quality gates obligatorios.</span>
+                            </li>
+                            <li class="check-item check-done">
+                                <span class="check-mark">[x]</span>
+                                <span><strong>.architect.md + Skills</strong> — Contexto de proyecto auto-inyectado y ecosistema de skills reutilizables activadas por glob.</span>
+                            </li>
+                            <li class="check-item check-done">
+                                <span class="check-mark">[x]</span>
+                                <span><strong>Memoria Procedural</strong> — Detección de correcciones del usuario, persistencia en disco e inyección automática en sesiones futuras.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- FASE B: EN CONSTRUCCIÓN -->
+                <div class="timeline-item" id="fase-b">
+                    <div class="timeline-node node-active"></div>
+                    <div class="timeline-connector"></div>
+
+                    <div class="timeline-card card-active">
+                        <div class="card-header">
+                            <div>
+                                <span class="card-phase">Fase B</span>
+                                <h2 class="card-title">Persistencia y Reporting</h2>
+                            </div>
+                            <div class="status-badge badge-active">
+                                <span class="spinner"></span>
+                                EN CONSTRUCCIÓN
+                            </div>
+                        </div>
+
+                        <p class="card-description">
+                            Features que hacen a architect viable para tareas largas y entornos CI/CD.
+                            Sesiones persistentes, reportes estructurados y flags nativos para pipelines.
+                        </p>
+
+                        <ul class="checklist">
+                            <li class="check-item check-progress">
+                                <span class="check-mark">[-]</span>
+                                <span><strong>Session Resume</strong> — Persistencia del estado a disco. Si una sesión se interrumpe, se reanuda desde el último punto.</span>
+                            </li>
+                            <li class="check-item check-progress">
+                                <span class="check-mark">[-]</span>
+                                <span><strong>Execution Report</strong> — Reportes en JSON, Markdown y GitHub PR comment con timeline, costes y quality gates.</span>
+                            </li>
+                            <li class="check-item check-pending">
+                                <span class="check-mark">[ ]</span>
+                                <span><strong>CI/CD Native Flags</strong> — <code>--json</code>, <code>--budget</code>, <code>--timeout</code>, <code>--context-git-diff</code>. Exit codes semánticos.</span>
+                            </li>
+                            <li class="check-item check-pending">
+                                <span class="check-mark">[ ]</span>
+                                <span><strong>Dry Run / Preview</strong> — El agente planifica sin ejecutar. Tools de lectura activas, escritura interceptada como plan.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- FASE C: PLANIFICADA -->
+                <div class="timeline-item" id="fase-c">
+                    <div class="timeline-node node-planned"></div>
+                    <div class="timeline-connector"></div>
+
+                    <div class="timeline-card card-planned">
+                        <div class="card-header">
+                            <div>
+                                <span class="card-phase">Fase C</span>
+                                <h2 class="card-title">Automatización Avanzada</h2>
+                            </div>
+                            <div class="status-badge badge-planned">
+                                PLANOS APROBADOS
+                            </div>
+                        </div>
+
+                        <p class="card-description">
+                            Las features que convierten a architect en una herramienta de automatización seria.
+                            Loops autónomos, ejecución paralela y workflows multi-step.
+                        </p>
+
+                        <ul class="checklist">
+                            <li class="check-item check-pending">
+                                <span class="check-mark">[ ]</span>
+                                <span><strong>Ralph Loop Nativo</strong> — Loop de corrección automática: ejecutar, verificar checks externos, re-ejecutar con errores. Configurable con presupuesto y tiempo límite.</span>
+                            </li>
+                            <li class="check-item check-pending">
+                                <span class="check-mark">[ ]</span>
+                                <span><strong>Parallel Runs + Worktrees</strong> — Múltiples agentes en git worktrees aislados. Fan-out (misma tarea, varios modelos) o distribución de tareas.</span>
+                            </li>
+                            <li class="check-item check-pending">
+                                <span class="check-mark">[ ]</span>
+                                <span><strong>Pipeline Mode</strong> — Workflows YAML multi-step con variables, condiciones, checkpoints y resume desde cualquier paso.</span>
+                            </li>
+                            <li class="check-item check-pending">
+                                <span class="check-mark">[ ]</span>
+                                <span><strong>Checkpoints & Rollback</strong> — Puntos de restauración basados en git. Rollback a cualquier step anterior.</span>
+                            </li>
+                            <li class="check-item check-pending">
+                                <span class="check-mark">[ ]</span>
+                                <span><strong>Auto-Review</strong> — Patrón writer/reviewer: al completar, un reviewer analiza los cambios y genera correcciones automáticas.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- FASE D: PLANIFICADA -->
+                <div class="timeline-item" id="fase-d">
+                    <div class="timeline-node node-planned"></div>
+                    <div class="timeline-connector"></div>
+
+                    <div class="timeline-card card-planned">
+                        <div class="card-header">
+                            <div>
+                                <span class="card-phase">Fase D</span>
+                                <h2 class="card-title">Extras y Especialización</h2>
+                            </div>
+                            <div class="status-badge badge-planned">
+                                PLANOS APROBADOS
+                            </div>
+                        </div>
+
+                        <p class="card-description">
+                            Features avanzadas que completan la plataforma: sub-agentes, métricas de salud,
+                            evaluación competitiva entre modelos y observabilidad.
+                        </p>
+
+                        <ul class="checklist">
+                            <li class="check-item check-pending">
+                                <span class="check-mark">[ ]</span>
+                                <span><strong>Sub-Agentes / Dispatch</strong> — Delegar sub-tareas a agentes con contexto independiente que retornan un resumen.</span>
+                            </li>
+                            <li class="check-item check-pending">
+                                <span class="check-mark">[ ]</span>
+                                <span><strong>Code Health Delta</strong> — Métricas de salud antes/después con radon, eslint. Diff de complejidad en el reporte.</span>
+                            </li>
+                            <li class="check-item check-pending">
+                                <span class="check-mark">[ ]</span>
+                                <span><strong>Competitive Eval</strong> — Misma tarea con diferentes modelos + reporte comparativo de calidad, coste y velocidad.</span>
+                            </li>
+                            <li class="check-item check-pending">
+                                <span class="check-mark">[ ]</span>
+                                <span><strong>OpenTelemetry Traces</strong> — Spans para sesiones, LLM calls, tools y hooks. Exporta a Jaeger, Grafana Tempo, etc.</span>
+                            </li>
+                            <li class="check-item check-pending">
+                                <span class="check-mark">[ ]</span>
+                                <span><strong>Preset Configs</strong> — Templates predefinidos: <code>python</code>, <code>node-react</code>, <code>ci</code>, <code>paranoid</code>.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- FUTURO: HORIZONTE -->
+                <div class="timeline-item" id="futuro">
+                    <div class="timeline-node node-future"></div>
+
+                    <div class="timeline-card card-future">
+                        <div class="card-header">
+                            <div>
+                                <span class="card-phase">Horizonte</span>
+                                <h2 class="card-title">Futuro</h2>
+                            </div>
+                            <div class="status-badge badge-future">
+                                ESTUDIO DE VIABILIDAD
+                            </div>
+                        </div>
+
+                        <p class="card-description">
+                            Ideas en evaluación para después del lanzamiento de las fases principales.
+                            Sujetas a cambios según feedback de la comunidad.
+                        </p>
+
+                        <ul class="checklist">
+                            <li class="check-item check-future">
+                                <span class="check-mark">[?]</span>
+                                <span><strong>Sandbox Docker</strong> — Ejecutar el agente en un contenedor efímero para aislamiento total del sistema host.</span>
+                            </li>
+                            <li class="check-item check-future">
+                                <span class="check-mark">[?]</span>
+                                <span><strong>Watch Mode</strong> — Daemon que observa el workspace y reacciona automáticamente a triggers configurados.</span>
+                            </li>
+                            <li class="check-item check-future">
+                                <span class="check-mark">[?]</span>
+                                <span><strong>Streaming Interactivo</strong> — Inyección de instrucciones mid-task con Ctrl+M en modo interactivo.</span>
+                            </li>
+                            <li class="check-item check-future">
+                                <span class="check-mark">[?]</span>
+                                <span><strong>.architect.md Jerárquico</strong> — Skills por directorio que se fusionan según el contexto de archivos activos.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- CTA -->
+            <div class="roadmap-cta">
+                <h3 class="cta-title">¿Falta algo en los planos?</h3>
+                <p class="cta-description">La arquitectura es un esfuerzo colaborativo. Propón nuevas herramientas o agentes en nuestro repositorio.</p>
+                <a href="https://github.com/Diego303/architect-cli/issues" target="_blank" class="cta-button">
+                    <svg class="cta-icon" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                    </svg>
+                    Abrir Issue en GitHub
+                </a>
+            </div>
+        </main>
+
+        <!-- Sidebar TOC -->
+        <aside class="roadmap-toc">
+            <div class="toc-content">
+                <div class="toc-header">
+                    <span class="toc-title">Fases</span>
+                </div>
+                <nav class="toc-nav">
+                    <ul class="toc-list">
+                        <li>
+                            <a href={import.meta.env.BASE_URL} class="toc-item toc-back">
+                                <svg class="back-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                                </svg>
+                                Volver a Inicio
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#fase-a" class="toc-item" data-slug="fase-a">
+                                <span class="toc-dot toc-dot-completed"></span>
+                                Fase A — Extensibilidad
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#fase-b" class="toc-item" data-slug="fase-b">
+                                <span class="toc-dot toc-dot-active"></span>
+                                Fase B — Persistencia
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#fase-c" class="toc-item" data-slug="fase-c">
+                                <span class="toc-dot toc-dot-planned"></span>
+                                Fase C — Automatización
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#fase-d" class="toc-item" data-slug="fase-d">
+                                <span class="toc-dot toc-dot-planned"></span>
+                                Fase D — Especialización
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#futuro" class="toc-item" data-slug="futuro">
+                                <span class="toc-dot toc-dot-future"></span>
+                                Futuro
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+    </div>
+</section>
+
+<script>
+    document.addEventListener('astro:page-load', () => {
+        const tocLinks = document.querySelectorAll<HTMLAnchorElement>('.roadmap-toc .toc-item[data-slug]');
+        if (!tocLinks.length) return;
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        tocLinks.forEach(link => link.classList.remove('active'));
+                        const activeLink = document.querySelector<HTMLAnchorElement>(
+                            `.roadmap-toc .toc-item[data-slug="${entry.target.id}"]`
+                        );
+                        if (activeLink) activeLink.classList.add('active');
+                    }
+                });
+            },
+            { rootMargin: '-80px 0px -60% 0px', threshold: 0 }
+        );
+
+        tocLinks.forEach(link => {
+            const slug = link.dataset.slug;
+            if (slug) {
+                const section = document.getElementById(slug);
+                if (section) observer.observe(section);
+            }
+        });
+    });
+</script>
+
+<style>
+    /* ============================================
+       PAGE LAYOUT
+       ============================================ */
+    .roadmap-page {
+        max-width: 80rem;
+        margin: 0 auto;
+        width: 100%;
+    }
+
+    /* ============================================
+       HERO
+       ============================================ */
+    .roadmap-hero {
+        padding: 3rem 1.5rem 2rem;
+        border-bottom: 2px solid var(--arch-line);
+        text-align: center;
+    }
+
+    @media (min-width: 1024px) {
+        .roadmap-hero {
+            text-align: left;
+        }
+    }
+
+    .section-header {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .hero-title {
+        font-family: var(--font-heading);
+        font-size: 2.25rem;
+        color: var(--arch-ink);
+        font-weight: 800;
+        margin: 0;
+        white-space: nowrap;
+    }
+
+    .highlight-brick {
+        position: relative;
+        display: inline-block;
+        color: var(--arch-brick);
+    }
+
+    .highlight-brick::after {
+        content: '';
+        position: absolute;
+        bottom: 4px;
+        left: 0;
+        width: 100%;
+        height: 8px;
+        background-color: var(--arch-brick-transparent);
+        z-index: -1;
+        transform: skewX(-15deg);
+    }
+
+    .section-line {
+        height: 4px;
+        background-color: var(--arch-ink);
+        flex-grow: 1;
+    }
+
+    .hero-subtitle {
+        font-size: 1.125rem;
+        color: var(--arch-ink-light);
+        line-height: 1.6;
+        margin: 0;
+        max-width: 60ch;
+    }
+
+    .hero-subtitle code {
+        font-family: var(--font-mono);
+        color: var(--arch-brick);
+        background-color: var(--arch-shape);
+        padding: 0.15em 0.4em;
+        border-radius: 3px;
+        font-size: 0.9em;
+    }
+
+    /* ============================================
+       LAYOUT (timeline + toc)
+       ============================================ */
+    .roadmap-layout {
+        display: flex;
+        flex-direction: column;
+    }
+
+    @media (min-width: 1024px) {
+        .roadmap-layout {
+            flex-direction: row;
+        }
+    }
+
+    .timeline-container {
+        flex: 1;
+        min-width: 0;
+        padding: 2.5rem 1.5rem 4rem;
+    }
+
+    @media (min-width: 1024px) {
+        .timeline-container {
+            padding: 2.5rem 3rem 4rem;
+        }
+    }
+
+    /* ============================================
+       TIMELINE
+       ============================================ */
+    .timeline {
+        position: relative;
+        padding-left: 2rem;
+        margin-left: 0.75rem;
+    }
+
+    /* Vertical line */
+    .timeline::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 4px;
+        background-color: var(--arch-ink);
+    }
+
+    /* ============================================
+       TIMELINE ITEMS
+       ============================================ */
+    .timeline-item {
+        position: relative;
+        padding-bottom: 3rem;
+        scroll-margin-top: 6rem;
+    }
+
+    .timeline-item:last-child {
+        padding-bottom: 0;
+    }
+
+    /* Nodes on the line */
+    .timeline-node {
+        position: absolute;
+        left: -2.75rem;
+        top: 0.5rem;
+        width: 1.5rem;
+        height: 1.5rem;
+        border: 4px solid var(--arch-ink);
+        z-index: 2;
+    }
+
+    .node-completed {
+        background-color: var(--arch-ink);
+    }
+
+    .node-active {
+        background-color: var(--arch-brick);
+        animation: pulse-border 2s infinite;
+    }
+
+    @keyframes pulse-border {
+        0% { box-shadow: 0 0 0 0 rgba(200, 90, 50, 0.4); }
+        70% { box-shadow: 0 0 0 10px rgba(200, 90, 50, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(200, 90, 50, 0); }
+    }
+
+    .node-planned {
+        background-color: var(--arch-paper);
+    }
+
+    .node-future {
+        background-color: var(--arch-shape);
+        border-style: dashed;
+        border-color: var(--arch-ink-light);
+    }
+
+    /* Horizontal connector */
+    .timeline-connector {
+        position: absolute;
+        left: -1.25rem;
+        top: calc(0.5rem + 0.5rem);
+        width: 1.25rem;
+        height: 4px;
+        background-color: var(--arch-ink);
+    }
+
+    .timeline-item:last-child .timeline-connector {
+        background-color: transparent;
+        border-top: 4px dashed var(--arch-ink-light);
+    }
+
+    /* ============================================
+       TIMELINE CARDS
+       ============================================ */
+    .timeline-card {
+        border: 2px solid var(--arch-ink);
+        padding: 1.5rem;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    @media (min-width: 768px) {
+        .timeline-card {
+            padding: 2rem;
+        }
+    }
+
+    .timeline-card:hover {
+        transform: translate(-2px, -2px);
+    }
+
+    .card-completed {
+        background-color: var(--arch-surface);
+        box-shadow: var(--shadow-draft);
+    }
+
+    .card-completed:hover {
+        box-shadow: 8px 8px 0px 0px rgba(41, 37, 36, 1);
+    }
+
+    .card-active {
+        background-color: var(--arch-surface);
+        box-shadow: var(--shadow-draft);
+    }
+
+    .card-active:hover {
+        box-shadow: 8px 8px 0px 0px rgba(41, 37, 36, 1);
+    }
+
+    .card-planned {
+        background-color: var(--arch-paper);
+        box-shadow: var(--shadow-draft);
+        opacity: 0.92;
+    }
+
+    .card-planned:hover {
+        opacity: 1;
+        box-shadow: 8px 8px 0px 0px rgba(41, 37, 36, 1);
+    }
+
+    .card-future {
+        background-color: var(--arch-shape);
+        border-style: dashed;
+        border-color: var(--arch-ink-light);
+        opacity: 0.8;
+    }
+
+    .card-future:hover {
+        opacity: 0.95;
+    }
+
+    /* Card header */
+    .card-header {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+    }
+
+    @media (min-width: 640px) {
+        .card-header {
+            flex-direction: row;
+            align-items: flex-start;
+            justify-content: space-between;
+        }
+    }
+
+    .card-phase {
+        display: block;
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--arch-brick);
+        margin-bottom: 0.25rem;
+    }
+
+    .card-future .card-phase {
+        color: var(--arch-ink-light);
+    }
+
+    .card-title {
+        font-family: var(--font-heading);
+        font-size: 1.375rem;
+        font-weight: 800;
+        color: var(--arch-ink);
+        text-transform: uppercase;
+        letter-spacing: 0.02em;
+        margin: 0;
+        line-height: 1.2;
+    }
+
+    .card-future .card-title {
+        color: var(--arch-ink-light);
+    }
+
+    .card-description {
+        font-family: var(--font-body);
+        font-size: 0.9375rem;
+        color: var(--arch-ink-light);
+        line-height: 1.6;
+        margin: 0 0 1.25rem 0;
+    }
+
+    /* ============================================
+       STATUS BADGES
+       ============================================ */
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        border: 2px solid var(--arch-ink);
+        padding: 0.25rem 0.75rem;
+        font-family: var(--font-mono);
+        font-size: 0.6875rem;
+        font-weight: 700;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+
+    .badge-completed {
+        background-color: var(--arch-ink);
+        color: var(--arch-paper);
+    }
+
+    .badge-icon {
+        width: 0.875rem;
+        height: 0.875rem;
+    }
+
+    .badge-active {
+        background-color: var(--arch-paper);
+        color: var(--arch-ink);
+    }
+
+    .spinner {
+        width: 0.75rem;
+        height: 0.75rem;
+        border: 2px solid var(--arch-line);
+        border-top-color: var(--arch-brick);
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+
+    .badge-planned {
+        background-color: var(--arch-surface);
+        color: var(--arch-ink-light);
+    }
+
+    .badge-future {
+        background-color: var(--arch-paper);
+        color: var(--arch-ink-light);
+        border-color: var(--arch-ink-light);
+        border-style: dashed;
+    }
+
+    /* ============================================
+       CHECKLIST
+       ============================================ */
+    .checklist {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .check-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.75rem;
+        font-family: var(--font-mono);
+        font-size: 0.8125rem;
+        line-height: 1.5;
+        color: var(--arch-ink);
+    }
+
+    .check-mark {
+        flex-shrink: 0;
+        font-weight: 700;
+        margin-top: 1px;
+    }
+
+    .check-done .check-mark {
+        color: var(--arch-ink);
+    }
+
+    .check-progress .check-mark {
+        color: var(--arch-brick);
+    }
+
+    .check-pending .check-mark {
+        color: var(--arch-ink-light);
+    }
+
+    .check-future .check-mark {
+        color: var(--arch-ink-light);
+    }
+
+    .check-future {
+        color: var(--arch-ink-light);
+        opacity: 0.75;
+    }
+
+    .check-item strong {
+        font-weight: 700;
+    }
+
+    .check-done strong {
+        background-color: rgba(41, 37, 36, 0.06);
+        padding: 0 0.25rem;
+    }
+
+    .check-progress strong {
+        background-color: var(--arch-brick-transparent);
+        padding: 0 0.25rem;
+    }
+
+    .check-item code {
+        font-family: var(--font-mono);
+        color: var(--arch-brick);
+        background-color: var(--arch-shape);
+        padding: 0.1em 0.3em;
+        border-radius: 2px;
+        font-size: 0.85em;
+    }
+
+    /* ============================================
+       CTA
+       ============================================ */
+    .roadmap-cta {
+        margin-top: 3rem;
+        background-color: var(--arch-surface);
+        border: 2px solid var(--arch-ink);
+        box-shadow: var(--shadow-draft);
+        padding: 2rem;
+        text-align: center;
+    }
+
+    .cta-title {
+        font-family: var(--font-heading);
+        font-size: 1.375rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        color: var(--arch-ink);
+        margin: 0 0 0.5rem 0;
+    }
+
+    .cta-description {
+        font-family: var(--font-body);
+        font-size: 0.9375rem;
+        color: var(--arch-ink-light);
+        margin: 0 0 1.5rem 0;
+    }
+
+    .cta-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.625rem;
+        background-color: var(--arch-brick);
+        color: var(--arch-surface);
+        border: 2px solid var(--arch-ink);
+        padding: 0.75rem 1.5rem;
+        font-family: var(--font-heading);
+        font-size: 0.875rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        text-decoration: none;
+        box-shadow: var(--shadow-draft);
+        transition: all 0.2s;
+    }
+
+    .cta-button:hover {
+        transform: translate(2px, 2px);
+        box-shadow: var(--shadow-draft-hover);
+    }
+
+    .cta-icon {
+        width: 1.125rem;
+        height: 1.125rem;
+    }
+
+    /* ============================================
+       SIDEBAR TOC
+       ============================================ */
+    .roadmap-toc {
+        display: none;
+    }
+
+    @media (min-width: 1024px) {
+        .roadmap-toc {
+            display: block;
+            width: 18rem;
+            min-width: 18rem;
+            height: calc(100vh - 74px);
+            position: sticky;
+            top: 74px;
+            overflow-y: auto;
+            border-left: 2px solid var(--arch-ink);
+            background-color: var(--arch-paper);
+        }
+    }
+
+    .toc-content {
+        padding: 1.5rem;
+    }
+
+    .toc-header {
+        margin-bottom: 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid var(--arch-line);
+    }
+
+    .toc-title {
+        font-family: var(--font-heading);
+        font-weight: 800;
+        text-transform: uppercase;
+        color: var(--arch-ink);
+        font-size: 0.8rem;
+        letter-spacing: 0.05em;
+    }
+
+    .toc-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+
+    .toc-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.3rem 0.5rem;
+        font-family: var(--font-body);
+        font-size: 0.8125rem;
+        color: var(--arch-ink-light);
+        text-decoration: none;
+        border-left: 2px solid transparent;
+        transition: all 0.2s;
+        line-height: 1.4;
+    }
+
+    .toc-item:hover {
+        color: var(--arch-brick);
+        background-color: rgba(231, 229, 223, 0.3);
+    }
+
+    .toc-item.active {
+        color: var(--arch-brick);
+        border-left-color: var(--arch-brick);
+        font-weight: 600;
+    }
+
+    .toc-back {
+        display: inline-flex;
+        align-items: center;
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        margin-bottom: 0.75rem;
+    }
+
+    .back-icon {
+        width: 0.875rem;
+        height: 0.875rem;
+        margin-right: 0.375rem;
+    }
+
+    /* TOC status dots */
+    .toc-dot {
+        width: 0.5rem;
+        height: 0.5rem;
+        flex-shrink: 0;
+        border: 2px solid var(--arch-ink);
+    }
+
+    .toc-dot-completed {
+        background-color: var(--arch-ink);
+    }
+
+    .toc-dot-active {
+        background-color: var(--arch-brick);
+    }
+
+    .toc-dot-planned {
+        background-color: var(--arch-paper);
+    }
+
+    .toc-dot-future {
+        background-color: var(--arch-shape);
+        border-style: dashed;
+        border-color: var(--arch-ink-light);
+    }
+</style>
