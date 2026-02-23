@@ -1,0 +1,160 @@
+---
+import { getEntry } from 'astro:content';
+import Prose from './Prose.astro';
+import UseCasesTOC from './UseCasesTOC.astro';
+
+const entry = await getEntry('pages', 'why-architect');
+const { Content, headings } = await entry.render();
+---
+
+<section class="why-architect-page">
+    <div class="why-hero">
+        <div class="section-header">
+            <h1 class="hero-title">Por qué Architect</h1>
+            <div class="section-line"></div>
+        </div>
+        <p class="hero-subtitle">
+            <code>architect</code> es la capa de automatización y control que falta entre los agentes de IA y tu pipeline de CI/CD. Claude Code es brillante implementando código. architect se asegura de que ese código pasa tests, cumple guardrails, y se entrega de forma verificable — sin supervisión humana, durante horas si hace falta.
+        </p>
+        <p class="hero-subtitle hero-subtitle--secondary">
+            Usa architect con Claude (vía Agent SDK), con GPT-4.1, con DeepSeek, o con tu modelo local. El cerebro cambia, las garantías no.
+        </p>
+    </div>
+
+    <div class="why-layout">
+        <main class="why-content">
+            <Prose>
+                <Content />
+            </Prose>
+        </main>
+        <UseCasesTOC headings={headings} />
+    </div>
+</section>
+
+<style>
+    .why-architect-page {
+        max-width: 80rem;
+        margin: 0 auto;
+        width: 100%;
+    }
+
+    /* Hero */
+    .why-hero {
+        padding: 3rem 1.5rem 2rem;
+        border-bottom: 2px solid var(--arch-line);
+    }
+
+    .section-header {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .hero-title {
+        font-family: var(--font-heading);
+        font-size: 2.25rem;
+        color: var(--arch-ink);
+        font-weight: 800;
+        margin: 0;
+        white-space: nowrap;
+    }
+
+    .section-line {
+        height: 4px;
+        background-color: var(--arch-ink);
+        flex-grow: 1;
+    }
+
+    .hero-subtitle {
+        font-size: 1.125rem;
+        color: var(--arch-ink-light);
+        line-height: 1.6;
+        margin: 0;
+        max-width: 60ch;
+    }
+
+    .hero-subtitle--secondary {
+        margin-top: 0.75rem;
+        font-size: 1rem;
+    }
+
+    .hero-subtitle code {
+        font-family: var(--font-mono);
+        color: var(--arch-brick);
+        background-color: var(--arch-shape);
+        padding: 0.15em 0.4em;
+        border-radius: 3px;
+        font-size: 0.9em;
+    }
+
+    /* Layout 2 columnas */
+    .why-layout {
+        display: flex;
+        flex-direction: column;
+    }
+
+    @media (min-width: 1024px) {
+        .why-layout {
+            flex-direction: row;
+        }
+    }
+
+    .why-content {
+        flex: 1;
+        min-width: 0;
+        padding: 2rem 1.5rem 5rem;
+    }
+
+    @media (min-width: 1024px) {
+        .why-content {
+            padding: 2.5rem 3rem 5rem;
+        }
+    }
+
+    /* Overrides de Prose para esta página */
+    .why-content :global(.prose-arch) {
+        max-width: 100%;
+    }
+
+    /* H2 con patrón título + línea */
+    .why-content :global(.prose-arch h2) {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        border-bottom: none;
+        padding-bottom: 0;
+        font-size: 1.5rem;
+        font-weight: 800;
+    }
+
+    .why-content :global(.prose-arch h2)::after {
+        content: '';
+        height: 3px;
+        background-color: var(--arch-ink);
+        flex-grow: 1;
+    }
+
+    /* Tablas brutalistas */
+    .why-content :global(.prose-arch table) {
+        border: 2px solid var(--arch-ink);
+        box-shadow: 4px 4px 0 var(--arch-line);
+    }
+
+    .why-content :global(.prose-arch th) {
+        background-color: var(--arch-ink);
+        color: var(--arch-paper);
+        border-color: var(--arch-ink-light);
+        font-size: 0.75rem;
+        letter-spacing: 0.05em;
+    }
+
+    .why-content :global(.prose-arch td) {
+        border-color: var(--arch-line);
+    }
+
+    /* Bloques de código — mejor overflow en tablas anchas */
+    .why-content :global(.prose-arch pre) {
+        font-size: 0.8125rem;
+    }
+</style>

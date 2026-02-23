@@ -3,7 +3,7 @@ import { LATEST_VERSION } from '../config/versions';
 ---
 <footer class="footer">
     <div class="container footer-content">
-        <p>&copy; 2026 Architect Project. <span class="footer-tagline">Hecho con precisión.</span></p>
+        <p>&copy; 2026 Architect Project. <span class="footer-tagline">Hecho con precisión.</span> <span class="footer-claude">Creado con <a href="https://claude.ai/claude-code" target="_blank" class="claude-link">Claude Code</a></span></p>
         <div class="footer-links">
             <a href="#" class="footer-link">{LATEST_VERSION.label}</a>
         </div>
@@ -39,6 +39,22 @@ import { LATEST_VERSION } from '../config/versions';
     .footer-tagline {
         color: var(--arch-ink);
         font-weight: 700;
+    }
+
+    .footer-claude {
+        color: var(--arch-ink-light);
+        font-size: 0.8125rem;
+    }
+
+    .claude-link {
+        color: var(--arch-brick);
+        text-decoration: none;
+        font-weight: 600;
+        transition: color 0.2s;
+    }
+
+    .claude-link:hover {
+        color: var(--arch-brick-light);
     }
 
     .footer-links {
