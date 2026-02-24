@@ -110,20 +110,22 @@
                     </div>
                 </div>
 
-                <!-- FASE C: EN CONSTRUCCIÓN -->
+                <!-- FASE C: COMPLETADA -->
                 <div class="timeline-item" id="fase-c">
-                    <div class="timeline-node node-active"></div>
+                    <div class="timeline-node node-completed"></div>
                     <div class="timeline-connector"></div>
 
-                    <div class="timeline-card card-active">
+                    <div class="timeline-card card-completed">
                         <div class="card-header">
                             <div>
                                 <span class="card-phase">Fase C</span>
                                 <h2 class="card-title">Automatización Avanzada</h2>
                             </div>
-                            <div class="status-badge badge-active">
-                                <span class="spinner"></span>
-                                EN CONSTRUCCIÓN
+                            <div class="status-badge badge-completed">
+                                <svg class="badge-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                COMPLETADA
                             </div>
                         </div>
 
@@ -133,43 +135,44 @@
                         </p>
 
                         <ul class="checklist">
-                            <li class="check-item check-pending">
-                                <span class="check-mark">[ ]</span>
+                            <li class="check-item check-done">
+                                <span class="check-mark">[x]</span>
                                 <span><strong>Ralph Loop Nativo</strong> — Loop de corrección automática: ejecutar, verificar checks externos, re-ejecutar con errores. Configurable con presupuesto y tiempo límite.</span>
                             </li>
-                            <li class="check-item check-pending">
-                                <span class="check-mark">[ ]</span>
+                            <li class="check-item check-done">
+                                <span class="check-mark">[x]</span>
                                 <span><strong>Parallel Runs + Worktrees</strong> — Múltiples agentes en git worktrees aislados. Fan-out (misma tarea, varios modelos) o distribución de tareas.</span>
                             </li>
-                            <li class="check-item check-pending">
-                                <span class="check-mark">[ ]</span>
+                            <li class="check-item check-done">
+                                <span class="check-mark">[x]</span>
                                 <span><strong>Pipeline Mode</strong> — Workflows YAML multi-step con variables, condiciones, checkpoints y resume desde cualquier paso.</span>
                             </li>
-                            <li class="check-item check-pending">
-                                <span class="check-mark">[ ]</span>
+                            <li class="check-item check-done">
+                                <span class="check-mark">[x]</span>
                                 <span><strong>Checkpoints & Rollback</strong> — Puntos de restauración basados en git. Rollback a cualquier step anterior.</span>
                             </li>
-                            <li class="check-item check-pending">
-                                <span class="check-mark">[ ]</span>
+                            <li class="check-item check-done">
+                                <span class="check-mark">[x]</span>
                                 <span><strong>Auto-Review</strong> — Patrón writer/reviewer: al completar, un reviewer analiza los cambios y genera correcciones automáticas.</span>
                             </li>
                         </ul>
                     </div>
                 </div>
 
-                <!-- FASE D: PLANIFICADA -->
+                <!-- FASE D: EN CONSTRUCCIÓN -->
                 <div class="timeline-item" id="fase-d">
-                    <div class="timeline-node node-planned"></div>
+                    <div class="timeline-node node-active"></div>
                     <div class="timeline-connector"></div>
 
-                    <div class="timeline-card card-planned">
+                    <div class="timeline-card card-active">
                         <div class="card-header">
                             <div>
                                 <span class="card-phase">Fase D</span>
                                 <h2 class="card-title">Extras y Especialización</h2>
                             </div>
-                            <div class="status-badge badge-planned">
-                                PLANOS APROBADOS
+                            <div class="status-badge badge-active">
+                                <span class="spinner"></span>
+                                EN CONSTRUCCIÓN
                             </div>
                         </div>
 
@@ -198,6 +201,173 @@
                             <li class="check-item check-pending">
                                 <span class="check-mark">[ ]</span>
                                 <span><strong>Preset Configs</strong> — Templates predefinidos: <code>python</code>, <code>node-react</code>, <code>ci</code>, <code>paranoid</code>.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- HITO MAYOR: v1.0.0 -->
+                <div class="timeline-item timeline-milestone" id="hito-v1">
+                    <div class="timeline-node node-milestone"></div>
+                    <div class="timeline-connector"></div>
+
+                    <div class="milestone-card">
+                        <div class="milestone-content">
+                            <div class="milestone-info">
+                                <svg class="milestone-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path>
+                                </svg>
+                                <div>
+                                    <span class="milestone-label">Hito Mayor</span>
+                                    <h3 class="milestone-title">Lanzamiento v1.0.0 Stable</h3>
+                                </div>
+                            </div>
+                            <div class="milestone-badge">
+                                Candidato Final
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FASE E: PLANIFICADA -->
+                <div class="timeline-item" id="fase-e">
+                    <div class="timeline-node node-planned"></div>
+                    <div class="timeline-connector"></div>
+
+                    <div class="timeline-card card-planned">
+                        <div class="card-header">
+                            <div>
+                                <span class="card-phase">Fase E</span>
+                                <h2 class="card-title">Backend Abstraction + Claude SDK</h2>
+                            </div>
+                            <div class="status-badge badge-planned">
+                                PLANOS APROBADOS
+                            </div>
+                        </div>
+
+                        <p class="card-description">
+                            Capa de abstracción para proveedores LLM e integración nativa con Claude Agent SDK
+                            como motor de ejecución, manteniendo la capa de control de architect encima.
+                        </p>
+
+                        <ul class="checklist">
+                            <li class="check-item check-pending">
+                                <span class="check-mark">[ ]</span>
+                                <span><strong>Backend Abstraction Layer</strong> — Interfaz unificada para proveedores LLM con health checks, métricas por backend y switching transparente.</span>
+                            </li>
+                            <li class="check-item check-pending">
+                                <span class="check-mark">[ ]</span>
+                                <span><strong>Claude Agent SDK Backend</strong> — Backend de Claude Agent SDK para usar las tools nativas de Claude Code como motor, con la capa de control de architect encima.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- FASE F: PLANIFICADA -->
+                <div class="timeline-item" id="fase-f">
+                    <div class="timeline-node node-planned"></div>
+                    <div class="timeline-connector"></div>
+
+                    <div class="timeline-card card-planned">
+                        <div class="card-header">
+                            <div>
+                                <span class="card-phase">Fase F</span>
+                                <h2 class="card-title">Architect como MCP Server</h2>
+                            </div>
+                            <div class="status-badge badge-planned">
+                                PLANOS APROBADOS
+                            </div>
+                        </div>
+
+                        <p class="card-description">
+                            Architect como servidor MCP nativo para integración bidireccional
+                            con Claude Code y otros agentes del ecosistema.
+                        </p>
+
+                        <ul class="checklist">
+                            <li class="check-item check-pending">
+                                <span class="check-mark">[ ]</span>
+                                <span><strong>Architect MCP Server</strong> — Servidor MCP nativo que expone las capacidades de architect (build, review, plan) como tools remotas para integración bidireccional con Claude Code y otros agentes.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- FASE G: PLANIFICADA -->
+                <div class="timeline-item" id="fase-g">
+                    <div class="timeline-node node-planned"></div>
+                    <div class="timeline-connector"></div>
+
+                    <div class="timeline-card card-planned">
+                        <div class="card-header">
+                            <div>
+                                <span class="card-phase">Fase G</span>
+                                <h2 class="card-title">Ralph v2 + Guardrails v2 + Reports v2</h2>
+                            </div>
+                            <div class="status-badge badge-planned">
+                                PLANOS APROBADOS
+                            </div>
+                        </div>
+
+                        <p class="card-description">
+                            Profundización de los sistemas core: loops resumables, guardrails por agente
+                            con audit trail, pipelines paralelos y reportes en formatos estándar CI/CD.
+                        </p>
+
+                        <ul class="checklist">
+                            <li class="check-item check-pending">
+                                <span class="check-mark">[ ]</span>
+                                <span><strong>Ralph Loop v2</strong> — Resumable (si se interrumpe un loop largo, se retoma desde la última iteración). Estrategias de escalación: si lleva 5+ iteraciones fallando, cambia el approach automáticamente.</span>
+                            </li>
+                            <li class="check-item check-pending">
+                                <span class="check-mark">[ ]</span>
+                                <span><strong>Guardrails v2</strong> — Scoped por agente (el build puede tocar código, el deploy solo infra). Audit trail JSONL inmutable. <code>allowed_paths</code> como inverso de <code>protected_files</code>.</span>
+                            </li>
+                            <li class="check-item check-pending">
+                                <span class="check-mark">[ ]</span>
+                                <span><strong>Pipeline Engine v2</strong> — Steps paralelos, error handling declarativo (<code>on_failure: retry | skip | abort</code>), includes para reutilizar steps entre pipelines.</span>
+                            </li>
+                            <li class="check-item check-pending">
+                                <span class="check-mark">[ ]</span>
+                                <span><strong>Reports & Audit Engine</strong> — JUnit XML para dashboards CI/CD estándar, formato GitHub PR con secciones colapsables, desglose de coste por paso.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- FASE H: PLANIFICADA -->
+                <div class="timeline-item" id="fase-h">
+                    <div class="timeline-node node-planned"></div>
+                    <div class="timeline-connector"></div>
+
+                    <div class="timeline-card card-planned">
+                        <div class="card-header">
+                            <div>
+                                <span class="card-phase">Fase H</span>
+                                <h2 class="card-title">Output Modes + Fallback + Int. Tests</h2>
+                            </div>
+                            <div class="status-badge badge-planned">
+                                PLANOS APROBADOS
+                            </div>
+                        </div>
+
+                        <p class="card-description">
+                            Resiliencia de producción: modos de salida configurables, fallback automático
+                            entre backends y suite de tests de integración end-to-end.
+                        </p>
+
+                        <ul class="checklist">
+                            <li class="check-item check-pending">
+                                <span class="check-mark">[ ]</span>
+                                <span><strong>CLI Output Modes</strong> — Modos de salida del CLI configurables y extensibles para distintos contextos de uso.</span>
+                            </li>
+                            <li class="check-item check-pending">
+                                <span class="check-mark">[ ]</span>
+                                <span><strong>Backend Health & Fallback</strong> — Health check y fallback automático entre backends. Si el proveedor principal cae, architect cambia al fallback sin intervención.</span>
+                            </li>
+                            <li class="check-item check-pending">
+                                <span class="check-mark">[ ]</span>
+                                <span><strong>Integration Test Suite</strong> — Suite de tests de integración end-to-end para validar flujos completos: build, review, loops, pipelines y parallel.</span>
                             </li>
                         </ul>
                     </div>
@@ -289,14 +459,44 @@
                         </li>
                         <li>
                             <a href="#fase-c" class="toc-item" data-slug="fase-c">
-                                <span class="toc-dot toc-dot-active"></span>
+                                <span class="toc-dot toc-dot-completed"></span>
                                 Fase C — Automatización
                             </a>
                         </li>
                         <li>
                             <a href="#fase-d" class="toc-item" data-slug="fase-d">
-                                <span class="toc-dot toc-dot-planned"></span>
+                                <span class="toc-dot toc-dot-active"></span>
                                 Fase D — Especialización
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#hito-v1" class="toc-item" data-slug="hito-v1">
+                                <span class="toc-dot toc-dot-milestone"></span>
+                                Hito — v1.0.0
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#fase-e" class="toc-item" data-slug="fase-e">
+                                <span class="toc-dot toc-dot-planned"></span>
+                                Fase E — Backend + SDK
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#fase-f" class="toc-item" data-slug="fase-f">
+                                <span class="toc-dot toc-dot-planned"></span>
+                                Fase F — MCP Server
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#fase-g" class="toc-item" data-slug="fase-g">
+                                <span class="toc-dot toc-dot-planned"></span>
+                                Fase G — v2 Engines
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#fase-h" class="toc-item" data-slug="fase-h">
+                                <span class="toc-dot toc-dot-planned"></span>
+                                Fase H — Output + Tests
                             </a>
                         </li>
                         <li>
@@ -945,5 +1145,119 @@
         background-color: var(--arch-shape);
         border-style: dashed;
         border-color: var(--arch-ink-light);
+    }
+
+    .toc-dot-milestone {
+        background-color: var(--arch-brick);
+        transform: rotate(45deg);
+    }
+
+    /* ============================================
+       MILESTONE
+       ============================================ */
+    .timeline-milestone {
+        padding-bottom: 3rem;
+    }
+
+    .node-milestone {
+        position: absolute;
+        left: -2.95rem;
+        top: 0.5rem;
+        width: 1.75rem;
+        height: 1.75rem;
+        background-color: var(--arch-brick);
+        border: 4px solid var(--arch-ink);
+        transform: rotate(45deg);
+        z-index: 2;
+    }
+
+    .milestone-card {
+        background-color: var(--arch-ink);
+        border: 2px solid var(--arch-ink);
+        box-shadow: 4px 4px 0px 0px var(--arch-brick);
+        padding: 1.25rem 1.5rem;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    @media (min-width: 768px) {
+        .milestone-card {
+            padding: 1.5rem 2rem;
+        }
+    }
+
+    .milestone-card:hover {
+        transform: translate(-2px, -2px);
+        box-shadow: 2px 2px 0px 0px var(--arch-brick);
+    }
+
+    .milestone-content {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    @media (min-width: 768px) {
+        .milestone-content {
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+        }
+    }
+
+    .milestone-info {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .milestone-icon {
+        width: 2rem;
+        height: 2rem;
+        color: var(--arch-brick);
+        flex-shrink: 0;
+    }
+
+    .milestone-label {
+        display: block;
+        font-family: var(--font-mono);
+        font-size: 0.6875rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--arch-line);
+        margin-bottom: 0.125rem;
+    }
+
+    .milestone-title {
+        font-family: var(--font-heading);
+        font-size: 1.25rem;
+        font-weight: 800;
+        color: var(--arch-paper);
+        text-transform: uppercase;
+        letter-spacing: 0.02em;
+        margin: 0;
+        line-height: 1.2;
+    }
+
+    @media (min-width: 768px) {
+        .milestone-title {
+            font-size: 1.5rem;
+        }
+    }
+
+    .milestone-badge {
+        display: inline-flex;
+        align-items: center;
+        border: 2px solid var(--arch-brick);
+        background-color: var(--arch-brick);
+        color: var(--arch-paper);
+        padding: 0.5rem 1rem;
+        font-family: var(--font-mono);
+        font-size: 0.8125rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        box-shadow: 2px 2px 0px 0px rgba(41, 37, 36, 1);
+        white-space: nowrap;
+        flex-shrink: 0;
     }
 </style>
