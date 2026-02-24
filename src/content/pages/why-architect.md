@@ -236,11 +236,11 @@ El que implementa no es el que revisa. Evitas el confirmation bias de que el mis
 
 ## El camino que viene
 
-### Ahora (v4)
+### Ahora
 
 El core completo de la herramienta: hooks en 10 eventos del lifecycle, guardrails declarativos con quality gates, skills y `.architect.md`, memoria procedural, session resume, reports, flags CI/CD nativos, dry run, Ralph Loop, parallel runs con worktrees, pipelines YAML, checkpoints y rollback, auto-review writer/reviewer, sub-agentes, code health delta, presets de configuración.
 
-### Próximo (v5)
+### Próximo
 
 La evolución hacia plataforma de orquestación:
 
