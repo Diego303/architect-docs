@@ -6,32 +6,42 @@ const features = [
     {
         title: "Multi-Modelo, Cero Lock-in",
         iconPath: "M8 7h12M8 12h12M8 17h12M4 7h.01M4 12h.01M4 17h.01",
-        description: "Usa cualquier LLM sin atarte a un proveedor. OpenAI, Anthropic, Google, DeepSeek, Mistral, Ollama — o cualquier API compatible con OpenAI. Cambia de modelo con un flag.",
+        description: "Usa cualquier LLM: OpenAI, Anthropic, Google, DeepSeek, Mistral, Ollama — o cualquier API compatible. Más de 100 proveedores vía LiteLLM. Cambia de modelo con un flag.",
     },
     {
-        title: "El Agente Decide Cuándo Terminar",
+        title: "Ralph Loop — Iteración Autónoma",
+        iconPath: "M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15",
+        description: "Ejecuta, verifica con tus tests, si fallan reintenta con contexto limpio. Itera hasta que tus checks pasen de verdad — no hasta que el LLM crea que ha terminado.",
+    },
+    {
+        title: "Parallel Runs con Worktrees",
+        iconPath: "M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10",
+        description: "Múltiples agentes en paralelo, cada uno en su git worktree aislado. Misma tarea con N modelos para comparar, o tareas diferentes para multiplicar velocidad.",
+    },
+    {
+        title: "Guardrails & Quality Gates",
         iconPath: "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z",
-        description: "El agente trabaja hasta que decide que terminó. Los límites de seguridad (budget, timeout) son watchdogs: cuando saltan, piden al agente un cierre limpio con resumen de qué hizo y qué queda pendiente.",
+        description: "Archivos protegidos, comandos bloqueados, límites de cambios, reglas de código. Quality gates obligatorios antes de completar. Declarativo en YAML, determinista.",
     },
     {
-        title: "Verificación Automática Post-Edición",
-        iconPath: "M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4",
-        description: "Cada edición dispara automáticamente linter, formatter y type checker. Si algo falla, el error vuelve al agente como feedback para que lo corrija — sin intervención humana.",
+        title: "Pipelines Declarativos",
+        iconPath: "M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z",
+        description: "Workflows multi-paso en YAML. Plan, Build, Test, Review, Fix. Variables entre pasos, condiciones, checkpoints. Composable y reutilizable.",
     },
     {
-        title: "Hecho para Headless",
+        title: "Extensible con Hooks",
+        iconPath: "M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4",
+        description: "10 eventos del lifecycle del agente. Formatea código automáticamente, bloquea comandos peligrosos, notifica a Slack cuando termina. Pre y post en cada acción.",
+    },
+    {
+        title: "Hecho para CI/CD",
         iconPath: "M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z",
-        description: "Headless-first: cada decisión de diseño está pensada para funcionar sin supervisión. En CI/CD, en cron jobs, en scripts, dentro de un Makefile. Exit codes semánticos y logs JSON.",
+        description: "Exit codes semánticos, output JSON parseable, reports en Markdown para PR comments. Budget y timeout como hard limits. Sin confirmaciones, sin prompts interactivos.",
     },
     {
-        title: "Control de Costes Integrado",
-        iconPath: "M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z",
-        description: "Cada llamada al LLM se rastrea: tokens, coste por paso, coste acumulado. Pon límites de presupuesto y el agente se detendrá limpiamente cuando los alcance.",
-    },
-    {
-        title: "Conecta vía MCP",
-        iconPath: "M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1",
-        description: "Conéctate a servidores MCP para que el agente use herramientas externas: bases de datos, APIs, GitHub, Jira. Las tools MCP se descubren automáticamente y funcionan como nativas.",
+        title: "Aprende Con El Uso",
+        iconPath: "M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z",
+        description: "Memoria procedural auto-generada. Detecta correcciones y las persiste. Combinada con .architect.md y skills Vercel-compatible: tres capas de conocimiento acumulado.",
     },
 ];
 ---
@@ -51,53 +61,104 @@ const features = [
             ))}
         </div>
 
-        <!-- Highlighted feature: Terminal workflow -->
-        <div class="feature-highlight">
-            <div class="highlight-text">
-                <h3 class="highlight-title">Tools Potentes para el Agente</h3>
-                <p class="highlight-desc">
-                    El agente no solo genera código: lee el codebase, busca patrones, ejecuta comandos, y
-                    verifica su propio trabajo. Cada tool está diseñada para dar al LLM el contexto justo
-                    que necesita sin desperdiciar tokens.
+        <!-- Spotlight: Ralph Loop -->
+        <div class="feature-spotlight">
+            <div class="spotlight-text">
+                <h3 class="spotlight-title">Ralph Loop — La Feature Estrella</h3>
+                <p class="spotlight-desc">
+                    El patrón más productivo en agentic coding, integrado como feature nativa.
+                    En vez de confiar en que la IA decida cuándo ha terminado, architect ejecuta tus tests
+                    y linters después de cada iteración. Si fallan, el agente vuelve a intentarlo con
+                    <strong>contexto limpio</strong>.
                 </p>
-                <div class="tool-list">
-                    <div class="tool-group">
-                        <h4 class="tool-group-label">Lectura</h4>
-                        <ul class="tool-items">
-                            <li><code>read_file</code> <span>Archivos con rangos parciales</span></li>
-                            <li><code>search_code</code> <span>Búsqueda regex con contexto</span></li>
-                            <li><code>grep</code> <span>Búsqueda rápida en múltiples archivos</span></li>
-                            <li><code>find_files</code> <span>Descubre archivos por patrón</span></li>
-                        </ul>
-                    </div>
-                    <div class="tool-group">
-                        <h4 class="tool-group-label">Escritura</h4>
-                        <ul class="tool-items">
-                            <li><code>write_file</code> <span>Crea archivos nuevos</span></li>
-                            <li><code>edit_file</code> <span>Edición quirúrgica (str_replace)</span></li>
-                            <li><code>apply_patch</code> <span>Diffs complejos multi-hunk</span></li>
-                        </ul>
-                    </div>
-                    <div class="tool-group">
-                        <h4 class="tool-group-label">Ejecución</h4>
-                        <ul class="tool-items">
-                            <li><code>run_command</code> <span>Shell con timeout y captura</span></li>
-                        </ul>
-                    </div>
+                <p class="spotlight-desc">
+                    Cada iteración arranca fresca — sin acumular basura de intentos anteriores. Solo recibe:
+                    la spec original, el diff acumulado, y los errores de la última iteración. El resultado:
+                    <strong>código que compila, pasa tests, y está limpio.</strong>
+                </p>
+                <div class="spotlight-cmd">
+                    <code>$ architect loop "Implementa el módulo de pagos" \<br/>  --check "pytest tests/ -q" \<br/>  --check "ruff check src/" \<br/>  --max-iterations 25</code>
                 </div>
             </div>
+            <CodeFigure title="Ralph Loop — Iteración 3/25">
+                <div class="sl-line"><span class="sl-icon">&#x1F504;</span> Agente trabajando (contexto limpio + errores de iter. 2)...</div>
+                <div class="sl-line sl-indent"><span class="sl-icon-sm">&#x1F527;</span> edit_file &#x2192; src/payments/stripe.py</div>
+                <div class="sl-line sl-indent"><span class="sl-icon-sm">&#x1F527;</span> edit_file &#x2192; tests/test_payments.py</div>
+                <div class="sl-line sl-indent"><span class="sl-check">&#x2713;</span> Agente completó</div>
+                <div class="sl-spacer"></div>
+                <div class="sl-line"><span class="sl-icon">&#x1F9EA;</span> Verificación externa:</div>
+                <div class="sl-line sl-indent"><span class="sl-check">&#x2713;</span> pytest tests/ -q &#x2192; <span class="sl-pass">18/18 passed</span></div>
+                <div class="sl-line sl-indent"><span class="sl-check">&#x2713;</span> ruff check src/ &#x2192; <span class="sl-pass">sin errores</span></div>
+                <div class="sl-separator"></div>
+                <div class="sl-line sl-bold"><span class="sl-icon">&#x2705;</span> Loop completado en 3 iteraciones (<span class="sl-cost">$0.089</span>)</div>
+            </CodeFigure>
+        </div>
 
-            <CodeFigure title="Flujo del agente">
-                <div class="workflow-line"><span class="wf-icon">&#128214;</span> read_file <span class="wf-arrow">&rarr;</span> src/auth/provider.py <span class="wf-meta">(145 líneas)</span></div>
-                <div class="workflow-line"><span class="wf-icon">&#128214;</span> read_file <span class="wf-arrow">&rarr;</span> src/routes/login.py <span class="wf-meta">(89 líneas)</span></div>
-                <div class="workflow-line"><span class="wf-icon">&#128295;</span> edit_file <span class="wf-arrow">&rarr;</span> src/auth/provider.py <span class="wf-meta">(+12 -3)</span></div>
-                <div class="workflow-line"><span class="wf-icon">&#128221;</span> write_file <span class="wf-arrow">&rarr;</span> src/auth/jwt_handler.py <span class="wf-meta">(67 líneas)</span></div>
-                <div class="workflow-line"><span class="wf-icon">&#128295;</span> edit_file <span class="wf-arrow">&rarr;</span> src/routes/login.py <span class="wf-meta">(+8 -2)</span></div>
-                <div class="workflow-line"><span class="wf-icon">&#128221;</span> write_file <span class="wf-arrow">&rarr;</span> tests/test_jwt.py <span class="wf-meta">(54 líneas)</span></div>
-                <div class="workflow-line"><span class="wf-icon">&#128421;&#65039;</span> run_command <span class="wf-arrow">&rarr;</span> pytest tests/test_jwt.py -q <span class="wf-result">&#10003; 4/4 passed</span></div>
-                <div class="workflow-line"><span class="wf-icon">&#128269;</span> lint <span class="wf-arrow">&rarr;</span> ruff check src/auth/ <span class="wf-result">&#10003; sin errores</span></div>
-                <div class="workflow-separator"></div>
-                <div class="workflow-result"><span class="wf-result">&#10003;</span> Completado (8 pasos, 14.2s, $0.032)</div>
+        <!-- Spotlight: Guardrails & Quality Gates -->
+        <div class="feature-spotlight spotlight-reverse">
+            <div class="spotlight-text">
+                <h3 class="spotlight-title">Guardrails & Quality Gates</h3>
+                <p class="spotlight-desc">
+                    Los guardrails de architect no dependen del LLM. Son reglas deterministas que se evalúan
+                    antes y después de cada acción. El agente no puede saltárselas porque no las controla —
+                    <strong>están fuera de su contexto.</strong>
+                </p>
+                <p class="spotlight-desc">
+                    Si el agente intenta escribir en <code>.env</code> &#x2192; bloqueado. Si el código
+                    contiene <code>eval()</code> &#x2192; bloqueado. Si dice "he terminado" pero pytest
+                    falla &#x2192; sigue trabajando. <strong>Los quality gates pasan o no pasan.</strong>
+                    Sin negociación.
+                </p>
+            </div>
+            <CodeFigure title="guardrails.yaml">
+                <div class="sl-yaml"><span class="sl-key">guardrails:</span></div>
+                <div class="sl-yaml sl-yi1"><span class="sl-key">protected_files:</span> [".env", "*.pem", "migrations/*"]</div>
+                <div class="sl-yaml sl-yi1"><span class="sl-key">blocked_commands:</span> ['rm -rf /', 'git push --force']</div>
+                <div class="sl-yaml sl-yi1"><span class="sl-key">max_files_modified:</span> 30</div>
+                <div class="sl-spacer-sm"></div>
+                <div class="sl-yaml sl-yi1"><span class="sl-key">quality_gates:</span></div>
+                <div class="sl-yaml sl-yi2">- <span class="sl-key">name:</span> lint</div>
+                <div class="sl-yaml sl-yi3"><span class="sl-key">command:</span> "ruff check src/"</div>
+                <div class="sl-yaml sl-yi3"><span class="sl-key">required:</span> true</div>
+                <div class="sl-yaml sl-yi2">- <span class="sl-key">name:</span> tests</div>
+                <div class="sl-yaml sl-yi3"><span class="sl-key">command:</span> "pytest tests/ -q"</div>
+                <div class="sl-yaml sl-yi3"><span class="sl-key">required:</span> true</div>
+                <div class="sl-spacer-sm"></div>
+                <div class="sl-yaml sl-yi1"><span class="sl-key">code_rules:</span></div>
+                <div class="sl-yaml sl-yi2">- <span class="sl-key">pattern:</span> 'eval\('</div>
+                <div class="sl-yaml sl-yi3"><span class="sl-key">severity:</span> <span class="sl-val">block</span></div>
+            </CodeFigure>
+        </div>
+
+        <!-- Spotlight: Parallel Runs -->
+        <div class="feature-spotlight">
+            <div class="spotlight-text">
+                <h3 class="spotlight-title">Parallel Runs con Git Worktrees</h3>
+                <p class="spotlight-desc">
+                    Lanza múltiples agentes en paralelo, cada uno en su propio git worktree aislado. Misma
+                    tarea con diferentes modelos para comparar resultados reales en tu codebase. O diferentes
+                    tareas en paralelo para multiplicar velocidad.
+                </p>
+                <p class="spotlight-desc">
+                    Worktrees nativos de git: sin copias, sin conflictos, sin Docker. Cada worker opera en un
+                    snapshot aislado del repo. Al final, <strong>datos objetivos — no opiniones.</strong>
+                </p>
+                <div class="spotlight-cmd">
+                    <code>$ architect parallel "Refactoriza el módulo auth" \<br/>  --models gpt-4.1,claude-sonnet-4,deepseek-chat</code>
+                </div>
+            </div>
+            <CodeFigure title="Resultados — Competitive Eval">
+                <div class="sl-line sl-bold">Worker 1 <span class="sl-meta">(gpt-4.1)</span></div>
+                <div class="sl-line sl-indent">&#x2192; architect/parallel-1 <span class="sl-pass">&#x2713;</span>  8 pasos  <span class="sl-cost">$0.034</span></div>
+                <div class="sl-spacer-sm"></div>
+                <div class="sl-line sl-bold">Worker 2 <span class="sl-meta">(claude-sonnet-4)</span></div>
+                <div class="sl-line sl-indent">&#x2192; architect/parallel-2 <span class="sl-pass">&#x2713;</span>  5 pasos  <span class="sl-cost">$0.028</span></div>
+                <div class="sl-spacer-sm"></div>
+                <div class="sl-line sl-bold">Worker 3 <span class="sl-meta">(deepseek-chat)</span></div>
+                <div class="sl-line sl-indent">&#x2192; architect/parallel-3 <span class="sl-pass">&#x26A1;</span> 20 pasos  <span class="sl-cost">$0.006</span></div>
+                <div class="sl-separator"></div>
+                <div class="sl-line"><span class="sl-meta">$ architect diff parallel-1 parallel-2</span></div>
+                <div class="sl-line"><span class="sl-meta">$ architect merge parallel-2</span></div>
             </CodeFigure>
         </div>
     </div>
@@ -127,6 +188,13 @@ const features = [
         white-space: nowrap;
     }
 
+    @media (max-width: 640px) {
+        .section-title {
+            white-space: normal;
+            font-size: 1.5rem;
+        }
+    }
+
     .section-line {
         height: 4px;
         background-color: var(--arch-ink);
@@ -146,14 +214,14 @@ const features = [
         }
     }
 
-    @media (min-width: 1024px) {
+    @media (min-width: 1280px) {
         .features-grid {
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(4, 1fr);
         }
     }
 
-    /* Feature Highlight — Tools section */
-    .feature-highlight {
+    /* Feature Spotlights */
+    .feature-spotlight {
         display: grid;
         grid-template-columns: 1fr;
         gap: 2.5rem;
@@ -162,15 +230,20 @@ const features = [
         border: 2px solid var(--arch-ink);
         padding: 2.5rem;
         box-shadow: var(--shadow-draft);
+        margin-bottom: 3rem;
     }
 
     @media (min-width: 1024px) {
-        .feature-highlight {
+        .feature-spotlight {
             grid-template-columns: 1fr 1fr;
+        }
+
+        .feature-spotlight.spotlight-reverse .spotlight-text {
+            order: 2;
         }
     }
 
-    .highlight-title {
+    .spotlight-title {
         font-family: var(--font-heading);
         font-size: 1.5rem;
         font-weight: 800;
@@ -180,95 +253,113 @@ const features = [
         margin: 0 0 1rem 0;
     }
 
-    .highlight-desc {
+    .spotlight-desc {
         font-size: 1rem;
         line-height: 1.7;
         color: var(--arch-ink-light);
-        margin: 0 0 1.5rem 0;
+        margin: 0 0 1rem 0;
     }
 
-    .tool-list {
-        display: flex;
-        flex-direction: column;
-        gap: 1.25rem;
-    }
-
-    .tool-group-label {
-        font-family: var(--font-heading);
-        font-size: 0.75rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
+    .spotlight-desc strong {
         color: var(--arch-brick);
-        margin: 0 0 0.5rem 0;
+        font-weight: 600;
     }
 
-    .tool-items {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-        display: flex;
-        flex-direction: column;
-        gap: 0.375rem;
-    }
-
-    .tool-items li {
-        font-size: 0.875rem;
-        color: var(--arch-ink-light);
-        display: flex;
-        align-items: baseline;
-        gap: 0.5rem;
-    }
-
-    .tool-items code {
+    .spotlight-desc code {
         font-family: var(--font-mono);
-        font-size: 0.8125rem;
-        color: var(--arch-ink);
-        font-weight: 500;
+        font-size: 0.875rem;
         background-color: var(--arch-shape);
         padding: 0.125rem 0.375rem;
         border: 1px solid var(--arch-line);
-        white-space: nowrap;
     }
 
-    .tool-items span {
-        color: var(--arch-ink-light);
+    .spotlight-cmd {
+        margin-top: 1.25rem;
     }
 
-    /* Workflow lines inside CodeFigure */
-    .workflow-line {
+    .spotlight-cmd code {
+        display: block;
+        font-family: var(--font-mono);
+        font-size: 0.8125rem;
+        color: var(--arch-ink);
+        background-color: var(--arch-shape);
+        padding: 0.75rem 1rem;
+        border: 1px solid var(--arch-line);
+        line-height: 1.7;
+    }
+
+    /* Spotlight log lines */
+    .sl-line {
         padding: 0.125rem 0;
     }
 
-    .wf-icon {
-        display: inline-block;
-        width: 1.5rem;
-        text-align: center;
-        font-style: normal;
+    .sl-indent {
+        padding-left: 1.5rem;
     }
 
-    .wf-arrow {
-        color: var(--arch-ink-light);
-        margin: 0 0.25rem;
+    .sl-bold {
+        font-weight: 700;
     }
 
-    .wf-meta {
-        color: var(--arch-ink-light);
-        font-size: 0.75rem;
+    .sl-icon {
+        margin-right: 0.375rem;
     }
 
-    .wf-result {
+    .sl-icon-sm {
+        margin-right: 0.25rem;
+        font-size: 0.8125rem;
+    }
+
+    .sl-check {
+        color: var(--arch-ink);
+        font-weight: 700;
+        margin-right: 0.25rem;
+    }
+
+    .sl-pass {
         color: var(--arch-brick);
         font-weight: 500;
     }
 
-    .workflow-separator {
+    .sl-cost {
+        color: var(--arch-brick);
+        font-weight: 600;
+    }
+
+    .sl-meta {
+        color: var(--arch-ink-light);
+        font-size: 0.8125rem;
+    }
+
+    .sl-spacer {
+        height: 0.75rem;
+    }
+
+    .sl-spacer-sm {
+        height: 0.375rem;
+    }
+
+    .sl-separator {
         border-top: 1px dashed var(--arch-line);
         margin: 0.75rem 0;
     }
 
-    .workflow-result {
-        font-weight: 700;
+    /* YAML styling in spotlights */
+    .sl-yaml {
+        padding: 0.0625rem 0;
+    }
+
+    .sl-yi1 { padding-left: 1rem; }
+    .sl-yi2 { padding-left: 2rem; }
+    .sl-yi3 { padding-left: 3rem; }
+
+    .sl-key {
+        color: var(--arch-brick);
+        font-weight: 500;
+    }
+
+    .sl-val {
         color: var(--arch-ink);
+        font-weight: 700;
     }
 </style>

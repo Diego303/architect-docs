@@ -2,16 +2,21 @@
 import CodeFigure from '../ui/CodeFigure.astro';
 
 const devCases = [
-    { label: "Implementar features", cmd: 'architect run "Añade un endpoint GET /v1/users/{id}/orders\ncon paginación y filtro por status"' },
-    { label: "Fix de bugs", cmd: 'architect run "El endpoint /payments/webhook lanza 500 cuando\nStipe envía un evento charge.refunded"' },
-    { label: "Generar tests", cmd: 'architect run "Escribe tests completos para\nsrc/services/payment_service.py"' },
-    { label: "Refactoring", cmd: 'architect run "Extrae la lógica de validación de\nwebhooks a src/services/webhook_validator.py"' },
+    { label: "Coding overnight", cmd: 'architect loop --spec tasks/payment-module.md \\\n  --check "pytest tests/ -q" \\\n  --check "mypy src/" \\\n  --max-iterations 30' },
+    { label: "Competitive coding", cmd: 'architect parallel "Optimiza las queries SQL" \\\n  --models gpt-4.1,claude-sonnet-4,deepseek-chat' },
+    { label: "Refactoring seguro", cmd: 'architect run "Migra de SQLAlchemy sync a async" \\\n  --dry-run\n# Preview primero, ejecuta después con checkpoints:\narchitect run "Migra de SQLAlchemy sync a async" \\\n  --checkpoint-every 5' },
+];
+
+const teamCases = [
+    { label: "Review automático en PRs", cmd: 'architect run "Revisa este PR" \\\n  --agent review \\\n  --context-git-diff origin/main \\\n  --report github > review.md' },
+    { label: "Estándares compartidos", cmd: '# .architect.md + guardrails + skills\n# Convenciones del equipo codificadas,\n# versionadas en git, verificadas en cada ejecución' },
+    { label: "Eval de modelos", cmd: 'architect eval \\\n  --models claude-sonnet-4,gpt-4.1 \\\n  --tasks eval/tasks.yaml' },
 ];
 
 const ciCases = [
-    { label: "Review automático en PRs", cmd: 'architect run "Revisa estos cambios buscando\nbugs y security issues" --agent review --budget 0.15' },
-    { label: "Fix automático de lint", cmd: 'architect run "Corrige todos los errores de lint"\n--confirm-mode yolo --budget 0.30' },
-    { label: "Generación de changelogs", cmd: 'architect run "Genera changelog desde v1.2.0"\n--agent plan' },
+    { label: "Fix automático de lint", cmd: 'architect loop "Corrige errores de lint" \\\n  --check "eslint src/ --max-warnings 0" \\\n  --max-iterations 5 --budget 0.50' },
+    { label: "Changelog automático", cmd: 'architect run "Genera changelog desde v1.2.0" \\\n  --report markdown > CHANGELOG.md' },
+    { label: "Docs automáticas", cmd: 'architect pipeline pipelines/update-docs.yaml' },
 ];
 ---
 
@@ -29,8 +34,8 @@ const ciCases = [
                     <div class="usecase-marker"></div>
                     <h3 class="usecase-title">Para Developers</h3>
                 </div>
-                <p class="usecase-desc">Un comando, una tarea, código verificado. Describe lo que necesitas y architect
-                    lo implementa, testea y valida.</p>
+                <p class="usecase-desc">Configura un Ralph Loop con tu spec y tus tests. Cierra el portátil.
+                    A la mañana siguiente tienes un PR con código que compila y pasa todos los tests.</p>
                 <div class="usecase-commands">
                     {devCases.map(c => (
                         <div class="cmd-item">
@@ -41,16 +46,16 @@ const ciCases = [
                 </div>
             </div>
 
-            <!-- For CI/CD -->
+            <!-- For Teams -->
             <div class="usecase-block">
                 <div class="usecase-label">
                     <div class="usecase-marker"></div>
-                    <h3 class="usecase-title">Para CI/CD</h3>
+                    <h3 class="usecase-title">Para Equipos</h3>
                 </div>
-                <p class="usecase-desc">Integra architect en tus pipelines. Review automático, fix de lint,
-                    generación de changelogs — todo headless.</p>
+                <p class="usecase-desc">Review automático en cada PR, estándares compartidos codificados en YAML,
+                    y evaluación objetiva cuando cambiáis de modelo.</p>
                 <div class="usecase-commands">
-                    {ciCases.map(c => (
+                    {teamCases.map(c => (
                         <div class="cmd-item">
                             <span class="cmd-label">{c.label}</span>
                             <code class="cmd-code">$ {c.cmd}</code>
@@ -58,36 +63,32 @@ const ciCases = [
                     ))}
                 </div>
 
-                <CodeFigure title="GitHub Actions" class="usecase-code">
-                    <div><span class="yaml-key">- run:</span> |</div>
-                    <div class="yaml-indent">architect run "Revisa los cambios de este PR" \</div>
-                    <div class="yaml-indent2">--agent review \</div>
-                    <div class="yaml-indent2">--confirm-mode yolo \</div>
-                    <div class="yaml-indent2">--budget 0.15</div>
+                <CodeFigure title="GitHub Actions — Review" class="usecase-code">
+                    <div><span class="yaml-key">- name:</span> AI Code Review</div>
+                    <div class="yaml-indent"><span class="yaml-key">run:</span> |</div>
+                    <div class="yaml-indent2">architect run "Revisa los cambios de este PR" \</div>
+                    <div class="yaml-indent2">  --agent review \</div>
+                    <div class="yaml-indent2">  --context-git-diff origin/main \</div>
+                    <div class="yaml-indent2">  --report github \</div>
+                    <div class="yaml-indent2">  --budget 0.10</div>
                 </CodeFigure>
             </div>
 
-            <!-- For DevOps -->
+            <!-- For CI/CD & DevOps -->
             <div class="usecase-block">
                 <div class="usecase-label">
                     <div class="usecase-marker"></div>
-                    <h3 class="usecase-title">Para DevOps</h3>
+                    <h3 class="usecase-title">Para CI/CD & DevOps</h3>
                 </div>
-                <p class="usecase-desc">Genera IaC, actualiza manifests, documenta módulos. Define agentes
-                    custom con permisos acotados para cada tarea.</p>
+                <p class="usecase-desc">Integra architect en tus pipelines. Fix automático de lint,
+                    generación de changelogs, documentación actualizada — todo headless, todo auditable.</p>
                 <div class="usecase-commands">
-                    <div class="cmd-item">
-                        <span class="cmd-label">Generar K8s manifests</span>
-                        <code class="cmd-code">$ architect run "Crea los manifests de K8s para el servicio de notificaciones" --agent deploy</code>
-                    </div>
-                    <div class="cmd-item">
-                        <span class="cmd-label">Documentación</span>
-                        <code class="cmd-code">$ architect run "Documenta el módulo src/services/" --agent docs</code>
-                    </div>
-                    <div class="cmd-item">
-                        <span class="cmd-label">Cron automatizado</span>
-                        <code class="cmd-code">0 6 * * 1 cd /app && architect run "Actualiza dependencias" --timeout 600</code>
-                    </div>
+                    {ciCases.map(c => (
+                        <div class="cmd-item">
+                            <span class="cmd-label">{c.label}</span>
+                            <code class="cmd-code">$ {c.cmd}</code>
+                        </div>
+                    ))}
                 </div>
             </div>
         </div>
@@ -116,6 +117,13 @@ const ciCases = [
         font-weight: 800;
         margin: 0;
         white-space: nowrap;
+    }
+
+    @media (max-width: 640px) {
+        .section-title {
+            white-space: normal;
+            font-size: 1.5rem;
+        }
     }
 
     .section-line {
