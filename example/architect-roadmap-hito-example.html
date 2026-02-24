@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hoja de Ruta | Architect</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Outfit', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace'],
+                    },
+                    colors: {
+                        arch: {
+                            paper: '#FFFFFF',    /* Blanco puro */
+                            surface: '#F1F5F9',  /* Gris azulado muy claro */
+                            ink: '#0F172A',      /* Azul marino oscuro (casi negro) */
+                            inkLight: '#475569', /* Gris azulado medio */
+                            line: '#E0F2FE',     /* Azul cielo muy suave (Milimetrado) */
+                            brick: '#E11D48',    /* Rojo bolígrafo */
+                            brickLight: '#F43F5E'
+                        }
+                    },
+                    boxShadow: {
+                        'draft': '6px 6px 0px 0px rgba(15, 23, 42, 1)', 
+                        'draft-hover': '2px 2px 0px 0px rgba(15, 23, 42, 1)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #FFFFFF;
+            background-image: 
+                linear-gradient(#E0F2FE 1px, transparent 1px),
+                linear-gradient(90deg, #E0F2FE 1px, transparent 1px);
+            background-size: 40px 40px; 
+            background-position: center center;
+            color: #0F172A;
+        }
+        .bg-arch-shape {
+            position: absolute;
+            top: -10%; right: -5%;
+            width: 800px; height: 800px;
+            background-color: #F8FAFC;
+            border-radius: 50% 50% 0 0;
+            z-index: -1; opacity: 0.8;
+            border: 1px solid #BAE6FD;
+        }
+        .highlight-brick {
+            position: relative; display: inline-block; color: #E11D48;
+        }
+        .highlight-brick::after {
+            content: ''; position: absolute; bottom: 4px; left: 0;
+            width: 100%; height: 8px;
+            background-color: rgba(225, 29, 72, 0.15);
+            z-index: -1; transform: skewX(-15deg);
+        }
+        
+        /* Animación para el nodo de la fase actual */
+        @keyframes pulse-border {
+            0% { box-shadow: 0 0 0 0 rgba(225, 29, 72, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(225, 29, 72, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(225, 29, 72, 0); }
+        }
+        .node-active {
+            animation: pulse-border 2s infinite;
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col font-sans relative overflow-x-hidden">
+    
+    <!-- Decoración de fondo -->
+    <div class="bg-arch-shape hidden lg:block"></div>
+
+    <!-- Navegación -->
+    <nav class="border-b-2 border-arch-ink bg-arch-paper/90 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <a href="#" class="flex items-center gap-3 group">
+                    <svg class="w-8 h-8 text-arch-brick group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2.5" d="M12 3L3 21h18L12 3zm0 7l4 9H8l4-9z"></path></svg>
+                    <span class="text-2xl font-heading font-extrabold tracking-tight text-arch-ink uppercase">Architect</span>
+                </a>
+                <span class="bg-arch-ink text-arch-paper text-xs font-mono px-2 py-0.5 rounded-sm ml-2 hidden sm:inline-block">v1.2.0</span>
+            </div>
+            
+            <div class="hidden md:flex items-center space-x-8 text-sm font-semibold font-heading uppercase tracking-wide text-arch-inkLight">
+                <a href="#" class="hover:text-arch-brick transition-colors">Inicio</a>
+                <a href="#" class="hover:text-arch-brick transition-colors">Docs</a>
+                <a href="#" class="text-arch-brick border-b-2 border-arch-brick pb-1">Roadmap</a>
+                <a href="#" class="hover:text-arch-ink transition-colors flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header Sección -->
+    <header class="w-full max-w-4xl mx-auto px-6 pt-20 pb-10 text-center relative z-10">
+        <div class="inline-flex items-center justify-center space-x-2 mb-6 border-2 border-arch-ink bg-arch-surface px-4 py-1 text-sm font-mono font-bold text-arch-brick shadow-[2px_2px_0px_0px_rgba(15,23,42,1)]">
+            <span class="w-2 h-2 bg-arch-brick animate-pulse"></span>
+            <span>DOCUMENTO VIVO</span>
+        </div>
+        <h1 class="text-5xl md:text-7xl font-heading font-extrabold tracking-tight mb-6 text-arch-ink uppercase">
+            Planos de <span class="highlight-brick">Expansión</span>
+        </h1>
+        <p class="text-lg md:text-xl text-arch-inkLight max-w-2xl mx-auto font-medium">
+            Nuestra hoja de ruta técnica. Conoce las fases de construcción, las herramientas en desarrollo y el futuro de la orquestación agéntica en Architect.
+        </p>
+    </header>
+
+    <!-- Contenido del Roadmap (Timeline) -->
+    <main class="flex-grow w-full max-w-4xl mx-auto px-6 pb-24 relative z-10">
+        
+        <!-- Línea vertical principal -->
+        <div class="relative border-l-4 border-arch-ink ml-4 md:ml-8 space-y-16 py-8">
+            
+            <!-- FASE 0: COMPLETADO (NUEVO) -->
+            <div class="relative pl-8 md:pl-12 group">
+                <div class="absolute -left-[14px] top-2 w-6 h-6 bg-arch-ink border-4 border-arch-ink transition-colors"></div>
+                <div class="absolute left-0 top-4 w-8 border-t-4 border-arch-ink hidden md:block"></div>
+                
+                <div class="bg-arch-surface border-2 border-arch-ink shadow-draft p-6 md:p-8 hover:-translate-y-1 hover:-translate-x-1 hover:shadow-draft-hover transition-all opacity-70">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4">
+                        <div>
+                            <span class="text-arch-inkLight font-mono font-bold text-sm tracking-wider uppercase mb-1 block">Q1-Q2 2026 // Fase Completada</span>
+                            <h2 class="text-2xl font-heading font-extrabold text-arch-ink uppercase tracking-wide">Cimientos y Core</h2>
+                        </div>
+                        <div class="inline-flex items-center border-2 border-arch-ink bg-arch-ink text-arch-paper px-3 py-1 font-mono text-xs font-bold">
+                            OBRA ENTREGADA
+                        </div>
+                    </div>
+                    
+                    <p class="text-arch-ink font-medium mb-6">
+                        Desarrollo inicial del motor de orquestación, conexión con APIs de LLM básicas (OpenAI, Anthropic) y operaciones de sistema de archivos.
+                    </p>
+
+                    <ul class="space-y-3 font-mono text-sm text-arch-ink line-through opacity-75">
+                        <li class="flex items-start gap-3">
+                            <span class="font-bold">[x]</span>
+                            <span>CLI Base (<code class="bg-arch-paper px-1">architect init</code>, <code class="bg-arch-paper px-1">architect plan</code>).</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="font-bold">[x]</span>
+                            <span>Sistema de memoria de contexto a corto plazo.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- FASE 1: EN CURSO -->
+            <div class="relative pl-8 md:pl-12 group">
+                <!-- Nodo en la línea -->
+                <div class="absolute -left-[14px] top-2 w-6 h-6 bg-arch-brick border-4 border-arch-ink node-active transition-colors"></div>
+                <!-- Línea conectora horizontal (opcional para estilo) -->
+                <div class="absolute left-0 top-4 w-8 border-t-4 border-arch-ink hidden md:block"></div>
+                
+                <div class="bg-arch-surface border-2 border-arch-ink shadow-draft p-6 md:p-8 hover:-translate-y-1 hover:-translate-x-1 hover:shadow-draft-hover transition-all">
+                    <!-- Cabecera de Tarjeta -->
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4">
+                        <div>
+                            <span class="text-arch-brick font-mono font-bold text-sm tracking-wider uppercase mb-1 block">Q3 2026 // Fase Actual</span>
+                            <h2 class="text-2xl font-heading font-extrabold text-arch-ink uppercase tracking-wide">Estructuras Paralelas</h2>
+                        </div>
+                        <div class="inline-flex items-center border-2 border-arch-ink bg-arch-paper px-3 py-1 font-mono text-xs font-bold text-arch-ink">
+                            <svg class="w-4 h-4 mr-2 text-arch-brick animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                            EN CONSTRUCCIÓN
+                        </div>
+                    </div>
+                    
+                    <p class="text-arch-inkLight font-medium mb-6">
+                        Mejorando el motor principal para soportar múltiples agentes de construcción operando al mismo tiempo y añadiendo soporte nativo para modelos locales.
+                    </p>
+
+                    <!-- Lista técnica (Checklist) -->
+                    <ul class="space-y-3 font-mono text-sm text-arch-ink">
+                        <li class="flex items-start gap-3">
+                            <span class="text-arch-brick mt-0.5 font-bold">[x]</span>
+                            <span>Integración nativa con <strong class="bg-arch-line/50 px-1">Ollama</strong> para inferencia local.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-arch-brick mt-0.5 font-bold">[x]</span>
+                            <span>Caching de contexto AST para reducir llamadas a la API.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-arch-inkLight mt-0.5 font-bold">[-]</span>
+                            <span>Pipeline de ejecución paralela (Múltiples agentes modificando archivos simultáneamente).</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-arch-inkLight mt-0.5 font-bold">[-]</span>
+                            <span>Resolución de conflictos de código (Merge Agents).</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- HITO: LANZAMIENTO V1.0.0 (NUEVO) -->
+            <div class="relative pl-8 md:pl-12 py-2 group">
+                <!-- Nodo tipo rombo para el hito -->
+                <div class="absolute -left-[16px] top-1/2 -translate-y-1/2 w-7 h-7 bg-arch-brick border-4 border-arch-ink transform rotate-45 z-10"></div>
+                <!-- Línea conectora -->
+                <div class="absolute left-0 top-1/2 -translate-y-1/2 w-8 border-t-4 border-arch-ink hidden md:block"></div>
+                
+                <!-- Tarjeta de Hito invertida (Fondo oscuro, sombra roja) -->
+                <div class="bg-arch-ink text-arch-paper border-2 border-arch-ink shadow-[4px_4px_0px_0px_rgba(225,29,72,1)] p-5 md:p-6 flex flex-col md:flex-row md:items-center justify-between gap-6 hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[2px_2px_0px_0px_rgba(225,29,72,1)] transition-all">
+                    <div class="flex items-center gap-4">
+                        <svg class="w-8 h-8 text-arch-brick shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
+                        <div>
+                            <span class="text-arch-line font-mono font-bold text-xs tracking-wider uppercase mb-1 block">Hito Mayor</span>
+                            <h3 class="text-xl md:text-2xl font-heading font-extrabold uppercase tracking-wide text-white">Lanzamiento v1.0.0 Stable</h3>
+                        </div>
+                    </div>
+                    <div class="inline-flex items-center border-2 border-arch-brick bg-arch-brick text-arch-paper px-4 py-2 font-mono text-sm font-bold shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] uppercase">
+                        Candidato Final
+                    </div>
+                </div>
+            </div>
+
+            <!-- FASE 2: PLANIFICADO -->
+            <div class="relative pl-8 md:pl-12 group">
+                <div class="absolute -left-[14px] top-2 w-6 h-6 bg-arch-paper border-4 border-arch-ink group-hover:bg-arch-line transition-colors"></div>
+                <div class="absolute left-0 top-4 w-8 border-t-4 border-arch-ink hidden md:block"></div>
+                
+                <div class="bg-arch-paper border-2 border-arch-ink shadow-draft p-6 md:p-8 hover:-translate-y-1 hover:-translate-x-1 hover:shadow-draft-hover transition-all opacity-90">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4">
+                        <div>
+                            <span class="text-arch-inkLight font-mono font-bold text-sm tracking-wider uppercase mb-1 block">Q4 2026 // Próximamente</span>
+                            <h2 class="text-2xl font-heading font-extrabold text-arch-ink uppercase tracking-wide">Sala de Control</h2>
+                        </div>
+                        <div class="inline-flex items-center border-2 border-arch-ink bg-arch-surface px-3 py-1 font-mono text-xs font-bold text-arch-inkLight">
+                            PLANOS APROBADOS
+                        </div>
+                    </div>
+                    
+                    <p class="text-arch-inkLight font-medium mb-6">
+                        Desarrollo de una interfaz visual de depuración (Dashboard TUI y Web) para monitorizar qué están pensando y haciendo los agentes en tiempo real.
+                    </p>
+
+                    <ul class="space-y-3 font-mono text-sm text-arch-inkLight">
+                        <li class="flex items-start gap-3">
+                            <span class="font-bold">[ ]</span>
+                            <span>Dashboard en Terminal (TUI) con gráficas de rendimiento.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="font-bold">[ ]</span>
+                            <span>Interfaz Web local en el puerto <code class="bg-arch-surface px-1 text-arch-ink">localhost:8080</code>.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="font-bold">[ ]</span>
+                            <span>Sistema de "Pausa e Intervención" manual en medio de un plan.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- FASE 3: PLUGINS (NUEVO) -->
+            <div class="relative pl-8 md:pl-12 group">
+                <div class="absolute -left-[14px] top-2 w-6 h-6 bg-arch-paper border-4 border-arch-ink group-hover:bg-arch-line transition-colors"></div>
+                <div class="absolute left-0 top-4 w-8 border-t-4 border-arch-ink hidden md:block"></div>
+                
+                <div class="bg-arch-paper border-2 border-arch-ink shadow-draft p-6 md:p-8 hover:-translate-y-1 hover:-translate-x-1 hover:shadow-draft-hover transition-all opacity-90">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4">
+                        <div>
+                            <span class="text-arch-inkLight font-mono font-bold text-sm tracking-wider uppercase mb-1 block">Q1 2027 // Planificado</span>
+                            <h2 class="text-2xl font-heading font-extrabold text-arch-ink uppercase tracking-wide">Ecosistema de Plugins</h2>
+                        </div>
+                        <div class="inline-flex items-center border-2 border-arch-ink bg-arch-surface px-3 py-1 font-mono text-xs font-bold text-arch-inkLight">
+                            EN DISEÑO
+                        </div>
+                    </div>
+                    
+                    <p class="text-arch-inkLight font-medium mb-6">
+                        Apertura de la API de agentes para permitir a la comunidad crear herramientas y conectables al Planner de Architect.
+                    </p>
+
+                    <ul class="space-y-3 font-mono text-sm text-arch-inkLight">
+                        <li class="flex items-start gap-3">
+                            <span class="font-bold">[ ]</span>
+                            <span>SDK Oficial para desarrollo de plugins (TypeScript/Python).</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="font-bold">[ ]</span>
+                            <span>Marketplace descentralizado de herramientas comunitarias.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- FASE 4: IDEAS / FUTURO (Anteriormente FASE 3) -->
+            <div class="relative pl-8 md:pl-12 group">
+                <div class="absolute -left-[14px] top-2 w-6 h-6 bg-arch-surface border-4 border-arch-inkLight border-dashed"></div>
+                <div class="absolute left-0 top-4 w-8 border-t-4 border-arch-inkLight border-dashed hidden md:block"></div>
+                
+                <div class="bg-arch-surface/50 border-2 border-arch-inkLight border-dashed p-6 md:p-8 opacity-80">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4">
+                        <div>
+                            <span class="text-arch-inkLight font-mono font-bold text-sm tracking-wider uppercase mb-1 block">2027 // Horizonte</span>
+                            <h2 class="text-2xl font-heading font-extrabold text-arch-inkLight uppercase tracking-wide">Infraestructura Viva</h2>
+                        </div>
+                        <div class="inline-flex items-center border-2 border-arch-inkLight bg-arch-paper px-3 py-1 font-mono text-xs font-bold text-arch-inkLight">
+                            ESTUDIO DE VIABILIDAD
+                        </div>
+                    </div>
+                    
+                    <p class="text-arch-inkLight font-medium mb-6">
+                        Sistemas que se auto-auditan y se reescriben. Los agentes no solo construirán, sino que actuarán como mantenimiento constante del edificio.
+                    </p>
+
+                    <ul class="space-y-3 font-mono text-sm text-arch-inkLight opacity-75">
+                        <li class="flex items-start gap-3">
+                            <span class="font-bold">[?]</span>
+                            <span>Agente "Inspector de Obra" continuo en CI/CD.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="font-bold">[?]</span>
+                            <span>Auto-reparación de dependencias obsoletas y breaking changes.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="font-bold">[?]</span>
+                            <span>Generación dinámica de infraestructura multi-cloud (Terraform).</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+        </div>
+        
+        <!-- Bloque de Call to Action (CLI Terminal Box) -->
+        <div class="mt-20 w-full bg-arch-surface border-2 border-arch-ink shadow-draft p-8 text-center">
+            <h3 class="text-2xl font-heading font-bold text-arch-ink uppercase mb-3">¿Falta algo en los planos?</h3>
+            <p class="text-arch-inkLight font-medium mb-6">La arquitectura es un esfuerzo colaborativo. Propón nuevas herramientas o agentes en nuestro repositorio.</p>
+            
+            <div class="inline-block bg-arch-paper border-2 border-arch-ink px-4 py-3 font-mono text-sm text-arch-ink font-bold text-left relative group w-full sm:w-auto">
+                <span class="text-arch-inkLight select-none mr-2">$</span>architect issue --type feature-request
+                <button class="absolute right-4 top-1/2 -translate-y-1/2 text-arch-inkLight hover:text-arch-brick transition-colors" title="Copiar">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                </button>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-auto border-t-2 border-arch-ink bg-arch-surface py-10 z-10">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between text-sm font-medium text-arch-inkLight">
+            <p>&copy; 2026 Architect Project. <span class="text-arch-ink font-bold">Hecho con precisión.</span></p>
+            <div class="flex space-x-6 mt-4 md:mt-0 font-mono text-xs uppercase font-bold text-arch-ink">
+                <a href="#" class="hover:text-arch-brick transition-colors">v1.2.0</a>
+                <a href="#" class="hover:text-arch-brick transition-colors">Changelog</a>
+                <a href="#" class="hover:text-arch-brick transition-colors">Reportar Grieta</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
