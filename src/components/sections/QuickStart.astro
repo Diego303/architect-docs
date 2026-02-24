@@ -26,8 +26,8 @@ import CodeFigure from '../ui/CodeFigure.astro';
                     <div class="step-number">2</div>
                     <div class="step-content">
                         <h4 class="step-title">Configurar</h4>
-                        <code class="step-cmd">export OPENAI_API_KEY=sk-...</code>
-                        <span class="step-note">O ANTHROPIC_API_KEY, GOOGLE_API_KEY, etc.</span>
+                        <code class="step-cmd">architect init --preset python</code>
+                        <span class="step-note">O --preset node-react, --preset ci, o manual con export OPENAI_API_KEY=sk-...</span>
                     </div>
                 </div>
 
@@ -35,23 +35,28 @@ import CodeFigure from '../ui/CodeFigure.astro';
                     <div class="step-number">3</div>
                     <div class="step-content">
                         <h4 class="step-title">Tu primera tarea</h4>
-                        <code class="step-cmd">architect run "Añade un endpoint GET /health"</code>
+                        <code class="step-cmd">architect run "Añade un endpoint GET /health que devuelva {'{'}status: ok{'}'}"</code>
                     </div>
                 </div>
             </div>
 
             <CodeFigure title="Más ejemplos">
-                <div class="example-line"><span class="ex-comment"># Con un modelo específico</span></div>
-                <div class="example-line"><span class="ex-prompt">$ </span>architect run "Corrige los errores de lint" --model claude-sonnet-4</div>
+                <div class="example-line"><span class="ex-comment"># Preview sin ejecutar (como terraform plan)</span></div>
+                <div class="example-line"><span class="ex-prompt">$ </span>architect run "Refactoriza el módulo auth" --dry-run</div>
                 <div class="example-spacer"></div>
-                <div class="example-line"><span class="ex-comment"># Solo planificar, sin tocar código</span></div>
-                <div class="example-line"><span class="ex-prompt">$ </span>architect run "Analiza cómo refactorizar el módulo auth" --agent plan</div>
+                <div class="example-line"><span class="ex-comment"># Ralph Loop: itera hasta que los tests pasen</span></div>
+                <div class="example-line"><span class="ex-prompt">$ </span>architect loop "Corrige todos los errores de lint" \</div>
+                <div class="example-line">  --check "ruff check src/" --max-iterations 10</div>
                 <div class="example-spacer"></div>
-                <div class="example-line"><span class="ex-comment"># En modo headless para CI</span></div>
-                <div class="example-line"><span class="ex-prompt">$ </span>architect run "Añade tests para auth.py" --confirm-mode yolo --budget 0.30</div>
+                <div class="example-line"><span class="ex-comment"># Parallel: 3 modelos, misma tarea, compara</span></div>
+                <div class="example-line"><span class="ex-prompt">$ </span>architect parallel "Optimiza las queries SQL" \</div>
+                <div class="example-line">  --models gpt-4.1,claude-sonnet-4,deepseek-chat</div>
+                <div class="example-spacer"></div>
+                <div class="example-line"><span class="ex-comment"># En CI/CD con budget y report</span></div>
+                <div class="example-line"><span class="ex-prompt">$ </span>architect run "Revisa este PR" --agent review \</div>
+                <div class="example-line">  --budget 0.15 --report github</div>
                 <div class="example-spacer"></div>
                 <div class="example-line"><span class="ex-comment"># Exit codes semánticos</span></div>
-                <div class="example-line"><span class="ex-prompt">$ </span>echo $?</div>
                 <div class="example-line"><span class="ex-result"># 0 = success, 1 = failed, 2 = partial</span></div>
             </CodeFigure>
         </div>
@@ -89,6 +94,13 @@ import CodeFigure from '../ui/CodeFigure.astro';
         font-weight: 800;
         margin: 0;
         white-space: nowrap;
+    }
+
+    @media (max-width: 640px) {
+        .section-title {
+            white-space: normal;
+            font-size: 1.5rem;
+        }
     }
 
     .section-line {

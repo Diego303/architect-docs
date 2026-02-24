@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hoja de Ruta | Architect</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Outfit', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace'],
+                    },
+                    colors: {
+                        arch: {
+                            paper: '#FDFBF7',    /* Crema claro */
+                            surface: '#FFFFFF',  /* Blanco puro */
+                            ink: '#292524',      /* Grafito oscuro (Stone 800) */
+                            inkLight: '#57534E', /* Grafito medio */
+                            line: '#E7E5DF',     /* Líneas de cuadrícula */
+                            brick: '#C85A32',    /* Terracota / Ladrillo */
+                            brickLight: '#E87D57',
+                            caution: '#FACC15',  /* Amarillo para zona media del medidor */
+                            safe: '#10B981'      /* Verde para zona segura del medidor */
+                        }
+                    },
+                    boxShadow: {
+                        'draft': '6px 6px 0px 0px rgba(41, 37, 36, 1)', 
+                        'draft-hover': '2px 2px 0px 0px rgba(41, 37, 36, 1)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #FDFBF7;
+            background-image: 
+                linear-gradient(#E7E5DF 1px, transparent 1px),
+                linear-gradient(90deg, #E7E5DF 1px, transparent 1px);
+            background-size: 60px 60px;
+            background-position: center center;
+            color: #292524;
+        }
+        .bg-arch-shape {
+            position: absolute;
+            top: -10%; right: -5%;
+            width: 800px; height: 800px;
+            background-color: #F3EFE6;
+            border-radius: 50% 50% 0 0;
+            z-index: -1; opacity: 0.6;
+            border: 1px solid #E7E5DF;
+        }
+        .highlight-brick {
+            position: relative; display: inline-block; color: #C85A32;
+        }
+        .highlight-brick::after {
+            content: ''; position: absolute; bottom: 4px; left: 0;
+            width: 100%; height: 8px;
+            background-color: rgba(200, 90, 50, 0.15);
+            z-index: -1; transform: skewX(-15deg);
+        }
+        
+        /* Animación para la aguja del Medidor de Estrés */
+        @keyframes stabilizeNeedle {
+            0% { transform: rotate(-50deg); } /* Empieza en la zona roja (estrés) */
+            40% { transform: rotate(-20deg); } /* Tiembla un poco hacia el amarillo */
+            60% { transform: rotate(-30deg); }
+            80% { transform: rotate(10deg); }
+            100% { transform: rotate(35deg); } /* Se estabiliza apuntando hacia la verde */
+        }
+        .gauge-needle {
+            transform-origin: 50px 50px;
+            animation: stabilizeNeedle 2.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col font-sans relative overflow-x-hidden">
+    
+    <!-- Decoración de fondo -->
+    <div class="bg-arch-shape hidden lg:block"></div>
+
+    <!-- Navegación -->
+    <nav class="border-b-2 border-arch-ink bg-arch-paper/90 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <a href="#" class="flex items-center gap-3 group">
+                    <svg class="w-8 h-8 text-arch-brick group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2.5" d="M12 3L3 21h18L12 3zm0 7l4 9H8l4-9z"></path></svg>
+                    <span class="text-2xl font-heading font-extrabold tracking-tight text-arch-ink uppercase">Architect</span>
+                </a>
+                <span class="bg-arch-ink text-arch-paper text-xs font-mono px-2 py-0.5 rounded-sm ml-2 hidden sm:inline-block">v1.2.0</span>
+            </div>
+            
+            <div class="hidden md:flex items-center space-x-8 text-sm font-semibold font-heading uppercase tracking-wide text-arch-inkLight">
+                <a href="#" class="hover:text-arch-brick transition-colors">Inicio</a>
+                <a href="#" class="hover:text-arch-brick transition-colors">Docs</a>
+                <a href="#" class="text-arch-brick border-b-2 border-arch-brick pb-1">Roadmap</a>
+                <a href="#" class="hover:text-arch-ink transition-colors flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="w-full max-w-4xl mx-auto px-6 pt-20 pb-10 text-center relative z-10">
+        <div class="inline-flex items-center justify-center space-x-2 mb-6 border-2 border-arch-ink bg-arch-surface px-4 py-1 text-sm font-mono font-bold text-arch-brick shadow-[2px_2px_0px_0px_rgba(41,37,36,1)]">
+            <svg class="w-4 h-4 text-arch-brick" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+            <span>MANTENIMIENTO DEL CORE</span>
+        </div>
+        <h1 class="text-5xl md:text-7xl font-heading font-extrabold tracking-tight mb-6 text-arch-ink uppercase">
+            Planos de <span class="highlight-brick">Estabilización</span>
+        </h1>
+        <p class="text-lg md:text-xl text-arch-inkLight max-w-2xl mx-auto font-medium">
+            Historial y progreso de las optimizaciones, pruebas de carga y refactorizaciones críticas en Architect.
+        </p>
+    </header>
+
+    <main class="flex-grow w-full max-w-4xl mx-auto px-6 pb-24 relative z-10">
+        
+        <!-- Línea vertical principal -->
+        <div class="relative border-l-4 border-arch-ink ml-4 md:ml-8 space-y-20 py-8">
+            
+            <!-- ELEMENTO 1: HITO BASE (SIN COMPLETAR) -->
+            <div class="relative pl-8 md:pl-12 py-2 group">
+                <!-- Rombo del hito (activo/rojo) -->
+                <div class="absolute -left-[16px] top-1/2 -translate-y-1/2 w-7 h-7 bg-arch-brick border-4 border-arch-ink transform rotate-45 z-10"></div>
+                <div class="absolute left-0 top-1/2 -translate-y-1/2 w-8 border-t-4 border-arch-ink hidden md:block"></div>
+                
+                <div class="relative bg-arch-ink text-arch-paper border-2 border-arch-ink shadow-[4px_4px_0px_0px_rgba(225,29,72,1)] p-5 md:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6 hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[2px_2px_0px_0px_rgba(225,29,72,1)] transition-all">
+                    
+                    <div class="flex items-center gap-4 z-10">
+                        <svg class="w-10 h-10 text-arch-brick shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
+                        <div>
+                            <span class="text-arch-line font-mono font-bold text-xs tracking-widest uppercase mb-1 block">Hito Planificado</span>
+                            <h3 class="text-2xl md:text-3xl font-heading font-extrabold uppercase tracking-wide text-white">Lanzamiento v1.0.0 Stable</h3>
+                        </div>
+                    </div>
+                    <div class="inline-flex items-center border-2 border-arch-brick bg-arch-brick text-arch-paper px-4 py-2 font-mono text-sm font-bold shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] uppercase">
+                        Candidato Final
+                    </div>
+                </div>
+                <!-- Explicación fuera de la caja con borde rojo indicando actividad -->
+                <p class="mt-4 text-sm font-medium text-arch-inkLight max-w-2xl border-l-2 border-arch-brick pl-4 ml-1">
+                    Congelación final de código. Todas las validaciones de seguridad deben estar verificadas antes del despliegue oficial a producción.
+                </p>
+            </div>
+
+            <!-- ELEMENTO 2: HITO COMPLETADO (CON TICK GIGANTE) -->
+            <div class="relative pl-8 md:pl-12 py-2 group">
+                <!-- Rombo del hito (apagado/gris) -->
+                <div class="absolute -left-[16px] top-1/2 -translate-y-1/2 w-7 h-7 bg-arch-inkLight border-4 border-arch-ink transform rotate-45 z-10"></div>
+                <div class="absolute left-0 top-1/2 -translate-y-1/2 w-8 border-t-4 border-arch-ink hidden md:block"></div>
+                
+                <div class="relative bg-arch-ink text-arch-surface border-2 border-arch-ink shadow-[4px_4px_0px_0px_rgba(87,83,78,1)] p-5 md:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6 hover:-translate-y-1 hover:-translate-x-1 transition-transform overflow-hidden">
+                    
+                    <!-- Checkmark gigante dibujado a mano saliéndose de la caja -->
+                    <svg class="absolute -right-4 md:-right-6 -top-8 md:-top-10 w-28 md:w-32 h-28 md:h-32 text-arch-brick opacity-90 drop-shadow-md transform rotate-12 pointer-events-none z-20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+                    </svg>
+
+                    <div class="flex items-center gap-4 opacity-70 z-10">
+                        <svg class="w-10 h-10 text-arch-line shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                        <div>
+                            <span class="text-arch-line font-mono font-bold text-xs tracking-widest uppercase mb-1 block">Auditoría Superada</span>
+                            <h3 class="text-2xl md:text-3xl font-heading font-extrabold uppercase tracking-wide text-white">Refactorización Core</h3>
+                        </div>
+                    </div>
+                </div>
+                <!-- Explicación fuera de la caja en gris indicando que ya está superado -->
+                <p class="mt-4 text-sm font-medium text-arch-inkLight max-w-2xl border-l-2 border-arch-inkLight pl-4 ml-1">
+                    Migración completa a TypeScript estricto. Se eliminaron dependencias circulares que afectaban al rendimiento del CLI en la orquestación de agentes.
+                </p>
+            </div>
+
+            <!-- ELEMENTO 3: EL MEDIDOR DE ESTRÉS -->
+            <div class="relative pl-8 md:pl-12 group">
+                <!-- Nodo cuadrado clásico -->
+                <div class="absolute -left-[14px] top-4 w-6 h-6 bg-arch-surface border-4 border-arch-ink transition-colors group-hover:bg-arch-line"></div>
+                <div class="absolute left-0 top-6 w-8 border-t-4 border-arch-ink hidden md:block"></div>
+                
+                <div class="bg-arch-surface border-2 border-arch-ink shadow-draft hover:-translate-y-1 hover:-translate-x-1 hover:shadow-draft-hover transition-all flex flex-col md:flex-row overflow-hidden relative">
+                    
+                    <!-- Información Izquierda -->
+                    <div class="p-6 md:p-8 flex-grow z-10 bg-arch-surface">
+                        <span class="text-arch-inkLight font-mono font-bold text-xs tracking-widest uppercase mb-2 block border-b-2 border-arch-ink/10 pb-2">EL MEDIDOR DE ESTRÉS</span>
+                        <h2 class="text-2xl font-heading font-extrabold text-arch-ink uppercase tracking-wide mb-3">Optimización de Memoria</h2>
+                        <p class="text-arch-inkLight text-base font-medium">
+                            Rediseño de la gestión de AST para grandes repositorios. Supresión de <em>Out of Memory errors</em> durante el análisis estático.
+                        </p>
+                        <div class="mt-6 inline-flex items-center bg-arch-paper border-2 border-arch-ink px-3 py-1 font-mono text-xs font-bold text-arch-ink shadow-[2px_2px_0px_0px_rgba(41,37,36,1)]">
+                            <span class="w-2 h-2 bg-arch-caution rounded-full animate-pulse mr-2"></span>
+                            MONITORIZANDO
+                        </div>
+                    </div>
+                    
+                    <!-- Componente del Medidor Visual Derecha -->
+                    <div class="w-full md:w-64 bg-arch-paper border-t-2 md:border-t-0 md:border-l-2 border-arch-ink p-6 flex flex-col items-center justify-center shrink-0 relative overflow-hidden" style="background-image: linear-gradient(#E7E5DF 1px, transparent 1px), linear-gradient(90deg, #E7E5DF 1px, transparent 1px); background-size: 10px 10px;">
+                        
+                        <!-- Caja de Medidor Analógico -->
+                        <div class="bg-arch-surface border-2 border-arch-ink w-full aspect-[2/1] relative rounded-t-full p-2 pb-0 shadow-inner flex items-end justify-center">
+                            
+                            <!-- SVG del Gauge (Velocímetro sin rayas) -->
+                            <svg viewBox="0 0 100 50" class="w-full h-full drop-shadow-md">
+                                <!-- Zona Roja (Alto Estrés) -->
+                                <path d="M 10 50 A 40 40 0 0 1 30 15.35" fill="none" stroke="#C85A32" stroke-width="12" stroke-linecap="butt" />
+                                <!-- Zona Amarilla (Estrés Medio) -->
+                                <path d="M 30 15.35 A 40 40 0 0 1 70 15.35" fill="none" stroke="#FACC15" stroke-width="12" stroke-linecap="butt" />
+                                <!-- Zona Verde (Seguro / Estable) -->
+                                <path d="M 70 15.35 A 40 40 0 0 1 90 50" fill="none" stroke="#10B981" stroke-width="12" stroke-linecap="butt" />
+
+                                <!-- Aguja que se anima -->
+                                <g class="gauge-needle">
+                                    <polygon points="47,50 53,50 50,8" fill="#292524" />
+                                </g>
+                                
+                                <!-- Eje central negro -->
+                                <circle cx="50" cy="50" r="7" fill="#292524" />
+                                <circle cx="50" cy="50" r="3" fill="#FFFFFF" />
+                            </svg>
+
+                            <!-- Borde inferior para cerrar el medidor -->
+                            <div class="absolute bottom-0 left-0 w-full h-1 bg-arch-ink"></div>
+                        </div>
+
+                        <!-- Etiqueta de la máquina abajo -->
+                        <div class="mt-4 bg-arch-ink text-arch-paper px-3 py-1 font-mono text-[10px] font-bold tracking-widest text-center border-2 border-arch-ink">
+                            CARGA DE RAM
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-auto border-t-2 border-arch-ink bg-arch-surface py-10 z-10">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between text-sm font-medium text-arch-inkLight">
+            <p>&copy; 2026 Architect Project. <span class="text-arch-ink font-bold">Hecho con precisión.</span></p>
+            <div class="flex space-x-6 mt-4 md:mt-0 font-mono text-xs uppercase font-bold text-arch-ink">
+                <a href="#" class="hover:text-arch-brick transition-colors">v1.2.0</a>
+                <a href="#" class="hover:text-arch-brick transition-colors">Changelog</a>
+                <a href="#" class="hover:text-arch-brick transition-colors">Reportar Grieta</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

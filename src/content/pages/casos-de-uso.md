@@ -1517,6 +1517,93 @@ architect run "implementa feature X" \
 
 ---
 
+## Evaluación, Health, Presets y Sub-Agentes
+
+### Selección de modelo por tipo de tarea
+
+Usa `architect eval` para determinar qué modelo es mejor para tu tipo de tarea:
+
+```bash
+# ¿Qué modelo es mejor para refactoring en tu codebase?
+architect eval "refactoriza el módulo de auth usando dataclasses" \
+  --models gpt-4o,claude-sonnet-4-6,deepseek-chat \
+  --check "pytest tests/test_auth.py -q" \
+  --check "ruff check src/auth/" \
+  --budget-per-model 1.0 \
+  --report-file eval_refactoring.md
+
+# Compara resultados y elige el modelo que mejor rinda
+```
+
+### Monitoreo de calidad del código
+
+Añade `--health` para medir el impacto de los cambios en la calidad:
+
+```bash
+# Refactorizar con medición de impacto
+architect run "reduce la complejidad ciclomática de utils.py" \
+  --health --mode yolo
+
+# → Al finalizar:
+# | Métrica            | Antes | Después | Delta |
+# | Complejidad promedio | 8.2   | 4.1     | -4.1  |
+# | Funciones largas   | 5     | 1       | -4    |
+```
+
+### Onboarding de equipos con presets
+
+```bash
+# Nuevo desarrollador se une al proyecto
+architect init --preset python
+# → .architect.md con convenciones del equipo
+# → config.yaml con hooks de lint y quality gates
+
+# Para proyectos con datos sensibles
+architect init --preset paranoid
+# → confirm-all, guardrails estrictos, code rules de seguridad
+```
+
+### Delegación de investigación a sub-agentes
+
+El agente `build` puede delegar búsquedas y verificaciones a sub-agentes sin contaminar su contexto:
+
+```bash
+# En una tarea compleja, el agente principal puede:
+# 1. Delegar exploración a un sub-agente "explore"
+# 2. Implementar basándose en los resultados
+# 3. Delegar verificación a un sub-agente "test"
+# Todo esto ocurre automáticamente via dispatch_subagent
+
+architect run "implementa una API REST para gestión de usuarios, \
+  investigando primero los patrones existentes en el proyecto" \
+  --mode yolo --budget 5.0
+```
+
+### Observabilidad con OpenTelemetry
+
+Para equipos que quieren monitorear el uso del agente:
+
+```yaml
+# config.yaml
+telemetry:
+  enabled: true
+  exporter: otlp
+  endpoint: http://jaeger:4317
+```
+
+```bash
+# Cada ejecución genera trazas con:
+# - Duración total de la sesión
+# - Tokens consumidos por llamada LLM
+# - Coste acumulado
+# - Tools ejecutadas con duración
+
+architect run "implementa feature X" -c config.yaml --mode yolo
+# → Traces visibles en Jaeger/Grafana
+```
+
+---
+
 ## Costes de referencia
 
 Estimaciones basadas en uso real con modelos comunes. Los costes dependen del modelo, la complejidad de la tarea y el número de iteraciones.

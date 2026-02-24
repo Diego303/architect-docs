@@ -1,15 +1,17 @@
 ---
 const badges = [
     "Multi-modelo",
-    "Loop inteligente",
-    "Verificación auto",
-    "MCP nativo",
-    "Headless-first",
-    "Human logs",
-    "Cost tracking",
-    "Agentes custom",
-    "Self-eval",
-    "Prompt caching",
+    "Ralph Loop",
+    "Parallel runs",
+    "Guardrails",
+    "Pipelines YAML",
+    "Hooks",
+    "CI/CD-first",
+    "Memoria auto",
+    "OpenTelemetry",
+    "Reports",
+    "Dry run",
+    "Skills Vercel",
 ];
 ---
 
@@ -23,16 +25,15 @@ const badges = [
         <div class="elevator-grid">
             <div class="elevator-text">
                 <p class="elevator-lead">
-                    Una herramienta CLI que orquesta agentes de IA para leer, analizar, y modificar código
-                    automáticamente. Dale una tarea en lenguaje natural, y architect planifica los cambios,
-                    los implementa, ejecuta lint y tests para verificarlos, y te devuelve un resultado limpio
-                    — <strong>todo sin intervención humana.</strong>
+                    Una herramienta de línea de comandos que convierte cualquier LLM en un agente de código
+                    autónomo. Dale una tarea, y architect lee tu código, planifica los cambios, los implementa,
+                    ejecuta tests, y verifica el resultado — <strong>todo sin intervención humana.</strong>
                 </p>
                 <p class="elevator-body">
-                    A diferencia de los asistentes que viven dentro de un editor, architect está diseñada para
-                    ejecutarse donde el código realmente se construye: en terminales, Makefiles, y pipelines
-                    de CI/CD. Es la pieza que falta entre <em>"tengo una IA que sugiere código"</em> y
-                    <em>"tengo una IA que entrega código verificado"</em>.
+                    A diferencia de los asistentes de código que viven dentro de un IDE, architect está diseñada
+                    para ejecutarse donde el código realmente se construye: en terminales, scripts, Makefiles,
+                    y pipelines de CI/CD. Es la pieza que falta entre <em>"tengo una IA que genera código"</em>
+                    y <em>"tengo una IA que entrega código verificado"</em>.
                 </p>
                 <p class="elevator-body">
                     Funciona con cualquier LLM: OpenAI, Anthropic, Google, DeepSeek, Mistral, modelos locales
@@ -51,8 +52,8 @@ const badges = [
                 <div class="value-item">
                     <div class="value-marker"></div>
                     <div>
-                        <h4 class="value-title">Se verifica a sí mismo</h4>
-                        <p class="value-desc">Post-edit hooks, self-evaluation, errores como feedback. Tres capas para entregar código que funciona.</p>
+                        <h4 class="value-title">Determinismo sobre probabilismo</h4>
+                        <p class="value-desc">Los hooks y guardrails son reglas, no sugerencias. El LLM decide qué hacer, los quality gates verifican que el resultado es correcto.</p>
                     </div>
                 </div>
                 <div class="value-item">
@@ -101,6 +102,13 @@ const badges = [
         font-weight: 800;
         margin: 0;
         white-space: nowrap;
+    }
+
+    @media (max-width: 640px) {
+        .section-title {
+            white-space: normal;
+            font-size: 1.5rem;
+        }
     }
 
     .section-line {

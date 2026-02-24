@@ -159,20 +159,22 @@
                     </div>
                 </div>
 
-                <!-- FASE D: EN CONSTRUCCIÓN -->
+                <!-- FASE D: COMPLETADA -->
                 <div class="timeline-item" id="fase-d">
-                    <div class="timeline-node node-active"></div>
+                    <div class="timeline-node node-completed"></div>
                     <div class="timeline-connector"></div>
 
-                    <div class="timeline-card card-active">
+                    <div class="timeline-card card-completed">
                         <div class="card-header">
                             <div>
                                 <span class="card-phase">Fase D</span>
                                 <h2 class="card-title">Extras y Especialización</h2>
                             </div>
-                            <div class="status-badge badge-active">
-                                <span class="spinner"></span>
-                                EN CONSTRUCCIÓN
+                            <div class="status-badge badge-completed">
+                                <svg class="badge-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                COMPLETADA
                             </div>
                         </div>
 
@@ -182,48 +184,100 @@
                         </p>
 
                         <ul class="checklist">
-                            <li class="check-item check-pending">
-                                <span class="check-mark">[ ]</span>
+                            <li class="check-item check-done">
+                                <span class="check-mark">[x]</span>
                                 <span><strong>Sub-Agentes / Dispatch</strong> — Delegar sub-tareas a agentes con contexto independiente que retornan un resumen.</span>
                             </li>
-                            <li class="check-item check-pending">
-                                <span class="check-mark">[ ]</span>
+                            <li class="check-item check-done">
+                                <span class="check-mark">[x]</span>
                                 <span><strong>Code Health Delta</strong> — Métricas de salud antes/después con radon, eslint. Diff de complejidad en el reporte.</span>
                             </li>
-                            <li class="check-item check-pending">
-                                <span class="check-mark">[ ]</span>
+                            <li class="check-item check-done">
+                                <span class="check-mark">[x]</span>
                                 <span><strong>Competitive Eval</strong> — Misma tarea con diferentes modelos + reporte comparativo de calidad, coste y velocidad.</span>
                             </li>
-                            <li class="check-item check-pending">
-                                <span class="check-mark">[ ]</span>
+                            <li class="check-item check-done">
+                                <span class="check-mark">[x]</span>
                                 <span><strong>OpenTelemetry Traces</strong> — Spans para sesiones, LLM calls, tools y hooks. Exporta a Jaeger, Grafana Tempo, etc.</span>
                             </li>
-                            <li class="check-item check-pending">
-                                <span class="check-mark">[ ]</span>
+                            <li class="check-item check-done">
+                                <span class="check-mark">[x]</span>
                                 <span><strong>Preset Configs</strong> — Templates predefinidos: <code>python</code>, <code>node-react</code>, <code>ci</code>, <code>paranoid</code>.</span>
                             </li>
                         </ul>
                     </div>
                 </div>
 
-                <!-- HITO MAYOR: v1.0.0 -->
+                <!-- HITO MAYOR: v1.0.0 — CONSEGUIDO -->
                 <div class="timeline-item timeline-milestone" id="hito-v1">
-                    <div class="timeline-node node-milestone"></div>
+                    <div class="timeline-node node-milestone node-milestone-done"></div>
                     <div class="timeline-connector"></div>
 
-                    <div class="milestone-card">
+                    <div class="milestone-card milestone-card-done">
+                        <!-- Tick gigante saliéndose de la caja -->
+                        <svg class="milestone-checkmark" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+                        </svg>
+
                         <div class="milestone-content">
-                            <div class="milestone-info">
+                            <div class="milestone-info milestone-info-done">
                                 <svg class="milestone-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path>
                                 </svg>
                                 <div>
-                                    <span class="milestone-label">Hito Mayor</span>
+                                    <span class="milestone-label">Hito Conseguido</span>
                                     <h3 class="milestone-title">Lanzamiento v1.0.0 Stable</h3>
                                 </div>
                             </div>
-                            <div class="milestone-badge">
-                                Candidato Final
+                            <div class="milestone-badge milestone-badge-done">
+                                Release Oficial
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ESTABILIZACIÓN: MEDIDOR DE COBERTURA -->
+                <div class="timeline-item" id="estabilizacion">
+                    <div class="timeline-node node-active"></div>
+                    <div class="timeline-connector"></div>
+
+                    <div class="stabilization-card">
+                        <!-- Panel izquierdo: Info -->
+                        <div class="stabilization-info">
+                            <span class="stabilization-label">Fase de Estabilización</span>
+                            <h2 class="stabilization-title">Pruebas Exhaustivas & Hardening</h2>
+                            <p class="stabilization-description">
+                                Batería de pruebas de integración, stress tests y corrección de edge cases post-release.
+                                Estabilización del core antes de nuevas features.
+                            </p>
+                            <div class="stabilization-badge">
+                                <span class="stabilization-pulse"></span>
+                                MONITORIZANDO
+                            </div>
+                        </div>
+
+                        <!-- Panel derecho: Medidor analógico -->
+                        <div class="stabilization-gauge">
+                            <div class="gauge-container">
+                                <svg viewBox="0 0 100 50" class="gauge-svg">
+                                    <!-- Zona Roja (Inestable) -->
+                                    <path d="M 10 50 A 40 40 0 0 1 30 15.35" fill="none" stroke="var(--arch-brick)" stroke-width="12" stroke-linecap="butt" />
+                                    <!-- Zona Amarilla (En pruebas) -->
+                                    <path d="M 30 15.35 A 40 40 0 0 1 70 15.35" fill="none" stroke="#FACC15" stroke-width="12" stroke-linecap="butt" />
+                                    <!-- Zona Verde (Estable) -->
+                                    <path d="M 70 15.35 A 40 40 0 0 1 90 50" fill="none" stroke="#10B981" stroke-width="12" stroke-linecap="butt" />
+                                    <!-- Aguja animada -->
+                                    <g class="gauge-needle">
+                                        <polygon points="47,50 53,50 50,8" fill="var(--arch-ink)" />
+                                    </g>
+                                    <!-- Eje central -->
+                                    <circle cx="50" cy="50" r="7" fill="var(--arch-ink)" />
+                                    <circle cx="50" cy="50" r="3" fill="var(--arch-surface)" />
+                                </svg>
+                                <div class="gauge-baseline"></div>
+                            </div>
+                            <div class="gauge-label">
+                                Cobertura de Tests
                             </div>
                         </div>
                     </div>
@@ -465,7 +519,7 @@
                         </li>
                         <li>
                             <a href="#fase-d" class="toc-item" data-slug="fase-d">
-                                <span class="toc-dot toc-dot-active"></span>
+                                <span class="toc-dot toc-dot-completed"></span>
                                 Fase D — Especialización
                             </a>
                         </li>
@@ -473,6 +527,12 @@
                             <a href="#hito-v1" class="toc-item" data-slug="hito-v1">
                                 <span class="toc-dot toc-dot-milestone"></span>
                                 Hito — v1.0.0
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#estabilizacion" class="toc-item" data-slug="estabilizacion">
+                                <span class="toc-dot toc-dot-active"></span>
+                                Estabilización
                             </a>
                         </li>
                         <li>
@@ -1259,5 +1319,231 @@
         box-shadow: 2px 2px 0px 0px rgba(41, 37, 36, 1);
         white-space: nowrap;
         flex-shrink: 0;
+    }
+
+    /* ============================================
+       MILESTONE — DONE STATE
+       ============================================ */
+    .node-milestone-done {
+        background-color: var(--arch-ink-light);
+    }
+
+    .milestone-card-done {
+        position: relative;
+        overflow: hidden;
+        box-shadow: 4px 4px 0px 0px var(--arch-ink-light);
+    }
+
+    .milestone-card-done:hover {
+        box-shadow: 2px 2px 0px 0px var(--arch-ink-light);
+    }
+
+    .milestone-checkmark {
+        position: absolute;
+        right: -0.75rem;
+        top: -1.5rem;
+        width: 7rem;
+        height: 7rem;
+        color: var(--arch-brick);
+        opacity: 0.9;
+        transform: rotate(12deg);
+        pointer-events: none;
+        z-index: 20;
+        filter: drop-shadow(2px 2px 0px rgba(41, 37, 36, 0.3));
+    }
+
+    @media (min-width: 768px) {
+        .milestone-checkmark {
+            right: -1rem;
+            top: -2rem;
+            width: 8rem;
+            height: 8rem;
+        }
+    }
+
+    .milestone-info-done {
+        opacity: 0.7;
+    }
+
+    .milestone-badge-done {
+        background-color: var(--arch-ink-light);
+        border-color: var(--arch-ink-light);
+    }
+
+    /* ============================================
+       STABILIZATION CARD (GAUGE)
+       ============================================ */
+    .stabilization-card {
+        display: flex;
+        flex-direction: column;
+        border: 2px solid var(--arch-ink);
+        box-shadow: var(--shadow-draft);
+        background-color: var(--arch-surface);
+        overflow: hidden;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .stabilization-card:hover {
+        transform: translate(-2px, -2px);
+        box-shadow: 8px 8px 0px 0px rgba(41, 37, 36, 1);
+    }
+
+    @media (min-width: 768px) {
+        .stabilization-card {
+            flex-direction: row;
+        }
+    }
+
+    .stabilization-info {
+        flex: 1;
+        padding: 1.5rem;
+        background-color: var(--arch-surface);
+    }
+
+    @media (min-width: 768px) {
+        .stabilization-info {
+            padding: 2rem;
+        }
+    }
+
+    .stabilization-label {
+        display: block;
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--arch-ink-light);
+        margin-bottom: 0.5rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid rgba(41, 37, 36, 0.1);
+    }
+
+    .stabilization-title {
+        font-family: var(--font-heading);
+        font-size: 1.375rem;
+        font-weight: 800;
+        color: var(--arch-ink);
+        text-transform: uppercase;
+        letter-spacing: 0.02em;
+        margin: 0 0 0.75rem 0;
+        line-height: 1.2;
+    }
+
+    .stabilization-description {
+        font-family: var(--font-body);
+        font-size: 0.9375rem;
+        color: var(--arch-ink-light);
+        line-height: 1.6;
+        margin: 0 0 1.5rem 0;
+    }
+
+    .stabilization-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        border: 2px solid var(--arch-ink);
+        background-color: var(--arch-paper);
+        padding: 0.25rem 0.75rem;
+        font-family: var(--font-mono);
+        font-size: 0.6875rem;
+        font-weight: 700;
+        color: var(--arch-ink);
+        text-transform: uppercase;
+        box-shadow: 2px 2px 0px 0px rgba(41, 37, 36, 1);
+    }
+
+    .stabilization-pulse {
+        width: 0.5rem;
+        height: 0.5rem;
+        background-color: #FACC15;
+        border-radius: 50%;
+        animation: pulse-dot 2s infinite;
+    }
+
+    @keyframes pulse-dot {
+        0% { opacity: 1; }
+        50% { opacity: 0.3; }
+        100% { opacity: 1; }
+    }
+
+    /* Gauge panel */
+    .stabilization-gauge {
+        width: 100%;
+        border-top: 2px solid var(--arch-ink);
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--arch-paper);
+        background-image:
+            linear-gradient(var(--arch-line) 1px, transparent 1px),
+            linear-gradient(90deg, var(--arch-line) 1px, transparent 1px);
+        background-size: 10px 10px;
+    }
+
+    @media (min-width: 768px) {
+        .stabilization-gauge {
+            width: 16rem;
+            min-width: 16rem;
+            border-top: none;
+            border-left: 2px solid var(--arch-ink);
+        }
+    }
+
+    .gauge-container {
+        position: relative;
+        width: 100%;
+        max-width: 12rem;
+        background-color: var(--arch-surface);
+        border: 2px solid var(--arch-ink);
+        border-radius: 999px 999px 0 0;
+        padding: 0.5rem 0.5rem 0;
+        box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .gauge-svg {
+        width: 100%;
+        height: auto;
+        display: block;
+        filter: drop-shadow(1px 1px 0px rgba(41, 37, 36, 0.1));
+    }
+
+    .gauge-baseline {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background-color: var(--arch-ink);
+    }
+
+    /* Needle animation */
+    @keyframes stabilize-needle {
+        0% { transform: rotate(-50deg); }
+        40% { transform: rotate(-20deg); }
+        60% { transform: rotate(-30deg); }
+        80% { transform: rotate(10deg); }
+        100% { transform: rotate(35deg); }
+    }
+
+    .gauge-needle {
+        transform-origin: 50px 50px;
+        animation: stabilize-needle 2.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    }
+
+    .gauge-label {
+        margin-top: 1rem;
+        background-color: var(--arch-ink);
+        color: var(--arch-paper);
+        padding: 0.25rem 0.75rem;
+        font-family: var(--font-mono);
+        font-size: 0.625rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        text-align: center;
+        border: 2px solid var(--arch-ink);
     }
 </style>
