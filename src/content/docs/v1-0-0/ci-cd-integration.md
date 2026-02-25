@@ -11,22 +11,6 @@ Guía completa para integrar `architect` en pipelines de CI/CD: GitHub Actions, 
 
 ---
 
-## Índice
-
-- [Por qué architect en CI/CD](#por-qué-architect-en-cicd)
-- [Principios de ejecución headless](#principios-de-ejecución-headless)
-- [GitHub Actions](#github-actions)
-- [GitLab CI](#gitlab-ci)
-- [Bitbucket Pipelines](#bitbucket-pipelines)
-- [Jenkins](#jenkins)
-- [Patrones avanzados](#patrones-avanzados)
-- [Parsing de salida JSON](#parsing-de-salida-json)
-- [Gestión de secrets](#gestión-de-secrets)
-- [Control de costes en CI](#control-de-costes-en-ci)
-- [Checklist de integración](#checklist-de-integración)
-
----
-
 ## Por qué architect en CI/CD
 
 Architect puede actuar como un agente autónomo dentro de pipelines de CI/CD para:
@@ -137,7 +121,7 @@ jobs:
           python-version: "3.12"
 
       - name: Install architect
-        run: pip install architect-cli
+        run: pip install architect-ai-cli
 
       - name: Run review agent
         env:
@@ -196,7 +180,7 @@ jobs:
 
       - name: Install architect and project deps
         run: |
-          pip install architect-cli
+          pip install architect-ai-cli
           pip install -e .[dev]
 
       - name: Run auto-fix agent
@@ -262,7 +246,7 @@ jobs:
 
       - name: Install architect and project deps
         run: |
-          pip install architect-cli
+          pip install architect-ai-cli
           pip install -e .[dev]
 
       - name: Create feature branch
@@ -369,7 +353,7 @@ jobs:
 
       - name: Install architect and project deps
         run: |
-          pip install architect-cli
+          pip install architect-ai-cli
           pip install -e .[dev]
 
       - name: Run Ralph Loop
@@ -431,7 +415,7 @@ jobs:
           restore-keys: ${{ runner.os }}-pip-
 
       - name: Install architect
-        run: pip install architect-cli
+        run: pip install architect-ai-cli
 
       - name: Run review
         id: review
@@ -515,7 +499,7 @@ architect-review:
   image: python:3.12-slim
   before_script:
     - apt-get update && apt-get install -y --no-install-recommends git
-    - pip install architect-cli
+    - pip install architect-ai-cli
   script:
     - |
       architect run \
@@ -545,7 +529,7 @@ architect-build:
   image: python:3.12-slim
   before_script:
     - apt-get update && apt-get install -y --no-install-recommends git
-    - pip install architect-cli
+    - pip install architect-ai-cli
     - pip install -e .[dev]
   script:
     - |
@@ -615,7 +599,7 @@ architect-ralph:
   image: python:3.12-slim
   before_script:
     - apt-get update && apt-get install -y --no-install-recommends git
-    - pip install architect-cli
+    - pip install architect-ai-cli
     - pip install -e .[dev]
   script:
     - |
@@ -656,7 +640,7 @@ definitions:
         name: Setup
         script:
           - apt-get update && apt-get install -y --no-install-recommends git jq
-          - pip install architect-cli
+          - pip install architect-ai-cli
 
 pipelines:
   pull-requests:
@@ -667,7 +651,7 @@ pipelines:
             - pip
           script:
             - apt-get update && apt-get install -y --no-install-recommends git jq
-            - pip install architect-cli
+            - pip install architect-ai-cli
             - |
               architect run \
                 "Revisa los cambios de este PR. Busca bugs, vulnerabilidades, \
@@ -695,7 +679,7 @@ pipelines:
             - pip
           script:
             - apt-get update && apt-get install -y --no-install-recommends git jq
-            - pip install architect-cli
+            - pip install architect-ai-cli
             - pip install -e .[dev] || true
             - |
               architect run \
@@ -730,7 +714,7 @@ Bitbucket no tiene un CLI nativo como `gh`, pero puedes publicar comentarios en 
     name: Review and Comment
     script:
       - apt-get update && apt-get install -y --no-install-recommends git jq curl
-      - pip install architect-cli
+      - pip install architect-ai-cli
       - |
         architect run \
           "Revisa los cambios de este PR." \
@@ -793,7 +777,7 @@ pipelines:
             - pip
           script:
             - apt-get update && apt-get install -y --no-install-recommends git
-            - pip install architect-cli
+            - pip install architect-ai-cli
             - pip install -e .[dev] || true
             - |
               architect loop "${TASK}" \
@@ -827,7 +811,7 @@ pipelines:
           max-time: 20
           script:
             - apt-get update && apt-get install -y --no-install-recommends git jq
-            - pip install architect-cli
+            - pip install architect-ai-cli
             - pip install -e .[dev] || true
             - |
               BRANCH="architect/issue-${ISSUE_ID}"
@@ -914,7 +898,7 @@ pipeline {
             steps {
                 sh '''
                     apt-get update && apt-get install -y --no-install-recommends git jq
-                    pip install architect-cli
+                    pip install architect-ai-cli
                     pip install -e .[dev] || true
                 '''
             }
@@ -1570,7 +1554,7 @@ Guía paso a paso para configurar architect en un pipeline de CI nuevo.
 
 ### 3. Instalar architect
 
-- [ ] Añadir paso de instalación: `pip install architect-cli`
+- [ ] Añadir paso de instalación: `pip install architect-ai-cli`
 - [ ] (Opcional) Instalar dependencias del proyecto: `pip install -e .[dev]`
 - [ ] Verificar instalación: `architect --version`
 
@@ -1613,7 +1597,7 @@ Guía paso a paso para configurar architect en un pipeline de CI nuevo.
 - [ ] Revisar costes semanalmente
 - [ ] Configurar alertas si el gasto supera un umbral
 - [ ] Revisar logs de ejecuciones fallidas (exit code 1 o 5)
-- [ ] Actualizar architect periódicamente: `pip install --upgrade architect-cli`
+- [ ] Actualizar architect periódicamente: `pip install --upgrade architect-ai-cli`
 
 ---
 

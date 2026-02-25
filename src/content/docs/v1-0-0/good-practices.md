@@ -11,35 +11,6 @@ Guía de buenas prácticas para sacar el máximo partido a `architect`, evitar e
 
 ---
 
-## Índice
-
-- [Escribir buenos prompts](#escribir-buenos-prompts)
-- [Elegir el agente correcto](#elegir-el-agente-correcto)
-- [Edición de archivos](#edición-de-archivos)
-- [Ejecución de comandos](#ejecución-de-comandos)
-- [Gestión del contexto](#gestión-del-contexto)
-- [Optimización de costes](#optimización-de-costes)
-- [Hooks del lifecycle](#hooks-del-lifecycle)
-- [Guardrails](#guardrails)
-- [Skills y contexto del proyecto](#skills-y-contexto-del-proyecto)
-- [Memoria procedural](#memoria-procedural)
-- [Auto-evaluación](#auto-evaluación)
-- [Modos de confirmación](#modos-de-confirmación)
-- [Configuración del workspace](#configuración-del-workspace)
-- [Uso en CI/CD](#uso-en-cicd)
-- [Ralph Loop](#ralph-loop)
-- [Pipelines](#pipelines)
-- [Ejecución paralela](#ejecución-paralela)
-- [Auto-review](#auto-review)
-- [Sub-agentes (Dispatch)](#sub-agentes-dispatch)
-- [Code Health](#code-health)
-- [Evaluación competitiva](#evaluación-competitiva)
-- [Telemetry](#telemetry)
-- [Presets](#presets)
-- [Errores comunes y cómo evitarlos](#errores-comunes-y-cómo-evitarlos)
-
----
-
 ## Escribir buenos prompts
 
 El agente sigue un ciclo interno: **ANALIZAR → PLANIFICAR → EJECUTAR → VERIFICAR → CORREGIR**. Un buen prompt guía cada fase de ese ciclo.
@@ -902,7 +873,7 @@ auto_review:
 
 **Activa `--health` en refactorizaciones grandes.** El delta de métricas muestra si la refactorización realmente mejoró la calidad: menos complejidad, menos duplicados, funciones más cortas.
 
-**Instala `radon` para métricas precisas.** Sin radon, la complejidad ciclomática se estima con AST (menos preciso). Con `pip install architect[health]` obtienes métricas exactas.
+**Instala `radon` para métricas precisas.** Sin radon, la complejidad ciclomática se estima con AST (menos preciso). Con `pip install architect-ai-cli[health]` obtienes métricas exactas.
 
 **Configura `health.enabled: true` para monitoreo continuo.** En vez de pasar `--health` cada vez, actívalo en config para que siempre se analice la calidad.
 

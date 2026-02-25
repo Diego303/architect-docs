@@ -217,7 +217,7 @@ jobs:
 
       - name: Install architect
         run: |
-          pip install git+https://github.com/Diego303/architect-cli.git@main
+          pip install architect-ai-cli
 
       - name: AI Review
         env:
@@ -253,7 +253,7 @@ ai-review:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
   before_script:
     - apt-get update && apt-get install -y git
-    - pip install git+https://github.com/Diego303/architect-cli.git@main
+    - pip install architect-ai-cli
   script:
     - |
       architect run \
@@ -284,7 +284,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Install architect
-        run: pip install git+https://github.com/Diego303/architect-cli.git@main
+        run: pip install architect-ai-cli
 
       - name: Run security analysis
         env:
@@ -357,7 +357,7 @@ jobs:
 
       - name: Install tools
         run: |
-          pip install git+https://github.com/Diego303/architect-cli.git@main
+          pip install architect-ai-cli
           pip install ruff mypy
 
       - name: Autofix with architect
@@ -1261,7 +1261,7 @@ jobs:
           fetch-depth: 0
 
       - name: Install
-        run: pip install git+https://github.com/Diego303/architect-cli.git@main
+        run: pip install architect-ai-cli
 
       - name: AI Review con reporte
         env:
