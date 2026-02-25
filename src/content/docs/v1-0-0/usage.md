@@ -62,8 +62,16 @@ Guía práctica de uso real: desde el caso más simple hasta configuraciones ava
 ## 1. Instalación y setup inicial
 
 ```bash
-# Clonar e instalar (modo editable)
-git clone https://github.com/tu-usuario/architect-cli
+# Desde Pypi
+pip install architect-ai-cli
+
+# Extras opcionales
+pip install architect-ai-cli[dev]        # pytest, black, ruff, mypy
+pip install architect-ai-cli[telemetry]  # OpenTelemetry (trazas OTLP)
+pip install architect-ai-cli[health]     # radon (complejidad ciclomática)
+
+# O desde GitHub
+git clone https://github.com/Diego303/architect-cli.git
 cd architect-cli
 pip install -e .
 
@@ -1305,7 +1313,7 @@ jobs:
           python-version: '3.12'
 
       - name: Install architect
-        run: pip install -e .
+        run: pip install architect-ai-cli
 
       - name: Run architect with self-eval
         env:
@@ -1404,7 +1412,7 @@ architect-review:
   stage: test
   image: python:3.12
   before_script:
-    - pip install -e .
+    - pip install architect-ai-cli
   script:
     - |
       architect run "revisa los archivos modificados en este MR" \

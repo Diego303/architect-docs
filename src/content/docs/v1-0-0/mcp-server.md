@@ -11,21 +11,6 @@ Guía para construir un servidor MCP (Model Context Protocol) que exponga `archi
 
 ---
 
-## Índice
-
-- [Concepto](#concepto)
-- [Arquitectura](#arquitectura)
-- [Requisitos](#requisitos)
-- [Estructura del proyecto](#estructura-del-proyecto)
-- [Implementación: tools.py](#implementación-toolspy)
-- [Implementación: server.py](#implementación-serverpy)
-- [Ejecución y pruebas](#ejecución-y-pruebas)
-- [Conectar desde architect como cliente](#conectar-desde-architect-como-cliente)
-- [Despliegue en contenedor](#despliegue-en-contenedor)
-- [Buenas prácticas](#buenas-prácticas)
-
----
-
 ## Concepto
 
 Architect se instala como paquete Python y se invoca via CLI. Un servidor MCP puede wrappear esas invocaciones con `subprocess` y exponerlas como tools JSON-RPC 2.0. Así, cualquier cliente MCP (incluido otro architect) puede pedir:
@@ -79,7 +64,10 @@ Cada petición se traduce internamente a un `architect run "..." --mode yolo --j
 ## Requisitos
 
 ```bash
-# Instalar architect
+# Desde Pypi
+pip install architect-ai-cli
+
+# O desde GitHub
 git clone -b main --single-branch https://github.com/Diego303/architect-cli.git
 cd architect-cli && pip install -e .
 
@@ -1185,7 +1173,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         git ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
-# Instalar architect
+# Desde Pypi
+RUN pip install architect-ai-cli
+
+# O desde GitHub
 RUN git clone -b main --single-branch \
       https://github.com/Diego303/architect-cli.git /opt/architect-cli && \
     cd /opt/architect-cli && pip install --no-cache-dir -e .

@@ -44,7 +44,7 @@ Guía práctica de uso real: desde el caso más simple hasta configuraciones ava
 
 ```bash
 # Clonar e instalar (modo editable)
-git clone https://github.com/tu-usuario/architect-cli
+git clone https://github.com/Diego303/architect-cli.git
 cd architect-cli
 pip install -e .
 
