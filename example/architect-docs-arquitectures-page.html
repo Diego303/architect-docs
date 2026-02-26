@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentación — Architect</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;700;800&family=Inter:wght@300;400;500;600&family=Fira+Code:wght@400;500&display=swap"
+        rel="stylesheet">
+    <style>
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --paper: #FDFBF7;
+            --surface: #FFFFFF;
+            --shape: #F3EFE6;
+            --ink: #292524;
+            --ink-light: #57534E;
+            --line: #E7E5DF;
+            --brick: #C85A32;
+            --brick-light: #E87D57;
+            --brick-bg: rgba(200, 90, 50, 0.10);
+            --brick-bg-strong: rgba(200, 90, 50, 0.15);
+            --shadow-draft: 6px 6px 0px 0px rgba(41, 37, 36, 1);
+            --shadow-hover: 2px 2px 0px 0px rgba(41, 37, 36, 1);
+            --shadow-banner: 6px 6px 0px 0px var(--brick);
+            --shadow-banner-hover: 2px 2px 0px 0px var(--brick);
+            --heading: 'Outfit', sans-serif;
+            --body: 'Inter', sans-serif;
+            --mono: 'Fira Code', monospace;
+        }
+
+        body {
+            background-color: var(--paper);
+            background-image:
+                linear-gradient(var(--line) 1px, transparent 1px),
+                linear-gradient(90deg, var(--line) 1px, transparent 1px);
+            background-size: 60px 60px;
+            color: var(--ink);
+            font-family: var(--body);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* NAV */
+        nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 2rem;
+            border-bottom: 2px solid var(--ink);
+            background: var(--paper);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            color: var(--ink);
+            font-family: var(--heading);
+            font-weight: 800;
+            font-size: 1.15rem;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+        }
+
+        .nav-brand .version {
+            font-size: 0.65rem;
+            color: var(--ink-light);
+            background: var(--surface);
+            padding: 0.2rem 0.5rem;
+            border: 2px solid var(--ink);
+            font-family: var(--mono);
+            font-weight: 400;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 0.15rem;
+        }
+
+        .nav-links a {
+            color: var(--ink-light);
+            text-decoration: none;
+            font-family: var(--heading);
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            padding: 0.4rem 0.75rem;
+            border: 2px solid transparent;
+            transition: all 0.1s;
+        }
+
+        .nav-links a:hover {
+            color: var(--ink);
+            border-color: var(--ink);
+            background: var(--surface);
+        }
+
+        .nav-links a.active {
+            color: var(--surface);
+            background: var(--ink);
+            border-color: var(--ink);
+        }
+
+        /* MAIN */
+        main {
+            max-width: 1020px;
+            margin: 0 auto;
+            padding: 3rem 2rem 6rem;
+        }
+
+        h1 {
+            font-family: var(--heading);
+            font-size: 2.5rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+            margin-bottom: 1.5rem;
+        }
+
+        /* VERSION BAR */
+        .version-bar {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .version-label {
+            font-family: var(--heading);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--ink-light);
+            font-weight: 700;
+            margin-right: 0.25rem;
+        }
+
+        .version-pill {
+            font-family: var(--mono);
+            font-size: 0.72rem;
+            padding: 0.25rem 0.6rem;
+            border: 2px solid var(--line);
+            color: var(--ink-light);
+            cursor: pointer;
+            transition: all 0.1s;
+            background: var(--surface);
+        }
+
+        .version-pill:hover {
+            border-color: var(--ink);
+            color: var(--ink);
+        }
+
+        .version-pill.active {
+            background: var(--ink);
+            border-color: var(--ink);
+            color: var(--surface);
+        }
+
+        /* ============================================================
+     ARCHITECTURE BANNER
+     ============================================================ */
+        .arch-banner {
+            display: flex;
+            align-items: stretch;
+            margin-bottom: 2.5rem;
+            background: var(--surface);
+            border: 2px solid var(--ink);
+            box-shadow: var(--shadow-banner);
+            text-decoration: none;
+            color: var(--ink);
+            transition: all 0.12s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .arch-banner:hover {
+            transform: translate(4px, 4px);
+            box-shadow: var(--shadow-banner-hover);
+        }
+
+        .arch-banner-stripe {
+            width: 8px;
+            background: var(--brick);
+            flex-shrink: 0;
+        }
+
+        .arch-banner-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 72px;
+            flex-shrink: 0;
+            background: var(--paper);
+            border-right: 2px solid var(--ink);
+            font-size: 1.75rem;
+        }
+
+        .arch-banner-body {
+            flex: 1;
+            padding: 1.15rem 1.5rem;
+        }
+
+        .arch-banner-label {
+            font-family: var(--heading);
+            font-size: 0.6rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            color: var(--brick);
+            margin-bottom: 0.25rem;
+        }
+
+        .arch-banner-title {
+            font-family: var(--heading);
+            font-size: 1.15rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: -0.01em;
+            margin-bottom: 0.3rem;
+        }
+
+        .arch-banner-desc {
+            font-size: 0.82rem;
+            color: var(--ink-light);
+            line-height: 1.5;
+            font-weight: 400;
+        }
+
+        .arch-banner-stats {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 0.65rem;
+        }
+
+        .arch-stat {
+            font-family: var(--mono);
+            font-size: 0.68rem;
+            color: var(--ink-light);
+            background: var(--paper);
+            border: 1px solid var(--line);
+            padding: 0.2rem 0.55rem;
+        }
+
+        .arch-stat strong {
+            color: var(--ink);
+            font-weight: 500;
+        }
+
+        .arch-banner-arrow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 56px;
+            flex-shrink: 0;
+            border-left: 2px solid var(--ink);
+            background: var(--paper);
+            font-size: 1.5rem;
+            color: var(--ink-light);
+            transition: all 0.12s;
+        }
+
+        .arch-banner:hover .arch-banner-arrow {
+            background: var(--brick);
+            color: var(--surface);
+        }
+
+        /* Corner tape */
+        .arch-banner-corner {
+            position: absolute;
+            top: 0;
+            right: 56px;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 0 28px 28px 0;
+            border-color: transparent var(--brick-bg-strong) transparent transparent;
+        }
+
+        /* SEARCH */
+        .search-wrap {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+
+        .search-wrap svg {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--ink-light);
+            pointer-events: none;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 0.85rem 1rem 0.85rem 2.75rem;
+            background: var(--surface);
+            border: 2px solid var(--ink);
+            box-shadow: var(--shadow-draft);
+            color: var(--ink);
+            font-size: 0.875rem;
+            font-family: var(--body);
+            outline: none;
+            transition: all 0.12s;
+        }
+
+        .search-box:focus {
+            border-color: var(--brick);
+            box-shadow: var(--shadow-hover);
+            transform: translate(4px, 4px);
+        }
+
+        .search-box::placeholder {
+            color: var(--ink-light);
+            font-weight: 300;
+        }
+
+        /* CARDS GRID */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.15rem;
+        }
+
+        .doc-card {
+            display: block;
+            text-decoration: none;
+            color: var(--ink);
+            padding: 1.25rem 1.35rem;
+            background: var(--surface);
+            border: 2px solid var(--ink);
+            box-shadow: var(--shadow-draft);
+            transition: all 0.12s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .doc-card:hover {
+            transform: translate(4px, 4px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .doc-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 0 24px 24px 0;
+            border-color: transparent var(--brick-bg) transparent transparent;
+            transition: border-color 0.12s;
+        }
+
+        .doc-card:hover::before {
+            border-color: transparent var(--brick-bg-strong) transparent transparent;
+        }
+
+        .doc-card h3 {
+            font-family: var(--heading);
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.01em;
+            margin-bottom: 0.4rem;
+            padding-right: 1.5rem;
+        }
+
+        .doc-card p {
+            font-size: 0.8rem;
+            color: var(--ink-light);
+            line-height: 1.55;
+            font-weight: 400;
+        }
+
+        /* FOOTER */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--ink-light);
+            font-size: 0.75rem;
+            border-top: 2px solid var(--ink);
+            background: var(--paper);
+        }
+
+        footer a {
+            color: var(--ink);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        footer a:hover {
+            color: var(--brick);
+        }
+
+        @media (max-width: 768px) {
+            main {
+                padding: 2rem 1rem 4rem;
+            }
+
+            h1 {
+                font-size: 1.75rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .arch-banner {
+                flex-direction: column;
+            }
+
+            .arch-banner-icon {
+                width: 100%;
+                height: 48px;
+                border-right: none;
+                border-bottom: 2px solid var(--ink);
+            }
+
+            .arch-banner-arrow {
+                width: 100%;
+                height: 44px;
+                border-left: none;
+                border-top: 2px solid var(--ink);
+            }
+
+            .arch-banner-stripe {
+                width: 100%;
+                height: 6px;
+            }
+
+            .arch-banner-corner {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <a href="#" class="nav-brand">
+            Architect
+            <span class="version">v1.0.0</span>
+        </a>
+        <div class="nav-links">
+            <a href="#">Por qué Architect</a>
+            <a href="#" class="active">Docs</a>
+            <a href="#">Casos de Uso</a>
+            <a href="#">Roadmap</a>
+        </div>
+    </nav>
+
+    <main>
+        <h1>Documentación</h1>
+
+        <div class="version-bar">
+            <span class="version-label">Version</span>
+            <span class="version-pill active">v1.0.0 (latest)</span>
+            <span class="version-pill">v0.18.0</span>
+            <span class="version-pill">v0.17.0</span>
+            <span class="version-pill">v0.16.2</span>
+            <span class="version-pill">v0.16.1</span>
+            <span class="version-pill">v0.15.3</span>
+        </div>
+
+        <!-- ★ ARCHITECTURE BANNER -->
+        <a href="/architect-docs/docs/architectures/" class="arch-banner">
+            <div class="arch-banner-stripe"></div>
+            <div class="arch-banner-icon">🏗️</div>
+            <div class="arch-banner-body">
+                <span class="arch-banner-label">Nuevo · Referencia</span>
+                <div class="arch-banner-title">Arquitecturas de Referencia</div>
+                <div class="arch-banner-desc">
+                    10 arquitecturas reales donde architect encaja en sistemas de producción.
+                    Diagramas, configs YAML y código listo para CI/CD, Security, AIOps, MLOps y DevOps.
+                </div>
+                <div class="arch-banner-stats">
+                    <span class="arch-stat"><strong>10</strong> arquitecturas</span>
+                    <span class="arch-stat"><strong>7</strong> dominios</span>
+                    <span class="arch-stat"><strong>30+</strong> diagramas</span>
+                </div>
+            </div>
+            <div class="arch-banner-corner"></div>
+            <div class="arch-banner-arrow">→</div>
+        </a>
+
+        <div class="search-wrap">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="square" stroke-linejoin="miter">
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+            <input type="text" class="search-box" placeholder="Buscar en la documentación...">
+        </div>
+
+        <div class="cards-grid">
+            <a href="#" class="doc-card">
+                <h3>Introducción</h3>
+                <p>Índice de la documentación técnica del proyecto Architect v1.0.0.</p>
+            </a>
+            <a href="#" class="doc-card">
+                <h3>Guía Rápida</h3>
+                <p>Instalación, configuración mínima, comandos más útiles y referencia de flags.</p>
+            </a>
+            <a href="#" class="doc-card">
+                <h3>Uso del CLI</h3>
+                <p>Guía práctica de uso: flags, logging, configs, CI/CD, scripts, agentes custom.</p>
+            </a>
+            <a href="#" class="doc-card">
+                <h3>Arquitectura</h3>
+                <p>Visión general, diagrama de componentes y flujo completo de ejecución.</p>
+            </a>
+            <a href="#" class="doc-card">
+                <h3>Core Loop</h3>
+                <p>El AgentLoop: safety nets, StopReason, graceful close, hooks lifecycle.</p>
+            </a>
+            <a href="#" class="doc-card">
+                <h3>Tools y Ejecución</h3>
+                <p>Sistema de tools: filesystem, edición, búsqueda, MCP, ExecutionEngine.</p>
+            </a>
+            <a href="#" class="doc-card">
+                <h3>Agentes y Modos</h3>
+                <p>Sistema de agentes, registry, modos de ejecución, skills y memoria.</p>
+            </a>
+            <a href="#" class="doc-card">
+                <h3>Referencia de Configuración</h3>
+                <p>Schema completo de configuración, precedencia y variables de entorno.</p>
+            </a>
+            <a href="#" class="doc-card">
+                <h3>Guía para IA</h3>
+                <p>Invariantes críticos, patrones, dónde añadir cosas, trampas.</p>
+            </a>
+            <a href="#" class="doc-card">
+                <h3>Modelos de Datos</h3>
+                <p>Todos los modelos de datos: Pydantic, dataclasses y jerarquía de errores.</p>
+            </a>
+            <a href="#" class="doc-card">
+                <h3>Sistema de Logging</h3>
+                <p>3 pipelines, nivel HUMAN, iconos, HumanFormatter, structlog.</p>
+            </a>
+            <a href="#" class="doc-card">
+                <h3>Testing</h3>
+                <p>Mapa de tests: ~817+ tests en 30+ archivos, cobertura por módulo.</p>
+            </a>
+            <a href="#" class="doc-card">
+                <h3>Modelo de Seguridad</h3>
+                <p>19+ capas defensivas, modelo de amenazas, path traversal, command security, hardening.</p>
+            </a>
+            <a href="#" class="doc-card">
+                <h3>Crear un MCP Server</h3>
+                <p>Servidor MCP que exponga architect como herramienta remota (server.py + tools.py).</p>
+            </a>
+            <a href="#" class="doc-card">
+                <h3>Contenedores</h3>
+                <p>Containerfiles, Kubernetes Deployments, Docker, configuración para CI/CD.</p>
+            </a>
+            <a href="#" class="doc-card">
+                <h3>Buenas Prácticas</h3>
+                <p>Prompts, agentes, edición, costes, hooks lifecycle, guardrails, skills, memoria, CI/CD.</p>
+            </a>
+            <a href="#" class="doc-card">
+                <h3>Sessions</h3>
+                <p>Persistencia y resume de sesiones: guardar, listar, reanudar y limpiar entre ejecuciones.</p>
+            </a>
+            <a href="#" class="doc-card">
+                <h3>Reports</h3>
+                <p>Reportes de ejecución en JSON, Markdown y GitHub PR comment para CI/CD.</p>
+            </a>
+            <a href="#" class="doc-card">
+                <h3>Dry Run</h3>
+                <p>Simulación de ejecución: DryRunTracker, WRITE_TOOLS/READ_TOOLS, plan de acciones.</p>
+            </a>
+            <a href="#" class="doc-card">
+                <h3>Ralph Loop</h3>
+                <p>Iteración automática con checks: RalphConfig, RalphLoop, contexto limpio, worktrees.</p>
+            </a>
+            <a href="#" class="doc-card">
+                <h3>Pipelines</h3>
+                <p>Workflows YAML multi-step: variables, condiciones, output_var, checkpoints, dry-run.</p>
+            </a>
+            <a href="#" class="doc-card">
+                <h3>Ejecución Paralela</h3>
+                <p>Múltiples agentes en worktrees: ParallelRunner, workers, round-robin de modelos.</p>
+            </a>
+            <a href="#" class="doc-card">
+                <h3>Checkpoints</h3>
+                <p>Puntos de restauración git: CheckpointManager, rollback, integración con pipelines.</p>
+            </a>
+            <a href="#" class="doc-card">
+                <h3>Auto-Review</h3>
+                <p>Revisión post-build con contexto limpio: AutoReviewer, ReviewResult, fix-pass.</p>
+            </a>
+            <a href="#" class="doc-card">
+                <h3>Sub-Agentes</h3>
+                <p>Delegación de sub-tareas (explore/test/review) con contexto aislado y tools limitadas.</p>
+            </a>
+            <a href="#" class="doc-card">
+                <h3>Code Health Delta</h3>
+                <p>Análisis de métricas de calidad antes/después: complejidad, duplicados, funciones largas.</p>
+            </a>
+            <a href="#" class="doc-card">
+                <h3>Evaluación Competitiva</h3>
+                <p>Comparación multi-modelo con ranking por calidad, eficiencia y coste.</p>
+            </a>
+            <a href="#" class="doc-card">
+                <h3>OpenTelemetry Traces</h3>
+                <p>Spans de sesión, LLM y tools: exporters OTLP, console, JSON file.</p>
+            </a>
+            <a href="#" class="doc-card">
+                <h3>Presets</h3>
+                <p>Inicialización de proyectos con configuraciones predefinidas (python, node-react, ci, paranoid,
+                    yolo).</p>
+            </a>
+            <a href="#" class="doc-card">
+                <h3>Extensibilidad</h3>
+                <p>Crear tools custom, agentes, hooks lifecycle, skills, guardrails — con ejemplos.</p>
+            </a>
+            <a href="#" class="doc-card">
+                <h3>Prompt Engineering</h3>
+                <p>Escribir prompts efectivos, .architect.md, skills, anti-patrones, recetas.</p>
+            </a>
+            <a href="#" class="doc-card">
+                <h3>Integración CI/CD</h3>
+                <p>Recetas para GitHub Actions, GitLab CI, Jenkins: review bots, auto-fix, pipelines.</p>
+            </a>
+            <a href="#" class="doc-card">
+                <h3>Gestión de Costes</h3>
+                <p>CostTracker, precios por modelo, budgets, prompt caching, cache local, optimización.</p>
+            </a>
+            <a href="#" class="doc-card">
+                <h3>Troubleshooting</h3>
+                <p>Diagnóstico por síntomas: errores LLM, loops, tools, hooks, guardrails, exit codes.</p>
+            </a>
+        </div>
+    </main>
+
+    <footer>
+        © 2026 Architect Project. Hecho con precisión. Creado con <a href="https://claude.ai/claude-code">Claude
+            Code</a>
+    </footer>
+
+</body>
+
+</html>

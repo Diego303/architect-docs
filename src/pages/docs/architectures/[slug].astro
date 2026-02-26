@@ -1,0 +1,73 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../../layouts/Layout.astro';
+import Navbar from '../../../components/Navbar.astro';
+import DocsSidebar from '../../../components/DocsSidebar.astro';
+import Prose from '../../../components/Prose.astro';
+
+export async function getStaticPaths() {
+    const architectures = await getCollection('architectures');
+    return architectures.map(entry => ({
+        params: { slug: entry.slug },
+        props: { entry },
+    }));
+}
+
+const { entry } = Astro.props;
+const { Content, headings } = await entry.render();
+const baseUrl = import.meta.env.BASE_URL;
+---
+
+<Layout>
+    <div class="docs-layout">
+        <Navbar />
+
+        <div class="docs-container container">
+            <DocsSidebar
+                headings={headings}
+                title={entry.data.title}
+                backLink={`${baseUrl}docs/architectures/`}
+                backLabel="Volver a Arquitecturas"
+            />
+
+            <main class="docs-content">
+                <Prose>
+                    <Content />
+                </Prose>
+            </main>
+        </div>
+    </div>
+</Layout>
+
+<style>
+    .docs-layout {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
+
+    .docs-container {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        width: 100%;
+    }
+
+    @media (min-width: 1024px) {
+        .docs-container {
+            flex-direction: row;
+        }
+    }
+
+    .docs-content {
+        flex: 1;
+        padding: 2rem 1.5rem 5rem;
+        min-width: 0;
+    }
+
+    @media (min-width: 1024px) {
+        .docs-content {
+            padding: 3rem 4rem 5rem;
+        }
+    }
+</style>

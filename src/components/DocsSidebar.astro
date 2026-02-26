@@ -5,19 +5,27 @@ interface Props {
     headings: MarkdownHeading[];
     title: string;
     versionLabel?: string;
+    backLink?: string;
+    backLabel?: string;
 }
 
-const { headings, title, versionLabel } = Astro.props;
+const {
+    headings,
+    title,
+    versionLabel,
+    backLink = import.meta.env.BASE_URL + 'docs/',
+    backLabel = 'Volver a Docs'
+} = Astro.props;
 ---
 
 <aside class="docs-sidebar">
     <div class="sidebar-content">
             <div class="sidebar-top-row">
-                <a href={import.meta.env.BASE_URL + 'docs/'} class="back-link">
+                <a href={backLink} class="back-link">
                     <svg class="back-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                     </svg>
-                    Volver a Docs
+                    {backLabel}
                 </a>
                 {versionLabel && (
                     <span class="sidebar-version-badge">{versionLabel}</span>
