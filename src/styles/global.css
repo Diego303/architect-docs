@@ -28,6 +28,8 @@
   /* 4.1 Sombras Brutalistas */
   --shadow-draft: 6px 6px 0px 0px rgba(41, 37, 36, 1);
   --shadow-draft-hover: 2px 2px 0px 0px rgba(41, 37, 36, 1);
+  --shadow-banner: 6px 6px 0px 0px var(--arch-brick);
+  --shadow-banner-hover: 2px 2px 0px 0px var(--arch-brick);
 }
 
 /* Reset básico y configuración global */

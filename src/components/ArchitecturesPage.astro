@@ -1,0 +1,136 @@
+---
+import { getCollection } from 'astro:content';
+import ArchCard from './ui/ArchCard.astro';
+
+const baseUrl = import.meta.env.BASE_URL;
+const architectures = (await getCollection('architectures'))
+    .sort((a, b) => a.data.order - b.data.order);
+---
+
+<main class="arch-main">
+    <div class="arch-container">
+        <a href={`${baseUrl}docs/`} class="arch-back-link">
+            <svg class="arch-back-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+            </svg>
+            Volver a Docs
+        </a>
+
+        <div class="arch-header">
+            <h1 class="arch-title">Arquitecturas de Referencia</h1>
+            <div class="arch-line"></div>
+        </div>
+
+        <p class="arch-intro">
+            10 arquitecturas reales donde architect encaja en sistemas de producción.
+            Cada una incluye diagrama del flujo, configuración YAML, comandos de implementación,
+            y las features de architect que se usan.
+        </p>
+
+        <div class="arch-grid">
+            {architectures.map(arch => (
+                <ArchCard
+                    title={arch.data.title}
+                    icon={arch.data.icon}
+                    domain={arch.data.domain}
+                    description={arch.data.description}
+                    features={arch.data.features}
+                    href={`${baseUrl}docs/architectures/${arch.slug}/`}
+                />
+            ))}
+        </div>
+    </div>
+</main>
+
+<style>
+    .arch-main {
+        min-height: calc(100vh - 74px - 85px);
+        padding: 3rem 1.5rem 6rem;
+    }
+
+    .arch-container {
+        max-width: 80rem;
+        margin: 0 auto;
+    }
+
+    .arch-back-link {
+        display: inline-flex;
+        align-items: center;
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        color: var(--arch-ink-light);
+        text-decoration: none;
+        transition: color 0.2s;
+        margin-bottom: 2rem;
+    }
+
+    .arch-back-link:hover {
+        color: var(--arch-brick);
+    }
+
+    .arch-back-icon {
+        width: 1rem;
+        height: 1rem;
+        margin-right: 0.5rem;
+    }
+
+    .arch-header {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .arch-title {
+        font-family: var(--font-heading);
+        font-size: 1.875rem;
+        color: var(--arch-ink);
+        font-weight: 800;
+        margin: 0;
+        white-space: nowrap;
+    }
+
+    .arch-line {
+        height: 4px;
+        background-color: var(--arch-ink);
+        flex-grow: 1;
+    }
+
+    .arch-intro {
+        font-size: 1rem;
+        color: var(--arch-ink-light);
+        line-height: 1.7;
+        max-width: 65ch;
+        margin-bottom: 3rem;
+    }
+
+    .arch-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    @media (min-width: 768px) {
+        .arch-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (min-width: 1024px) {
+        .arch-grid {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+
+    @media (max-width: 640px) {
+        .arch-main {
+            padding: 2rem 1rem 4rem;
+        }
+
+        .arch-title {
+            font-size: 1.5rem;
+        }
+    }
+</style>

@@ -6,6 +6,7 @@ import Navbar from '../../components/Navbar.astro';
 import Footer from '../../components/Footer.astro';
 import Card from '../../components/ui/Card.astro';
 import VersionSelector from '../../components/VersionSelector.astro';
+import ArchBanner from '../../components/ArchBanner.astro';
 
 const allDocs = await getCollection('docs');
 
@@ -36,6 +37,8 @@ for (const version of VERSIONS) {
                 <h1 class="hub-title">Documentaci&oacute;n</h1>
                 <div class="hub-line"></div>
             </div>
+
+            <ArchBanner />
 
             <div class="hub-controls">
                 <div class="search-wrapper">
