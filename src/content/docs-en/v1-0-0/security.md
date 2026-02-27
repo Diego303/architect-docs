@@ -614,7 +614,7 @@ ENV HOME=/tmp
 RUN chgrp -R 0 /opt/architect-cli && chmod -R g=u /opt/architect-cli
 ```
 
-See [`containers.md`](/architect-docs/docs/v1-0-0/containers) for complete Containerfiles.
+See [`containers.md`](/architect-docs/en/docs/v1-0-0/containers) for complete Containerfiles.
 
 ---
 

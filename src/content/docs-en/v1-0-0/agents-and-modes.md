@@ -20,7 +20,7 @@ Defined in `agents/registry.py` as `DEFAULT_AGENTS: dict[str, AgentConfig]`.
 | `resume` | `read_file`, `list_files`, `search_code`, `grep`, `find_files` | `yolo` | 15 | Reads and summarizes information. Read-only, no confirmations. |
 | `review` | `read_file`, `list_files`, `search_code`, `grep`, `find_files` | `yolo` | 20 | Reviews code and provides feedback. Read-only, no confirmations. |
 
-The search tools (`search_code`, `grep`, `find_files`) are available to all agents since F10. The `build` agent has additional access to `edit_file` and `apply_patch` for incremental editing, and `dispatch_subagent` (v1.0.0) for delegating sub-tasks to specialized agents with isolated context (types: explore, test, review). See [`dispatch-subagent.md`](/architect-docs/docs/v1-0-0/dispatch-subagent).
+The search tools (`search_code`, `grep`, `find_files`) are available to all agents since F10. The `build` agent has additional access to `edit_file` and `apply_patch` for incremental editing, and `dispatch_subagent` (v1.0.0) for delegating sub-tasks to specialized agents with isolated context (types: explore, test, review). See [`dispatch-subagent.md`](/architect-docs/en/docs/v1-0-0/dispatch-subagent).
 
 ---
 

@@ -7,7 +7,7 @@ order: 5
 
 # The agent loop (core/loop.py)
 
-The `AgentLoop` is the heart of the system. See also [`logging.md`](/architect-docs/docs/v1-0-0/logging) for details on the logging system.
+The `AgentLoop` is the heart of the system. See also [`logging.md`](/architect-docs/en/docs/v1-0-0/logging) for details on the logging system.
 
 It uses a `while True` loop — the LLM decides when to stop (it stops requesting tools). The safety nets (max_steps, budget, timeout, context) are watchdogs that request a clean shutdown from the LLM instead of cutting off abruptly.
 
@@ -638,6 +638,6 @@ AgentLoop(
 )
 ```
 
-As of v1.0.0, the `build` agent also has access to `dispatch_subagent` as an additional tool, which allows delegating sub-tasks to agents with isolated context. See [`tools-and-execution.md`](/architect-docs/docs/v1-0-0/tools-and-execution) for details.
+As of v1.0.0, the `build` agent also has access to `dispatch_subagent` as an additional tool, which allows delegating sub-tasks to agents with isolated context. See [`tools-and-execution.md`](/architect-docs/en/docs/v1-0-0/tools-and-execution) for details.
 
 The loop does not create its dependencies — it receives them as parameters (dependency injection). Internally it creates `self.hlog = HumanLog(logger)` to emit traceability logs.

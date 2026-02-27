@@ -1299,7 +1299,7 @@ architect resume 20260223-143022-a1b2 --budget 2.00
 architect cleanup --older-than 30
 ```
 
-See full documentation: [`sessions.md`](/architect-docs/docs/v1-0-0/sessions).
+See full documentation: [`sessions.md`](/architect-docs/en/docs/v1-0-0/sessions).
 
 ---
 
@@ -1318,7 +1318,7 @@ architect run "..." --mode yolo --report markdown --report-file report.md
 architect run "..." --mode yolo --report github --report-file pr-comment.md
 ```
 
-See full documentation: [`reports.md`](/architect-docs/docs/v1-0-0/reports).
+See full documentation: [`reports.md`](/architect-docs/en/docs/v1-0-0/reports).
 
 ---
 
@@ -1386,7 +1386,7 @@ architect loop "refactor the auth module" \
   --max-time 600
 ```
 
-See full documentation: [`ralph-loop.md`](/architect-docs/docs/v1-0-0/ralph-loop).
+See full documentation: [`ralph-loop.md`](/architect-docs/en/docs/v1-0-0/ralph-loop).
 
 ---
 
@@ -1432,7 +1432,7 @@ steps:
     output_var: review_result
 ```
 
-See full documentation: [`pipelines.md`](/architect-docs/docs/v1-0-0/pipelines).
+See full documentation: [`pipelines.md`](/architect-docs/en/docs/v1-0-0/pipelines).
 
 ---
 
@@ -1456,7 +1456,7 @@ architect parallel \
 architect parallel-cleanup
 ```
 
-See full documentation: [`parallel.md`](/architect-docs/docs/v1-0-0/parallel).
+See full documentation: [`parallel.md`](/architect-docs/en/docs/v1-0-0/parallel).
 
 ---
 
@@ -1470,7 +1470,7 @@ checkpoints:
   every_n_steps: 5     # create checkpoint every 5 steps
 ```
 
-See full documentation: [`checkpoints.md`](/architect-docs/docs/v1-0-0/checkpoints).
+See full documentation: [`checkpoints.md`](/architect-docs/en/docs/v1-0-0/checkpoints).
 
 ---
 
@@ -1485,7 +1485,7 @@ auto_review:
   max_fix_passes: 1
 ```
 
-See full documentation: [`auto-review.md`](/architect-docs/docs/v1-0-0/auto-review).
+See full documentation: [`auto-review.md`](/architect-docs/en/docs/v1-0-0/auto-review).
 
 ---
 
@@ -1509,7 +1509,7 @@ Each model is scored on 4 dimensions (total = 100):
 | Efficiency | 20 | Reasonable cost and steps? |
 | Style | 10 | Follows project conventions? |
 
-See full documentation: [`eval.md`](/architect-docs/docs/v1-0-0/eval).
+See full documentation: [`eval.md`](/architect-docs/en/docs/v1-0-0/eval).
 
 ---
 
@@ -1523,7 +1523,7 @@ architect health --json
 architect run "refactor the auth module" --mode yolo --health
 ```
 
-See full documentation: [`health.md`](/architect-docs/docs/v1-0-0/health).
+See full documentation: [`health.md`](/architect-docs/en/docs/v1-0-0/health).
 
 ---
 
@@ -1546,7 +1546,7 @@ architect init yolo
 | `paranoid` | `gpt-4o` | `confirm-all` | $0.5 | Strict guardrails, protected files |
 | `yolo` | `gpt-4o` | `yolo` | -- | No restrictions, no budget |
 
-See full documentation: [`presets.md`](/architect-docs/docs/v1-0-0/presets).
+See full documentation: [`presets.md`](/architect-docs/en/docs/v1-0-0/presets).
 
 ---
 
@@ -1562,7 +1562,7 @@ The `build` agent can delegate sub-tasks to specialized agents with isolated con
 
 Sub-agents never modify files. Their result is returned as `ToolResult` to the parent agent.
 
-See full documentation: [`dispatch-subagent.md`](/architect-docs/docs/v1-0-0/dispatch-subagent).
+See full documentation: [`dispatch-subagent.md`](/architect-docs/en/docs/v1-0-0/dispatch-subagent).
 
 ---
 
@@ -1586,4 +1586,4 @@ telemetry:
 
 Traces include spans for: full session, each LLM call, each tool call, and context compression.
 
-See full documentation: [`telemetry.md`](/architect-docs/docs/v1-0-0/telemetry).
+See full documentation: [`telemetry.md`](/architect-docs/en/docs/v1-0-0/telemetry).

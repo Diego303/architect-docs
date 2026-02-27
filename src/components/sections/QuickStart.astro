@@ -41,25 +41,25 @@ const { lang = 'es' } = Astro.props;
                     <div class="step-number">3</div>
                     <div class="step-content">
                         <h4 class="step-title">{t('quickstart.step3Title', lang)}</h4>
-                        <code class="step-cmd">architect run "Añade un endpoint GET /health que devuelva {'{'}status: ok{'}'}"</code>
+                        <code class="step-cmd">architect run "{t('quickstart.step3Cmd', lang)}"</code>
                     </div>
                 </div>
             </div>
 
             <CodeFigure title={t('quickstart.figureTitle', lang)}>
                 <div class="example-line"><span class="ex-comment">{t('quickstart.comment1', lang)}</span></div>
-                <div class="example-line"><span class="ex-prompt">$ </span>architect run "Refactoriza el módulo auth" --dry-run</div>
+                <div class="example-line"><span class="ex-prompt">$ </span>architect run "{t('quickstart.exCmd1', lang)}" --dry-run</div>
                 <div class="example-spacer"></div>
                 <div class="example-line"><span class="ex-comment">{t('quickstart.comment2', lang)}</span></div>
-                <div class="example-line"><span class="ex-prompt">$ </span>architect loop "Corrige todos los errores de lint" \</div>
+                <div class="example-line"><span class="ex-prompt">$ </span>architect loop "{t('quickstart.exCmd2', lang)}" \</div>
                 <div class="example-line">  --check "ruff check src/" --max-iterations 10</div>
                 <div class="example-spacer"></div>
                 <div class="example-line"><span class="ex-comment">{t('quickstart.comment3', lang)}</span></div>
-                <div class="example-line"><span class="ex-prompt">$ </span>architect parallel "Optimiza las queries SQL" \</div>
+                <div class="example-line"><span class="ex-prompt">$ </span>architect parallel "{t('quickstart.exCmd3', lang)}" \</div>
                 <div class="example-line">  --models gpt-4.1,claude-sonnet-4,deepseek-chat</div>
                 <div class="example-spacer"></div>
                 <div class="example-line"><span class="ex-comment">{t('quickstart.comment4', lang)}</span></div>
-                <div class="example-line"><span class="ex-prompt">$ </span>architect run "Revisa este PR" --agent review \</div>
+                <div class="example-line"><span class="ex-prompt">$ </span>architect run "{t('quickstart.exCmd4', lang)}" --agent review \</div>
                 <div class="example-line">  --budget 0.15 --report github</div>
                 <div class="example-spacer"></div>
                 <div class="example-line"><span class="ex-comment">{t('quickstart.comment5', lang)}</span></div>

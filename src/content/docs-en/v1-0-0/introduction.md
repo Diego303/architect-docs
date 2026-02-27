@@ -15,40 +15,40 @@ Index of the project's internal documentation. Aimed at developers and AIs who n
 
 | File | Content |
 |------|---------|
-| [`usage.md`](/architect-docs/docs/v1-0-0/usage) | **Usage guide**: flags, logging, configs, CI/CD, scripts, custom agents, multi-project |
-| [`architecture.md`](/architect-docs/docs/v1-0-0/architecture) | High-level overview, component diagram, and full execution flow |
-| [`core-loop.md`](/architect-docs/docs/v1-0-0/core-loop) | The while True loop, safety nets, StopReason, graceful close, hooks lifecycle, human logging, ContextManager, parallel tools, SelfEvaluator |
-| [`data-models.md`](/architect-docs/docs/v1-0-0/data-models) | All data models: Pydantic, dataclasses, error hierarchy |
-| [`tools-and-execution.md`](/architect-docs/docs/v1-0-0/tools-and-execution) | Tool system: filesystem, editing, search, MCP, ExecutionEngine |
-| [`agents-and-modes.md`](/architect-docs/docs/v1-0-0/agents-and-modes) | Default agents, registry, system prompts |
-| [`config-reference.md`](/architect-docs/docs/v1-0-0/config-reference) | Complete configuration schema, precedence, environment variables |
-| [`logging.md`](/architect-docs/docs/v1-0-0/logging) | **Logging system**: 3 pipelines, HUMAN level, icons, HumanFormatter, structlog |
-| [`ai-guide.md`](/architect-docs/docs/v1-0-0/ai-guide) | AI guide: critical invariants, patterns, where to add things, pitfalls |
-| [`testing.md`](/architect-docs/docs/v1-0-0/testing) | Test map: ~817+ tests in 30+ files, coverage by module |
-| [`containers.md`](/architect-docs/docs/v1-0-0/containers) | **Containers**: Containerfiles (root, non-root, OpenShift), Kubernetes Deployments, Docker, CI/CD configuration |
-| [`casos-de-uso.md`](/architect-docs/casos-de-uso/) | **Use cases**: integration into daily development, CI/CD, QA, DevOps, AIOps, MLOps, MCP architectures, multi-agent pipelines |
-| [`fast-usage.md`](/architect-docs/docs/v1-0-0/fast-usage) | **Quick start guide**: installation, minimal setup, most useful commands, and flag reference |
-| [`mcp-server.md`](/architect-docs/docs/v1-0-0/mcp-server) | **MCP Server**: how to create an MCP server that exposes architect as a remote tool (complete server.py + tools.py) |
-| [`good-practices.md`](/architect-docs/docs/v1-0-0/good-practices) | **Best practices**: prompts, agents, editing, costs, hooks lifecycle, guardrails, skills, memory, self-evaluation, CI/CD, common mistakes |
-| [`security.md`](/architect-docs/docs/v1-0-0/security) | **Security model**: 19 defensive layers, threat model, path traversal, command security, prompt injection, hardening |
-| [`sessions.md`](/architect-docs/docs/v1-0-0/sessions) | **Sessions**: persistence and resume — save, list, resume, and clean up sessions between runs |
-| [`reports.md`](/architect-docs/docs/v1-0-0/reports) | **Reports**: execution reports in JSON, Markdown, and GitHub PR comment for CI/CD |
-| [`dryrun.md`](/architect-docs/docs/v1-0-0/dryrun) | **Dry Run**: execution simulation — DryRunTracker, WRITE_TOOLS/READ_TOOLS, action plan |
-| [`ralph-loop.md`](/architect-docs/docs/v1-0-0/ralph-loop) | **Ralph Loop**: automatic iteration with checks — RalphConfig, RalphLoop, clean context, worktrees, safety nets |
-| [`pipelines.md`](/architect-docs/docs/v1-0-0/pipelines) | **Pipelines**: multi-step YAML workflows — {{name}} variables, conditions, output_var, checkpoints, dry-run, from-step |
-| [`parallel.md`](/architect-docs/docs/v1-0-0/parallel) | **Parallel**: parallel execution in git worktrees — ParallelRunner, workers, round-robin models |
-| [`checkpoints.md`](/architect-docs/docs/v1-0-0/checkpoints) | **Checkpoints**: git restore points — CheckpointManager, rollback, pipeline integration |
-| [`auto-review.md`](/architect-docs/docs/v1-0-0/auto-review) | **Auto-Review**: post-build review with clean context — AutoReviewer, ReviewResult, fix-pass |
-| [`dispatch-subagent.md`](/architect-docs/docs/v1-0-0/dispatch-subagent) | **Sub-Agents**: sub-task delegation (explore/test/review) with isolated context and limited tools |
-| [`health.md`](/architect-docs/docs/v1-0-0/health) | **Code Health Delta**: before/after quality metrics analysis (complexity, duplicates, long functions) |
-| [`eval.md`](/architect-docs/docs/v1-0-0/eval) | **Competitive Evaluation**: multi-model comparison with ranking by quality, efficiency, and cost |
-| [`telemetry.md`](/architect-docs/docs/v1-0-0/telemetry) | **OpenTelemetry Traces**: session, LLM, and tool spans — OTLP, console, JSON file exporters |
-| [`presets.md`](/architect-docs/docs/v1-0-0/presets) | **Presets**: project initialization with predefined configurations (python, node-react, ci, paranoid, yolo) |
-| [`troubleshooting.md`](/architect-docs/docs/v1-0-0/troubleshooting) | **Troubleshooting**: symptom-based diagnosis — LLM errors, loops, tools, hooks, guardrails, advanced features, exit codes |
-| [`extending.md`](/architect-docs/docs/v1-0-0/extending) | **Extensibility**: create custom tools, agents, lifecycle hooks, skills, guardrails — with complete examples |
-| [`ci-cd-integration.md`](/architect-docs/docs/v1-0-0/ci-cd-integration) | **CI/CD**: complete recipes for GitHub Actions, GitLab CI, Jenkins — review bots, auto-fix, pipelines, secrets, costs |
-| [`cost-management.md`](/architect-docs/docs/v1-0-0/cost-management) | **Cost management**: CostTracker, per-model pricing, budgets, prompt caching, local cache, optimization strategies |
-| [`prompt-engineering.md`](/architect-docs/docs/v1-0-0/prompt-engineering) | **Prompt Engineering**: writing effective prompts, .architect.md, skills, anti-patterns, recipes by agent |
+| [`usage.md`](/architect-docs/en/docs/v1-0-0/usage) | **Usage guide**: flags, logging, configs, CI/CD, scripts, custom agents, multi-project |
+| [`architecture.md`](/architect-docs/en/docs/v1-0-0/architecture) | High-level overview, component diagram, and full execution flow |
+| [`core-loop.md`](/architect-docs/en/docs/v1-0-0/core-loop) | The while True loop, safety nets, StopReason, graceful close, hooks lifecycle, human logging, ContextManager, parallel tools, SelfEvaluator |
+| [`data-models.md`](/architect-docs/en/docs/v1-0-0/data-models) | All data models: Pydantic, dataclasses, error hierarchy |
+| [`tools-and-execution.md`](/architect-docs/en/docs/v1-0-0/tools-and-execution) | Tool system: filesystem, editing, search, MCP, ExecutionEngine |
+| [`agents-and-modes.md`](/architect-docs/en/docs/v1-0-0/agents-and-modes) | Default agents, registry, system prompts |
+| [`config-reference.md`](/architect-docs/en/docs/v1-0-0/config-reference) | Complete configuration schema, precedence, environment variables |
+| [`logging.md`](/architect-docs/en/docs/v1-0-0/logging) | **Logging system**: 3 pipelines, HUMAN level, icons, HumanFormatter, structlog |
+| [`ai-guide.md`](/architect-docs/en/docs/v1-0-0/ai-guide) | AI guide: critical invariants, patterns, where to add things, pitfalls |
+| [`testing.md`](/architect-docs/en/docs/v1-0-0/testing) | Test map: ~817+ tests in 30+ files, coverage by module |
+| [`containers.md`](/architect-docs/en/docs/v1-0-0/containers) | **Containers**: Containerfiles (root, non-root, OpenShift), Kubernetes Deployments, Docker, CI/CD configuration |
+| [`casos-de-uso.md`](/architect-docs/en/use-cases/) | **Use cases**: integration into daily development, CI/CD, QA, DevOps, AIOps, MLOps, MCP architectures, multi-agent pipelines |
+| [`fast-usage.md`](/architect-docs/en/docs/v1-0-0/fast-usage) | **Quick start guide**: installation, minimal setup, most useful commands, and flag reference |
+| [`mcp-server.md`](/architect-docs/en/docs/v1-0-0/mcp-server) | **MCP Server**: how to create an MCP server that exposes architect as a remote tool (complete server.py + tools.py) |
+| [`good-practices.md`](/architect-docs/en/docs/v1-0-0/good-practices) | **Best practices**: prompts, agents, editing, costs, hooks lifecycle, guardrails, skills, memory, self-evaluation, CI/CD, common mistakes |
+| [`security.md`](/architect-docs/en/docs/v1-0-0/security) | **Security model**: 19 defensive layers, threat model, path traversal, command security, prompt injection, hardening |
+| [`sessions.md`](/architect-docs/en/docs/v1-0-0/sessions) | **Sessions**: persistence and resume — save, list, resume, and clean up sessions between runs |
+| [`reports.md`](/architect-docs/en/docs/v1-0-0/reports) | **Reports**: execution reports in JSON, Markdown, and GitHub PR comment for CI/CD |
+| [`dryrun.md`](/architect-docs/en/docs/v1-0-0/dryrun) | **Dry Run**: execution simulation — DryRunTracker, WRITE_TOOLS/READ_TOOLS, action plan |
+| [`ralph-loop.md`](/architect-docs/en/docs/v1-0-0/ralph-loop) | **Ralph Loop**: automatic iteration with checks — RalphConfig, RalphLoop, clean context, worktrees, safety nets |
+| [`pipelines.md`](/architect-docs/en/docs/v1-0-0/pipelines) | **Pipelines**: multi-step YAML workflows — {{name}} variables, conditions, output_var, checkpoints, dry-run, from-step |
+| [`parallel.md`](/architect-docs/en/docs/v1-0-0/parallel) | **Parallel**: parallel execution in git worktrees — ParallelRunner, workers, round-robin models |
+| [`checkpoints.md`](/architect-docs/en/docs/v1-0-0/checkpoints) | **Checkpoints**: git restore points — CheckpointManager, rollback, pipeline integration |
+| [`auto-review.md`](/architect-docs/en/docs/v1-0-0/auto-review) | **Auto-Review**: post-build review with clean context — AutoReviewer, ReviewResult, fix-pass |
+| [`dispatch-subagent.md`](/architect-docs/en/docs/v1-0-0/dispatch-subagent) | **Sub-Agents**: sub-task delegation (explore/test/review) with isolated context and limited tools |
+| [`health.md`](/architect-docs/en/docs/v1-0-0/health) | **Code Health Delta**: before/after quality metrics analysis (complexity, duplicates, long functions) |
+| [`eval.md`](/architect-docs/en/docs/v1-0-0/eval) | **Competitive Evaluation**: multi-model comparison with ranking by quality, efficiency, and cost |
+| [`telemetry.md`](/architect-docs/en/docs/v1-0-0/telemetry) | **OpenTelemetry Traces**: session, LLM, and tool spans — OTLP, console, JSON file exporters |
+| [`presets.md`](/architect-docs/en/docs/v1-0-0/presets) | **Presets**: project initialization with predefined configurations (python, node-react, ci, paranoid, yolo) |
+| [`troubleshooting.md`](/architect-docs/en/docs/v1-0-0/troubleshooting) | **Troubleshooting**: symptom-based diagnosis — LLM errors, loops, tools, hooks, guardrails, advanced features, exit codes |
+| [`extending.md`](/architect-docs/en/docs/v1-0-0/extending) | **Extensibility**: create custom tools, agents, lifecycle hooks, skills, guardrails — with complete examples |
+| [`ci-cd-integration.md`](/architect-docs/en/docs/v1-0-0/ci-cd-integration) | **CI/CD**: complete recipes for GitHub Actions, GitLab CI, Jenkins — review bots, auto-fix, pipelines, secrets, costs |
+| [`cost-management.md`](/architect-docs/en/docs/v1-0-0/cost-management) | **Cost management**: CostTracker, per-model pricing, budgets, prompt caching, local cache, optimization strategies |
+| [`prompt-engineering.md`](/architect-docs/en/docs/v1-0-0/prompt-engineering) | **Prompt Engineering**: writing effective prompts, .architect.md, skills, anti-patterns, recipes by agent |
 
 ---
 

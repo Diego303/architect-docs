@@ -43,7 +43,7 @@ const iconPaths = [
                 <p class="spotlight-desc" set:html={t('features.ralphDesc1', lang)} />
                 <p class="spotlight-desc" set:html={t('features.ralphDesc2', lang)} />
                 <div class="spotlight-cmd">
-                    <code>$ architect loop "Implementa el módulo de pagos" \<br/>  --check "pytest tests/ -q" \<br/>  --check "ruff check src/" \<br/>  --max-iterations 25</code>
+                    <code>$ architect loop "{t('features.ralphCmd', lang)}" \<br/>  --check "pytest tests/ -q" \<br/>  --check "ruff check src/" \<br/>  --max-iterations 25</code>
                 </div>
             </div>
             <CodeFigure title={t('features.ralphFigureTitle', lang)}>
@@ -94,7 +94,7 @@ const iconPaths = [
                 <p class="spotlight-desc" set:html={t('features.parallelDesc1', lang)} />
                 <p class="spotlight-desc" set:html={t('features.parallelDesc2', lang)} />
                 <div class="spotlight-cmd">
-                    <code>$ architect parallel "Refactoriza el módulo auth" \<br/>  --models gpt-4.1,claude-sonnet-4,deepseek-chat</code>
+                    <code>$ architect parallel "{t('features.parallelCmd', lang)}" \<br/>  --models gpt-4.1,claude-sonnet-4,deepseek-chat</code>
                 </div>
             </div>
             <CodeFigure title={t('features.parallelFigureTitle', lang)}>

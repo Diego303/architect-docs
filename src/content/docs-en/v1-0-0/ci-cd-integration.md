@@ -1603,12 +1603,12 @@ Step-by-step guide to set up Architect in a new CI pipeline.
 
 ## Related files
 
-- **Containers**: [`containers.md`](/architect-docs/docs/v1-0-0/containers) -- Dockerfiles, Kubernetes and OpenShift
-- **Reports**: [`reports.md`](/architect-docs/docs/v1-0-0/reports) -- JSON, Markdown and GitHub formats
-- **Sessions**: [`sessions.md`](/architect-docs/docs/v1-0-0/sessions) -- persistence and resume
-- **Ralph Loop**: [`ralph-loop.md`](/architect-docs/docs/v1-0-0/ralph-loop) -- automatic iteration with checks
-- **Parallel**: [`parallel.md`](/architect-docs/docs/v1-0-0/parallel) -- parallel execution in worktrees
-- **Pipelines**: [`pipelines.md`](/architect-docs/docs/v1-0-0/pipelines) -- multi-step YAML workflows
-- **Security**: [`security.md`](/architect-docs/docs/v1-0-0/security) -- complete security model
-- **Dry Run**: [`dryrun.md`](/architect-docs/docs/v1-0-0/dryrun) -- execution simulation
-- **Quick Guide**: [`fast-usage.md`](/architect-docs/docs/v1-0-0/fast-usage) -- daily usage reference
+- **Containers**: [`containers.md`](/architect-docs/en/docs/v1-0-0/containers) -- Dockerfiles, Kubernetes and OpenShift
+- **Reports**: [`reports.md`](/architect-docs/en/docs/v1-0-0/reports) -- JSON, Markdown and GitHub formats
+- **Sessions**: [`sessions.md`](/architect-docs/en/docs/v1-0-0/sessions) -- persistence and resume
+- **Ralph Loop**: [`ralph-loop.md`](/architect-docs/en/docs/v1-0-0/ralph-loop) -- automatic iteration with checks
+- **Parallel**: [`parallel.md`](/architect-docs/en/docs/v1-0-0/parallel) -- parallel execution in worktrees
+- **Pipelines**: [`pipelines.md`](/architect-docs/en/docs/v1-0-0/pipelines) -- multi-step YAML workflows
+- **Security**: [`security.md`](/architect-docs/en/docs/v1-0-0/security) -- complete security model
+- **Dry Run**: [`dryrun.md`](/architect-docs/en/docs/v1-0-0/dryrun) -- execution simulation
+- **Quick Guide**: [`fast-usage.md`](/architect-docs/en/docs/v1-0-0/fast-usage) -- daily usage reference

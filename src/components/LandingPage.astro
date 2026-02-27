@@ -32,7 +32,7 @@ const { lang = 'es' } = Astro.props;
                 <div class="code-figure-dot"></div>
             </div>
             <div class="code-figure-content">
-                <div><span class="prompt font-bold">$ </span><span class="font-bold">architect run "{lang === 'es' ? 'Refactoriza el módulo auth del proyecto' : 'Refactor the project auth module'}"</span></div>
+                <div><span class="prompt font-bold">$ </span><span class="font-bold">{t('hero.terminalCmd', lang)}</span></div>
                 <div class="log-spacer"></div>
                 <div class="log-step"><span class="log-icon">&#x1F504;</span> {t('hero.terminalStep1', lang)}</div>
                 <div class="log-detail"><span class="log-check">&#x2713;</span> {t('hero.terminalStep1Detail', lang)}</div>

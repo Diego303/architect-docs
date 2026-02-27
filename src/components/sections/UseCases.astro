@@ -57,7 +57,7 @@ const ciCases = ui[lang].useCases.ciCases;
                 <CodeFigure title={t('useCases.teamFigureTitle', lang)} class="usecase-code">
                     <div><span class="yaml-key">- name:</span> AI Code Review</div>
                     <div class="yaml-indent"><span class="yaml-key">run:</span> |</div>
-                    <div class="yaml-indent2">architect run "Revisa los cambios de este PR" \</div>
+                    <div class="yaml-indent2">architect run "{t('useCases.teamGhActionCmd', lang)}" \</div>
                     <div class="yaml-indent2">  --agent review \</div>
                     <div class="yaml-indent2">  --context-git-diff origin/main \</div>
                     <div class="yaml-indent2">  --report github \</div>

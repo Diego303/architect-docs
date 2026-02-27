@@ -283,7 +283,7 @@ Starting with v1.0.0, architect supports OpenTelemetry traces as a complement to
 
 Logs go to stderr (human/technical) and JSON file. Traces go to OTLP, console, or a separate JSON file. They do not mix.
 
-See [`telemetry.md`](/architect-docs/docs/v1-0-0/telemetry) for OpenTelemetry configuration.
+See [`telemetry.md`](/architect-docs/en/docs/v1-0-0/telemetry) for OpenTelemetry configuration.
 
 ---
 
