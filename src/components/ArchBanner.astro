@@ -1,21 +1,26 @@
 ---
-const baseUrl = import.meta.env.BASE_URL;
+import { t, getLocalizedPath, type Lang } from '../i18n/utils';
+
+interface Props {
+    lang?: Lang;
+}
+
+const { lang = 'es' } = Astro.props;
 ---
 
-<a href={`${baseUrl}docs/architectures/`} class="arch-banner">
+<a href={getLocalizedPath('docs/architectures/', lang)} class="arch-banner">
     <div class="arch-banner-stripe"></div>
     <div class="arch-banner-icon">🏗️</div>
     <div class="arch-banner-body">
-        <span class="arch-banner-label">Nuevo · Referencia</span>
-        <div class="arch-banner-title">Arquitecturas de Referencia</div>
+        <span class="arch-banner-label">{t('archBanner.label', lang)}</span>
+        <div class="arch-banner-title">{t('archBanner.title', lang)}</div>
         <div class="arch-banner-desc">
-            10 arquitecturas reales donde architect encaja en sistemas de producción.
-            Diagramas, configs YAML y código listo para CI/CD, Security, AIOps, MLOps y DevOps.
+            {t('archBanner.desc', lang)}
         </div>
         <div class="arch-banner-stats">
-            <span class="arch-stat"><strong>10</strong> arquitecturas</span>
-            <span class="arch-stat"><strong>7</strong> dominios</span>
-            <span class="arch-stat"><strong>30+</strong> diagramas</span>
+            <span class="arch-stat"><strong>10</strong> {t('archBanner.statArchitectures', lang)}</span>
+            <span class="arch-stat"><strong>7</strong> {t('archBanner.statDomains', lang)}</span>
+            <span class="arch-stat"><strong>30+</strong> {t('archBanner.statDiagrams', lang)}</span>
         </div>
     </div>
     <div class="arch-banner-corner"></div>

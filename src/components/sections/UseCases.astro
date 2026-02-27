@@ -1,29 +1,22 @@
 ---
 import CodeFigure from '../ui/CodeFigure.astro';
+import { ui } from '../../i18n/ui';
+import { t, type Lang } from '../../i18n/utils';
 
-const devCases = [
-    { label: "Coding overnight", cmd: 'architect loop --spec tasks/payment-module.md \\\n  --check "pytest tests/ -q" \\\n  --check "mypy src/" \\\n  --max-iterations 30' },
-    { label: "Competitive coding", cmd: 'architect parallel "Optimiza las queries SQL" \\\n  --models gpt-4.1,claude-sonnet-4,deepseek-chat' },
-    { label: "Refactoring seguro", cmd: 'architect run "Migra de SQLAlchemy sync a async" \\\n  --dry-run\n# Preview primero, ejecuta después con checkpoints:\narchitect run "Migra de SQLAlchemy sync a async" \\\n  --checkpoint-every 5' },
-];
+interface Props {
+    lang?: Lang;
+}
 
-const teamCases = [
-    { label: "Review automático en PRs", cmd: 'architect run "Revisa este PR" \\\n  --agent review \\\n  --context-git-diff origin/main \\\n  --report github > review.md' },
-    { label: "Estándares compartidos", cmd: '# .architect.md + guardrails + skills\n# Convenciones del equipo codificadas,\n# versionadas en git, verificadas en cada ejecución' },
-    { label: "Eval de modelos", cmd: 'architect eval \\\n  --models claude-sonnet-4,gpt-4.1 \\\n  --tasks eval/tasks.yaml' },
-];
-
-const ciCases = [
-    { label: "Fix automático de lint", cmd: 'architect loop "Corrige errores de lint" \\\n  --check "eslint src/ --max-warnings 0" \\\n  --max-iterations 5 --budget 0.50' },
-    { label: "Changelog automático", cmd: 'architect run "Genera changelog desde v1.2.0" \\\n  --report markdown > CHANGELOG.md' },
-    { label: "Docs automáticas", cmd: 'architect pipeline pipelines/update-docs.yaml' },
-];
+const { lang = 'es' } = Astro.props;
+const devCases = ui[lang].useCases.devCases;
+const teamCases = ui[lang].useCases.teamCases;
+const ciCases = ui[lang].useCases.ciCases;
 ---
 
 <section id="use-cases" class="usecases-section">
     <div class="usecases-container">
         <div class="section-header">
-            <h2 class="section-title">Casos de Uso</h2>
+            <h2 class="section-title">{t('useCases.title', lang)}</h2>
             <div class="section-line"></div>
         </div>
 
@@ -32,10 +25,9 @@ const ciCases = [
             <div class="usecase-block">
                 <div class="usecase-label">
                     <div class="usecase-marker"></div>
-                    <h3 class="usecase-title">Para Developers</h3>
+                    <h3 class="usecase-title">{t('useCases.devTitle', lang)}</h3>
                 </div>
-                <p class="usecase-desc">Configura un Ralph Loop con tu spec y tus tests. Cierra el portátil.
-                    A la mañana siguiente tienes un PR con código que compila y pasa todos los tests.</p>
+                <p class="usecase-desc">{t('useCases.devDesc', lang)}</p>
                 <div class="usecase-commands">
                     {devCases.map(c => (
                         <div class="cmd-item">
@@ -50,10 +42,9 @@ const ciCases = [
             <div class="usecase-block">
                 <div class="usecase-label">
                     <div class="usecase-marker"></div>
-                    <h3 class="usecase-title">Para Equipos</h3>
+                    <h3 class="usecase-title">{t('useCases.teamTitle', lang)}</h3>
                 </div>
-                <p class="usecase-desc">Review automático en cada PR, estándares compartidos codificados en YAML,
-                    y evaluación objetiva cuando cambiáis de modelo.</p>
+                <p class="usecase-desc">{t('useCases.teamDesc', lang)}</p>
                 <div class="usecase-commands">
                     {teamCases.map(c => (
                         <div class="cmd-item">
@@ -63,10 +54,10 @@ const ciCases = [
                     ))}
                 </div>
 
-                <CodeFigure title="GitHub Actions — Review" class="usecase-code">
+                <CodeFigure title={t('useCases.teamFigureTitle', lang)} class="usecase-code">
                     <div><span class="yaml-key">- name:</span> AI Code Review</div>
                     <div class="yaml-indent"><span class="yaml-key">run:</span> |</div>
-                    <div class="yaml-indent2">architect run "Revisa los cambios de este PR" \</div>
+                    <div class="yaml-indent2">architect run "{t('useCases.teamGhActionCmd', lang)}" \</div>
                     <div class="yaml-indent2">  --agent review \</div>
                     <div class="yaml-indent2">  --context-git-diff origin/main \</div>
                     <div class="yaml-indent2">  --report github \</div>
@@ -78,10 +69,9 @@ const ciCases = [
             <div class="usecase-block">
                 <div class="usecase-label">
                     <div class="usecase-marker"></div>
-                    <h3 class="usecase-title">Para CI/CD & DevOps</h3>
+                    <h3 class="usecase-title">{t('useCases.ciTitle', lang)}</h3>
                 </div>
-                <p class="usecase-desc">Integra architect en tus pipelines. Fix automático de lint,
-                    generación de changelogs, documentación actualizada — todo headless, todo auditable.</p>
+                <p class="usecase-desc">{t('useCases.ciDesc', lang)}</p>
                 <div class="usecase-commands">
                     {ciCases.map(c => (
                         <div class="cmd-item">

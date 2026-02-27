@@ -1,0 +1,229 @@
+---
+import { getCollection } from 'astro:content';
+import { getVersionsForLang } from '../../../config/versions';
+import { t, getLocalizedPath } from '../../../i18n/utils';
+import Layout from '../../../layouts/Layout.astro';
+import Navbar from '../../../components/Navbar.astro';
+import Footer from '../../../components/Footer.astro';
+import Card from '../../../components/ui/Card.astro';
+import VersionSelector from '../../../components/VersionSelector.astro';
+import ArchBanner from '../../../components/ArchBanner.astro';
+
+const lang = 'en';
+const versions = getVersionsForLang(lang);
+const allDocs = await getCollection('docs-en');
+
+const docsByVersion: Record<string, typeof allDocs> = {};
+for (const version of versions) {
+    docsByVersion[version.id] = allDocs
+        .filter(doc => doc.slug.startsWith(version.id + '/'))
+        .sort((a, b) => {
+            if (a.data.order && b.data.order) return a.data.order - b.data.order;
+            return a.slug.localeCompare(b.slug);
+        });
+}
+---
+
+<Layout lang={lang}>
+    <Navbar lang={lang} />
+
+    <main class="hub-main">
+        <div class="hub-container">
+            <div class="hub-header">
+                <h1 class="hub-title">{t('docsHub.title', lang)}</h1>
+                <div class="hub-line"></div>
+            </div>
+
+            <ArchBanner lang={lang} />
+
+            <div class="hub-controls">
+                <div class="search-wrapper">
+                    <input
+                        type="text"
+                        id="docs-search"
+                        class="search-input"
+                        placeholder={t('docsHub.searchPlaceholder', lang)}
+                        autocomplete="off"
+                    />
+                </div>
+                <VersionSelector lang={lang} />
+            </div>
+
+            {versions.map(version => (
+                <div
+                    class="card-grid version-grid"
+                    data-version={version.id}
+                    style={version.isLatest ? '' : 'display: none;'}
+                >
+                    {docsByVersion[version.id].map(doc => (
+                        <div
+                            class="card-wrapper"
+                            data-title={doc.data.title || doc.slug.replace(/^v[\d-]+\//, '')}
+                            data-description={doc.data.description || ''}
+                        >
+                            <Card
+                                title={doc.data.title || doc.slug.replace(/^v[\d-]+\//, '')}
+                                href={getLocalizedPath(`docs/${doc.slug}`, lang)}
+                                iconPath={doc.data.icon}
+                                class="h-full"
+                            >
+                                {doc.data.description || t('docsHub.defaultDesc', lang)}
+                            </Card>
+                        </div>
+                    ))}
+                </div>
+            ))}
+
+            <p class="no-results" id="no-results">{t('docsHub.noResults', lang)}</p>
+        </div>
+    </main>
+
+    <Footer lang={lang} />
+</Layout>
+
+<script>
+document.addEventListener('astro:page-load', () => {
+    const input = document.getElementById('docs-search') as HTMLInputElement | null;
+    const noResults = document.getElementById('no-results');
+    const versionSelect = document.getElementById('version-select') as HTMLSelectElement | null;
+    const grids = document.querySelectorAll<HTMLElement>('.version-grid');
+
+    if (!input || !noResults || !versionSelect) return;
+
+    function getActiveGrid(): HTMLElement | null {
+        for (const grid of grids) {
+            if (grid.style.display !== 'none') return grid;
+        }
+        return null;
+    }
+
+    function filterCards() {
+        const query = input!.value.toLowerCase().trim();
+        const grid = getActiveGrid();
+        if (!grid) return;
+
+        const cards = Array.from(grid.querySelectorAll<HTMLElement>('.card-wrapper'));
+        let visible = 0;
+
+        cards.forEach(card => {
+            const title = (card.dataset.title || '').toLowerCase();
+            const desc = (card.dataset.description || '').toLowerCase();
+            const match = !query || title.includes(query) || desc.includes(query);
+            card.style.display = match ? '' : 'none';
+            if (match) visible++;
+        });
+
+        noResults!.style.display = visible === 0 ? '' : 'none';
+    }
+
+    versionSelect.addEventListener('change', () => {
+        const selected = versionSelect!.value;
+        grids.forEach(grid => {
+            grid.style.display = grid.dataset.version === selected ? '' : 'none';
+        });
+        filterCards();
+    });
+
+    input.addEventListener('input', filterCards);
+});
+</script>
+
+<style>
+    .hub-main {
+        min-height: calc(100vh - 74px - 85px);
+        padding: 4rem 1.5rem;
+    }
+
+    .hub-container {
+        max-width: 80rem;
+        margin: 0 auto;
+    }
+
+    .hub-header {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        margin-bottom: 2.5rem;
+    }
+
+    .hub-title {
+        font-family: var(--font-heading);
+        font-size: 1.875rem;
+        color: var(--arch-ink);
+        font-weight: 800;
+        margin: 0;
+        white-space: nowrap;
+    }
+
+    .hub-line {
+        height: 4px;
+        background-color: var(--arch-ink);
+        flex-grow: 1;
+    }
+
+    .hub-controls {
+        display: flex;
+        align-items: flex-start;
+        gap: 1.5rem;
+        margin-bottom: 3rem;
+        flex-wrap: wrap;
+    }
+
+    .search-wrapper {
+        flex: 1;
+        min-width: 16rem;
+        max-width: 36rem;
+    }
+
+    .search-input {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        font-family: var(--font-body);
+        font-size: 1rem;
+        color: var(--arch-ink);
+        background-color: var(--arch-surface);
+        border: 2px solid var(--arch-ink);
+        box-shadow: var(--shadow-draft);
+        outline: none;
+        transition: box-shadow 0.15s, transform 0.15s;
+    }
+
+    .search-input::placeholder {
+        color: var(--arch-ink-light);
+    }
+
+    .search-input:focus {
+        transform: translate(2px, 2px);
+        box-shadow: var(--shadow-draft-hover);
+    }
+
+    .card-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    @media (min-width: 768px) {
+        .card-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (min-width: 1024px) {
+        .card-grid {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+
+    .card-wrapper {
+        display: flex;
+    }
+
+    .no-results {
+        display: none;
+        text-align: center;
+        color: var(--arch-ink-light);
+        font-size: 1.125rem;
+        padding: 3rem 0;
+    }
+</style>

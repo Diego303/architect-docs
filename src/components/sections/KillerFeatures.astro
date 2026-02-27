@@ -1,61 +1,36 @@
 ---
 import FeatureCard from '../ui/FeatureCard.astro';
 import CodeFigure from '../ui/CodeFigure.astro';
+import { t, type Lang } from '../../i18n/utils';
+import { ui } from '../../i18n/ui';
 
-const features = [
-    {
-        title: "Multi-Modelo, Cero Lock-in",
-        iconPath: "M8 7h12M8 12h12M8 17h12M4 7h.01M4 12h.01M4 17h.01",
-        description: "Usa cualquier LLM: OpenAI, Anthropic, Google, DeepSeek, Mistral, Ollama — o cualquier API compatible. Más de 100 proveedores vía LiteLLM. Cambia de modelo con un flag.",
-    },
-    {
-        title: "Ralph Loop — Iteración Autónoma",
-        iconPath: "M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15",
-        description: "Ejecuta, verifica con tus tests, si fallan reintenta con contexto limpio. Itera hasta que tus checks pasen de verdad — no hasta que el LLM crea que ha terminado.",
-    },
-    {
-        title: "Parallel Runs con Worktrees",
-        iconPath: "M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10",
-        description: "Múltiples agentes en paralelo, cada uno en su git worktree aislado. Misma tarea con N modelos para comparar, o tareas diferentes para multiplicar velocidad.",
-    },
-    {
-        title: "Guardrails & Quality Gates",
-        iconPath: "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z",
-        description: "Archivos protegidos, comandos bloqueados, límites de cambios, reglas de código. Quality gates obligatorios antes de completar. Declarativo en YAML, determinista.",
-    },
-    {
-        title: "Pipelines Declarativos",
-        iconPath: "M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z",
-        description: "Workflows multi-paso en YAML. Plan, Build, Test, Review, Fix. Variables entre pasos, condiciones, checkpoints. Composable y reutilizable.",
-    },
-    {
-        title: "Extensible con Hooks",
-        iconPath: "M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4",
-        description: "10 eventos del lifecycle del agente. Formatea código automáticamente, bloquea comandos peligrosos, notifica a Slack cuando termina. Pre y post en cada acción.",
-    },
-    {
-        title: "Hecho para CI/CD",
-        iconPath: "M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z",
-        description: "Exit codes semánticos, output JSON parseable, reports en Markdown para PR comments. Budget y timeout como hard limits. Sin confirmaciones, sin prompts interactivos.",
-    },
-    {
-        title: "Aprende Con El Uso",
-        iconPath: "M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z",
-        description: "Memoria procedural auto-generada. Detecta correcciones y las persiste. Combinada con .architect.md y skills Vercel-compatible: tres capas de conocimiento acumulado.",
-    },
+interface Props { lang?: Lang; }
+const { lang = 'es' } = Astro.props;
+
+const features = ui[lang].features.items;
+
+const iconPaths = [
+    "M8 7h12M8 12h12M8 17h12M4 7h.01M4 12h.01M4 17h.01",
+    "M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15",
+    "M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10",
+    "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z",
+    "M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z",
+    "M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4",
+    "M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z",
+    "M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z",
 ];
 ---
 
 <section id="features" class="features-section">
     <div class="features-container">
         <div class="section-header">
-            <h2 class="section-title">Características Principales</h2>
+            <h2 class="section-title">{t('features.title', lang)}</h2>
             <div class="section-line"></div>
         </div>
 
         <div class="features-grid">
-            {features.map(feature => (
-                <FeatureCard title={feature.title} iconPath={feature.iconPath}>
+            {features.map((feature, i) => (
+                <FeatureCard title={feature.title} iconPath={iconPaths[i]}>
                     <p>{feature.description}</p>
                 </FeatureCard>
             ))}
@@ -64,51 +39,33 @@ const features = [
         <!-- Spotlight: Ralph Loop -->
         <div class="feature-spotlight">
             <div class="spotlight-text">
-                <h3 class="spotlight-title">Ralph Loop — La Feature Estrella</h3>
-                <p class="spotlight-desc">
-                    El patrón más productivo en agentic coding, integrado como feature nativa.
-                    En vez de confiar en que la IA decida cuándo ha terminado, architect ejecuta tus tests
-                    y linters después de cada iteración. Si fallan, el agente vuelve a intentarlo con
-                    <strong>contexto limpio</strong>.
-                </p>
-                <p class="spotlight-desc">
-                    Cada iteración arranca fresca — sin acumular basura de intentos anteriores. Solo recibe:
-                    la spec original, el diff acumulado, y los errores de la última iteración. El resultado:
-                    <strong>código que compila, pasa tests, y está limpio.</strong>
-                </p>
+                <h3 class="spotlight-title">{t('features.ralphTitle', lang)}</h3>
+                <p class="spotlight-desc" set:html={t('features.ralphDesc1', lang)} />
+                <p class="spotlight-desc" set:html={t('features.ralphDesc2', lang)} />
                 <div class="spotlight-cmd">
-                    <code>$ architect loop "Implementa el módulo de pagos" \<br/>  --check "pytest tests/ -q" \<br/>  --check "ruff check src/" \<br/>  --max-iterations 25</code>
+                    <code>$ architect loop "{t('features.ralphCmd', lang)}" \<br/>  --check "pytest tests/ -q" \<br/>  --check "ruff check src/" \<br/>  --max-iterations 25</code>
                 </div>
             </div>
-            <CodeFigure title="Ralph Loop — Iteración 3/25">
-                <div class="sl-line"><span class="sl-icon">&#x1F504;</span> Agente trabajando (contexto limpio + errores de iter. 2)...</div>
+            <CodeFigure title={t('features.ralphFigureTitle', lang)}>
+                <div class="sl-line"><span class="sl-icon">&#x1F504;</span> {t('features.ralphLine1', lang)}</div>
                 <div class="sl-line sl-indent"><span class="sl-icon-sm">&#x1F527;</span> edit_file &#x2192; src/payments/stripe.py</div>
                 <div class="sl-line sl-indent"><span class="sl-icon-sm">&#x1F527;</span> edit_file &#x2192; tests/test_payments.py</div>
-                <div class="sl-line sl-indent"><span class="sl-check">&#x2713;</span> Agente completó</div>
+                <div class="sl-line sl-indent"><span class="sl-check">&#x2713;</span> {t('features.ralphLine2', lang)}</div>
                 <div class="sl-spacer"></div>
-                <div class="sl-line"><span class="sl-icon">&#x1F9EA;</span> Verificación externa:</div>
-                <div class="sl-line sl-indent"><span class="sl-check">&#x2713;</span> pytest tests/ -q &#x2192; <span class="sl-pass">18/18 passed</span></div>
-                <div class="sl-line sl-indent"><span class="sl-check">&#x2713;</span> ruff check src/ &#x2192; <span class="sl-pass">sin errores</span></div>
+                <div class="sl-line"><span class="sl-icon">&#x1F9EA;</span> {t('features.ralphVerification', lang)}</div>
+                <div class="sl-line sl-indent"><span class="sl-check">&#x2713;</span> pytest tests/ -q &#x2192; <span class="sl-pass">{t('features.ralphTestPass', lang)}</span></div>
+                <div class="sl-line sl-indent"><span class="sl-check">&#x2713;</span> ruff check src/ &#x2192; <span class="sl-pass">{t('features.ralphLintPass', lang)}</span></div>
                 <div class="sl-separator"></div>
-                <div class="sl-line sl-bold"><span class="sl-icon">&#x2705;</span> Loop completado en 3 iteraciones (<span class="sl-cost">$0.089</span>)</div>
+                <div class="sl-line sl-bold"><span class="sl-icon">&#x2705;</span> {t('features.ralphDone', lang)} (<span class="sl-cost">$0.089</span>)</div>
             </CodeFigure>
         </div>
 
         <!-- Spotlight: Guardrails & Quality Gates -->
         <div class="feature-spotlight spotlight-reverse">
             <div class="spotlight-text">
-                <h3 class="spotlight-title">Guardrails & Quality Gates</h3>
-                <p class="spotlight-desc">
-                    Los guardrails de architect no dependen del LLM. Son reglas deterministas que se evalúan
-                    antes y después de cada acción. El agente no puede saltárselas porque no las controla —
-                    <strong>están fuera de su contexto.</strong>
-                </p>
-                <p class="spotlight-desc">
-                    Si el agente intenta escribir en <code>.env</code> &#x2192; bloqueado. Si el código
-                    contiene <code>eval()</code> &#x2192; bloqueado. Si dice "he terminado" pero pytest
-                    falla &#x2192; sigue trabajando. <strong>Los quality gates pasan o no pasan.</strong>
-                    Sin negociación.
-                </p>
+                <h3 class="spotlight-title">{t('features.guardrailsTitle', lang)}</h3>
+                <p class="spotlight-desc" set:html={t('features.guardrailsDesc1', lang)} />
+                <p class="spotlight-desc" set:html={t('features.guardrailsDesc2', lang)} />
             </div>
             <CodeFigure title="guardrails.yaml">
                 <div class="sl-yaml"><span class="sl-key">guardrails:</span></div>
@@ -133,29 +90,22 @@ const features = [
         <!-- Spotlight: Parallel Runs -->
         <div class="feature-spotlight">
             <div class="spotlight-text">
-                <h3 class="spotlight-title">Parallel Runs con Git Worktrees</h3>
-                <p class="spotlight-desc">
-                    Lanza múltiples agentes en paralelo, cada uno en su propio git worktree aislado. Misma
-                    tarea con diferentes modelos para comparar resultados reales en tu codebase. O diferentes
-                    tareas en paralelo para multiplicar velocidad.
-                </p>
-                <p class="spotlight-desc">
-                    Worktrees nativos de git: sin copias, sin conflictos, sin Docker. Cada worker opera en un
-                    snapshot aislado del repo. Al final, <strong>datos objetivos — no opiniones.</strong>
-                </p>
+                <h3 class="spotlight-title">{t('features.parallelTitle', lang)}</h3>
+                <p class="spotlight-desc" set:html={t('features.parallelDesc1', lang)} />
+                <p class="spotlight-desc" set:html={t('features.parallelDesc2', lang)} />
                 <div class="spotlight-cmd">
-                    <code>$ architect parallel "Refactoriza el módulo auth" \<br/>  --models gpt-4.1,claude-sonnet-4,deepseek-chat</code>
+                    <code>$ architect parallel "{t('features.parallelCmd', lang)}" \<br/>  --models gpt-4.1,claude-sonnet-4,deepseek-chat</code>
                 </div>
             </div>
-            <CodeFigure title="Resultados — Competitive Eval">
+            <CodeFigure title={t('features.parallelFigureTitle', lang)}>
                 <div class="sl-line sl-bold">Worker 1 <span class="sl-meta">(gpt-4.1)</span></div>
-                <div class="sl-line sl-indent">&#x2192; architect/parallel-1 <span class="sl-pass">&#x2713;</span>  8 pasos  <span class="sl-cost">$0.034</span></div>
+                <div class="sl-line sl-indent">&#x2192; architect/parallel-1 <span class="sl-pass">&#x2713;</span>  8 {t('features.parallelSteps', lang)}  <span class="sl-cost">$0.034</span></div>
                 <div class="sl-spacer-sm"></div>
                 <div class="sl-line sl-bold">Worker 2 <span class="sl-meta">(claude-sonnet-4)</span></div>
-                <div class="sl-line sl-indent">&#x2192; architect/parallel-2 <span class="sl-pass">&#x2713;</span>  5 pasos  <span class="sl-cost">$0.028</span></div>
+                <div class="sl-line sl-indent">&#x2192; architect/parallel-2 <span class="sl-pass">&#x2713;</span>  5 {t('features.parallelSteps', lang)}  <span class="sl-cost">$0.028</span></div>
                 <div class="sl-spacer-sm"></div>
                 <div class="sl-line sl-bold">Worker 3 <span class="sl-meta">(deepseek-chat)</span></div>
-                <div class="sl-line sl-indent">&#x2192; architect/parallel-3 <span class="sl-pass">&#x26A1;</span> 20 pasos  <span class="sl-cost">$0.006</span></div>
+                <div class="sl-line sl-indent">&#x2192; architect/parallel-3 <span class="sl-pass">&#x26A1;</span> 20 {t('features.parallelSteps', lang)}  <span class="sl-cost">$0.006</span></div>
                 <div class="sl-separator"></div>
                 <div class="sl-line"><span class="sl-meta">$ architect diff parallel-1 parallel-2</span></div>
                 <div class="sl-line"><span class="sl-meta">$ architect merge parallel-2</span></div>

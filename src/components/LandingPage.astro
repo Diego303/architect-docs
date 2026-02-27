@@ -5,6 +5,13 @@ import KillerFeatures from './sections/KillerFeatures.astro';
 import Comparison from './sections/Comparison.astro';
 import UseCases from './sections/UseCases.astro';
 import QuickStart from './sections/QuickStart.astro';
+import { t, getLocalizedPath, type Lang } from '../i18n/utils';
+
+interface Props {
+    lang?: Lang;
+}
+
+const { lang = 'es' } = Astro.props;
 ---
 
 <main class="landing-main">
@@ -12,57 +19,52 @@ import QuickStart from './sections/QuickStart.astro';
 
     <div class="hero-section">
         <h1 class="hero-title">
-            Planifica y ejecuta tareas con <br />
-            <span class="highlight-brick">Precisión Agéntica</span>
+            {t('hero.titleLine1', lang)} <br />
+            <span class="highlight-brick">{t('hero.titleHighlight', lang)}</span>
         </h1>
 
-        <p class="hero-subtitle">
-            La documentación oficial de <strong class="text-ink">Architect</strong>. Herramienta CLI
-            open source que orquesta agentes de IA para escribir, revisar, y corregir código
-            automáticamente. <strong class="text-ink">Headless-first</strong>: diseñada para CI/CD,
-            pipelines, y automatización. Multi-modelo y con guardrails de seguridad integrados.
-        </p>
+        <p class="hero-subtitle" set:html={t('hero.subtitle', lang)} />
 
         <!-- Code Block — Real Human Logs -->
         <div class="code-figure">
             <div class="code-figure-header">
-                <span class="code-figure-title">TERMINAL — HUMAN LOG OUTPUT</span>
+                <span class="code-figure-title">{t('hero.terminalHeader', lang)}</span>
                 <div class="code-figure-dot"></div>
             </div>
             <div class="code-figure-content">
-                <div><span class="prompt font-bold">$ </span><span class="font-bold">architect run "Refactoriza el módulo auth del proyecto"</span></div>
+                <div><span class="prompt font-bold">$ </span><span class="font-bold">{t('hero.terminalCmd', lang)}</span></div>
                 <div class="log-spacer"></div>
-                <div class="log-step"><span class="log-icon">&#x1F504;</span> Paso 1 &#x2192; Llamada al LLM (5 mensajes)</div>
-                <div class="log-detail"><span class="log-check">&#x2713;</span> LLM respondió con 2 tool calls</div>
+                <div class="log-step"><span class="log-icon">&#x1F504;</span> {t('hero.terminalStep1', lang)}</div>
+                <div class="log-detail"><span class="log-check">&#x2713;</span> {t('hero.terminalStep1Detail', lang)}</div>
                 <div class="log-spacer-sm"></div>
-                <div class="log-tool"><span class="log-icon">&#x1F527;</span> read_file &#x2192; src/main.py</div>
+                <div class="log-tool"><span class="log-icon">&#x1F527;</span> {t('hero.terminalTool1', lang)}</div>
                 <div class="log-result"><span class="log-check">&#x2713;</span> OK</div>
                 <div class="log-spacer-sm"></div>
-                <div class="log-tool"><span class="log-icon">&#x1F527;</span> edit_file &#x2192; src/main.py (3&#x2192;5 líneas)</div>
+                <div class="log-tool"><span class="log-icon">&#x1F527;</span> {t('hero.terminalTool2', lang)}</div>
                 <div class="log-result"><span class="log-check">&#x2713;</span> OK</div>
-                <div class="log-result"><span class="log-icon-sm">&#x1F50D;</span> Hook python-lint: <span class="log-check">&#x2713;</span></div>
+                <div class="log-result"><span class="log-icon-sm">&#x1F50D;</span> {t('hero.terminalHook', lang)} <span class="log-check">&#x2713;</span></div>
                 <div class="log-spacer"></div>
-                <div class="log-step"><span class="log-icon">&#x1F504;</span> Paso 2 &#x2192; Llamada al LLM (9 mensajes)</div>
-                <div class="log-detail"><span class="log-check">&#x2713;</span> LLM respondió con texto final</div>
+                <div class="log-step"><span class="log-icon">&#x1F504;</span> {t('hero.terminalStep2', lang)}</div>
+                <div class="log-detail"><span class="log-check">&#x2713;</span> {t('hero.terminalStep2Detail', lang)}</div>
                 <div class="log-spacer"></div>
-                <div class="log-done"><span class="log-icon">&#x2705;</span> Agente completado (2 pasos)</div>
-                <div class="log-meta">Razón: LLM decidió que terminó</div>
-                <div class="log-meta">Coste: <span class="text-arch-brick">$0.0042</span> <span class="cursor"></span></div>
+                <div class="log-done"><span class="log-icon">&#x2705;</span> {t('hero.terminalDone', lang)}</div>
+                <div class="log-meta">{t('hero.terminalReason', lang)}</div>
+                <div class="log-meta">{t('hero.terminalCost', lang)} <span class="text-arch-brick">$0.0042</span> <span class="cursor"></span></div>
             </div>
         </div>
 
         <div class="cta-group">
-            <Button href={`${import.meta.env.BASE_URL}docs/`}>VER DOCS</Button>
-            <Button variant="secondary" href="https://github.com/Diego303/architect-cli" target="_blank">GITHUB</Button>
+            <Button href={getLocalizedPath('docs/', lang)}>{t('hero.btnDocs', lang)}</Button>
+            <Button variant="secondary" href="https://github.com/Diego303/architect-cli" target="_blank">{t('hero.btnGithub', lang)}</Button>
         </div>
     </div>
 
-    <!-- New marketing sections -->
-    <ElevatorPitch />
-    <KillerFeatures />
-    <Comparison />
-    <UseCases />
-    <QuickStart />
+    <!-- Marketing sections -->
+    <ElevatorPitch lang={lang} />
+    <KillerFeatures lang={lang} />
+    <Comparison lang={lang} />
+    <UseCases lang={lang} />
+    <QuickStart lang={lang} />
 
 </main>
 

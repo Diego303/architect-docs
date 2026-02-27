@@ -2,20 +2,26 @@
 import { getEntry } from 'astro:content';
 import Prose from './Prose.astro';
 import UseCasesTOC from './UseCasesTOC.astro';
+import { t, type Lang } from '../i18n/utils';
 
-const entry = await getEntry('pages', 'casos-de-uso');
+interface Props {
+    lang?: Lang;
+}
+
+const { lang = 'es' } = Astro.props;
+const collectionName = lang === 'en' ? 'pages-en' : 'pages';
+const slug = lang === 'en' ? 'use-cases' : 'casos-de-uso';
+const entry = await getEntry(collectionName, slug);
 const { Content, headings } = await entry.render();
 ---
 
 <section class="casos-de-uso-page">
     <div class="casos-hero">
         <div class="section-header">
-            <h1 class="hero-title">Casos de Uso</h1>
+            <h1 class="hero-title">{t('casosDeUso.title', lang)}</h1>
             <div class="section-line"></div>
         </div>
-        <p class="hero-subtitle">
-            Guía práctica de integración de <code>architect</code> en flujos de trabajo reales: desarrollo diario, CI/CD, DevOps, QA, documentación y arquitecturas avanzadas.
-        </p>
+        <p class="hero-subtitle" set:html={t('casosDeUso.subtitle', lang)} />
     </div>
 
     <div class="casos-layout">
@@ -24,7 +30,7 @@ const { Content, headings } = await entry.render();
                 <Content />
             </Prose>
         </main>
-        <UseCasesTOC headings={headings} />
+        <UseCasesTOC headings={headings} lang={lang} />
     </div>
 </section>
 
