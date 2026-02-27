@@ -1,20 +1,23 @@
 ---
-import { VERSIONS, type VersionConfig } from '../config/versions';
+import { VERSIONS, type VersionConfig, getVersionsForLang } from '../config/versions';
+import { t, type Lang } from '../i18n/utils';
 
 interface Props {
   versions?: VersionConfig[];
+  lang?: Lang;
 }
 
-const { versions = VERSIONS } = Astro.props;
+const { lang = 'es' } = Astro.props;
+const versions = Astro.props.versions || getVersionsForLang(lang);
 ---
 
 <div class="version-selector">
-  <label class="version-label" for="version-select">VERSION</label>
+  <label class="version-label" for="version-select">{t('version.label', lang)}</label>
   <div class="version-select-box">
     <select id="version-select" class="version-select">
       {versions.map(v => (
         <option value={v.id} selected={v.isLatest}>
-          {v.label}{v.isLatest ? ' (latest)' : ''}
+          {v.label}{v.isLatest ? ` ${t('version.latest', lang)}` : ''}
         </option>
       ))}
     </select>

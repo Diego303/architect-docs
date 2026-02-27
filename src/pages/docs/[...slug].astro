@@ -22,12 +22,12 @@ const versionConfig = VERSIONS.find(v => v.id === versionId);
 const versionLabel = versionConfig?.label;
 ---
 
-<Layout>
+<Layout lang="es">
     <div class="docs-layout">
-        <Navbar />
+        <Navbar lang="es" />
 
         <div class="docs-container container">
-            <DocsSidebar headings={headings} title={entry.data.title || entry.slug} versionLabel={versionLabel} />
+            <DocsSidebar headings={headings} title={entry.data.title || entry.slug} versionLabel={versionLabel} lang="es" />
             
             <main class="docs-content">
                 <Prose>

@@ -1,9 +1,16 @@
 ---
 import { LATEST_VERSION } from '../config/versions';
+import { t, type Lang } from '../i18n/utils';
+
+interface Props {
+    lang?: Lang;
+}
+
+const { lang = 'es' } = Astro.props;
 ---
 <footer class="footer">
     <div class="container footer-content">
-        <p>&copy; 2026 Architect Project. <span class="footer-tagline">Hecho con precisión.</span> <span class="footer-claude">Creado con <a href="https://claude.ai/claude-code" target="_blank" class="claude-link">Claude Code</a></span></p>
+        <p>{t('footer.copyright', lang)} <span class="footer-tagline">{t('footer.tagline', lang)}</span> <span class="footer-claude">{t('footer.createdWith', lang)} <a href="https://claude.ai/claude-code" target="_blank" class="claude-link">Claude Code</a></span></p>
         <div class="footer-links">
             <a href="#" class="footer-link">{LATEST_VERSION.label}</a>
         </div>

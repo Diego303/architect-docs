@@ -1,5 +1,6 @@
 ---
 import type { MarkdownHeading } from 'astro';
+import { t, getLocalizedPath, type Lang } from '../i18n/utils';
 
 interface Props {
     headings: MarkdownHeading[];
@@ -7,14 +8,16 @@ interface Props {
     versionLabel?: string;
     backLink?: string;
     backLabel?: string;
+    lang?: Lang;
 }
 
 const {
     headings,
     title,
     versionLabel,
-    backLink = import.meta.env.BASE_URL + 'docs/',
-    backLabel = 'Volver a Docs'
+    backLink = getLocalizedPath('docs/', Astro.props.lang || 'es'),
+    backLabel = t('sidebar.backToDocs', Astro.props.lang || 'es'),
+    lang = 'es',
 } = Astro.props;
 ---
 
@@ -34,7 +37,7 @@ const {
         </div>
 
         <div class="sidebar-header">
-            <span class="sidebar-title">Índice: {title}</span>
+            <span class="sidebar-title">{t('sidebar.index', lang)} {title}</span>
         </div>
         
         <nav class="sidebar-nav">

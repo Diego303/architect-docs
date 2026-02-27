@@ -1,73 +1,55 @@
 ---
-const badges = [
-    "Multi-modelo",
-    "Ralph Loop",
-    "Parallel runs",
-    "Guardrails",
-    "Pipelines YAML",
-    "Hooks",
-    "CI/CD-first",
-    "Memoria auto",
-    "OpenTelemetry",
-    "Reports",
-    "Dry run",
-    "Skills Vercel",
-];
+import { t, tArray, type Lang } from '../../i18n/utils';
+
+interface Props {
+    lang?: Lang;
+}
+
+const { lang = 'es' } = Astro.props;
+const badges = tArray('elevator.badges', lang);
 ---
 
 <section id="about" class="elevator-section">
     <div class="elevator-container">
         <div class="section-header">
-            <h2 class="section-title">Qué es Architect</h2>
+            <h2 class="section-title">{t('elevator.title', lang)}</h2>
             <div class="section-line"></div>
         </div>
 
         <div class="elevator-grid">
             <div class="elevator-text">
-                <p class="elevator-lead">
-                    Una herramienta de línea de comandos que convierte cualquier LLM en un agente de código
-                    autónomo. Dale una tarea, y architect lee tu código, planifica los cambios, los implementa,
-                    ejecuta tests, y verifica el resultado — <strong>todo sin intervención humana.</strong>
-                </p>
-                <p class="elevator-body">
-                    A diferencia de los asistentes de código que viven dentro de un IDE, architect está diseñada
-                    para ejecutarse donde el código realmente se construye: en terminales, scripts, Makefiles,
-                    y pipelines de CI/CD. Es la pieza que falta entre <em>"tengo una IA que genera código"</em>
-                    y <em>"tengo una IA que entrega código verificado"</em>.
-                </p>
-                <p class="elevator-body">
-                    Funciona con cualquier LLM: OpenAI, Anthropic, Google, DeepSeek, Mistral, modelos locales
-                    con Ollama — más de 100 proveedores soportados. Tú eliges el modelo, architect hace el trabajo.
-                </p>
+                <p class="elevator-lead" set:html={t('elevator.lead', lang)} />
+                <p class="elevator-body" set:html={t('elevator.body1', lang)} />
+                <p class="elevator-body">{t('elevator.body2', lang)}</p>
             </div>
 
             <div class="elevator-values">
                 <div class="value-item">
                     <div class="value-marker"></div>
                     <div>
-                        <h4 class="value-title">Headless-first</h4>
-                        <p class="value-desc">No es un chat con superpoderes. Es una herramienta de automatización que habla con LLMs.</p>
+                        <h4 class="value-title">{t('elevator.value1Title', lang)}</h4>
+                        <p class="value-desc">{t('elevator.value1Desc', lang)}</p>
                     </div>
                 </div>
                 <div class="value-item">
                     <div class="value-marker"></div>
                     <div>
-                        <h4 class="value-title">Determinismo sobre probabilismo</h4>
-                        <p class="value-desc">Los hooks y guardrails son reglas, no sugerencias. El LLM decide qué hacer, los quality gates verifican que el resultado es correcto.</p>
+                        <h4 class="value-title">{t('elevator.value2Title', lang)}</h4>
+                        <p class="value-desc">{t('elevator.value2Desc', lang)}</p>
                     </div>
                 </div>
                 <div class="value-item">
                     <div class="value-marker"></div>
                     <div>
-                        <h4 class="value-title">Transparencia total</h4>
-                        <p class="value-desc">Cada acción del agente se registra con human logs legibles y JSON estructurado. Sin cajas negras.</p>
+                        <h4 class="value-title">{t('elevator.value3Title', lang)}</h4>
+                        <p class="value-desc">{t('elevator.value3Desc', lang)}</p>
                     </div>
                 </div>
                 <div class="value-item">
                     <div class="value-marker"></div>
                     <div>
-                        <h4 class="value-title">Open source, sin sorpresas</h4>
-                        <p class="value-desc">Sin suscripciones ni features bloqueadas. Pagas solo los costes de API del LLM que elijas.</p>
+                        <h4 class="value-title">{t('elevator.value4Title', lang)}</h4>
+                        <p class="value-desc">{t('elevator.value4Desc', lang)}</p>
                     </div>
                 </div>
             </div>

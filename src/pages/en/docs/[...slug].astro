@@ -1,0 +1,71 @@
+---
+import { getCollection } from 'astro:content';
+import { VERSIONS, getVersionFromSlug } from '../../../config/versions';
+import Layout from '../../../layouts/Layout.astro';
+import Navbar from '../../../components/Navbar.astro';
+import DocsSidebar from '../../../components/DocsSidebar.astro';
+import Prose from '../../../components/Prose.astro';
+
+export async function getStaticPaths() {
+  const docs = await getCollection('docs-en');
+  return docs.map(entry => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content, headings } = await entry.render();
+const versionId = getVersionFromSlug(entry.slug);
+const versionConfig = VERSIONS.find(v => v.id === versionId);
+const versionLabel = versionConfig?.label;
+---
+
+<Layout lang="en">
+    <div class="docs-layout">
+        <Navbar lang="en" />
+
+        <div class="docs-container container">
+            <DocsSidebar headings={headings} title={entry.data.title || entry.slug} versionLabel={versionLabel} lang="en" />
+
+            <main class="docs-content">
+                <Prose>
+                    <Content />
+                </Prose>
+            </main>
+        </div>
+    </div>
+</Layout>
+
+<style>
+    .docs-layout {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
+
+    .docs-container {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        width: 100%;
+    }
+
+    @media (min-width: 1024px) {
+        .docs-container {
+            flex-direction: row;
+        }
+    }
+
+    .docs-content {
+        flex: 1;
+        padding: 2rem 1.5rem 5rem;
+        min-width: 0;
+    }
+
+    @media (min-width: 1024px) {
+        .docs-content {
+            padding: 3rem 4rem 5rem;
+        }
+    }
+</style>

@@ -24,3 +24,14 @@ export function getVersionFromSlug(slug: string): string | null {
 export function getDocSlug(slug: string): string {
   return slug.replace(/^v[\d-]+\//, '');
 }
+
+/**
+ * Get versions available for a given language.
+ * English only has v1.0.0 (latest). Spanish has all versions.
+ */
+export function getVersionsForLang(lang: 'es' | 'en'): VersionConfig[] {
+  if (lang === 'en') {
+    return VERSIONS.filter(v => v.isLatest);
+  }
+  return VERSIONS;
+}

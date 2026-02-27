@@ -1,0 +1,66 @@
+---
+import type { Lang } from '../i18n/utils';
+import { getAlternateLangPath } from '../i18n/utils';
+
+interface Props {
+    lang?: Lang;
+}
+
+const { lang = 'es' } = Astro.props;
+const alternateLang: Lang = lang === 'es' ? 'en' : 'es';
+const alternateHref = getAlternateLangPath(Astro.url, alternateLang);
+---
+
+<div class="lang-toggle">
+    <span class="nav-sep"></span>
+    {lang === 'en' ? (
+        <a href={alternateHref} class="lang-link">ES</a>
+        <span class="lang-current">EN</span>
+    ) : (
+        <span class="lang-current">ES</span>
+        <a href={alternateHref} class="lang-link">EN</a>
+    )}
+</div>
+
+<style>
+    .lang-toggle {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .nav-sep {
+        width: 1px;
+        height: 1.25rem;
+        background-color: var(--arch-line);
+        margin-right: 0.25rem;
+    }
+
+    .lang-current {
+        font-family: var(--font-heading);
+        font-weight: 700;
+        font-size: 0.75rem;
+        color: var(--arch-ink);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        padding: 0.25rem 0.375rem;
+        background-color: var(--arch-ink);
+        color: var(--arch-paper);
+    }
+
+    .lang-link {
+        font-family: var(--font-heading);
+        font-weight: 600;
+        font-size: 0.75rem;
+        color: var(--arch-ink-light);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        text-decoration: none;
+        padding: 0.25rem 0.375rem;
+        transition: color 0.2s;
+    }
+
+    .lang-link:hover {
+        color: var(--arch-brick);
+    }
+</style>

@@ -1,43 +1,24 @@
 ---
-const rows = [
-    { label: "Modo principal", claude: "Terminal interactiva", cursor: "IDE (VS Code)", aider: "Terminal interactiva", architect: "Headless / CI" },
-    { label: "Multi-modelo", claude: "Solo Claude", cursor: "Multi (con config)", aider: "Multi", architect: "Multi (LiteLLM, 100+)" },
-    { label: "Sin supervisión", claude: "Parcial", cursor: "No", aider: "Parcial", architect: "Nativo" },
-    { label: "Parallel runs", claude: "Manual (worktrees)", cursor: "No", aider: "No", architect: "Nativo" },
-    { label: "Ralph Loop", claude: "Plugin externo", cursor: "No", aider: "No", architect: "Nativo" },
-    { label: "Pipelines YAML", claude: "No", cursor: "No", aider: "No", architect: "Sí" },
-    { label: "Guardrails", claude: "Hooks (manual)", cursor: "Limitado", aider: "No", architect: "Declarativo (YAML)" },
-    { label: "Quality Gates", claude: "No", cursor: "No", aider: "No", architect: "Sí" },
-    { label: "CI/CD-first", claude: "Adaptable", cursor: "No", aider: "Parcial", architect: "Diseñado para ello" },
-    { label: "Exit codes CI", claude: "No", cursor: "No", aider: "No", architect: "Semánticos" },
-    { label: "Reports", claude: "No", cursor: "No", aider: "No", architect: "JSON / MD / GitHub" },
-    { label: "MCP nativo", claude: "Sí", cursor: "No", aider: "No", architect: "Sí" },
-    { label: "Post-edit hooks", claude: "Manuales", cursor: "Parcial", aider: "No", architect: "Auto y configurables" },
-    { label: "Self-eval", claude: "No", cursor: "No", aider: "No", architect: "Basic + Full" },
-    { label: "Skills ecosystem", claude: "Sí", cursor: "Sí", aider: "No", architect: "Sí (Vercel-compatible)" },
-    { label: "Memoria procedural", claude: "No", cursor: "No", aider: "No", architect: "Auto-generada" },
-    { label: "Session resume", claude: "Parcial", cursor: "No", aider: "No", architect: "Completo" },
-    { label: "Checkpoints", claude: "Interactivo", cursor: "No", aider: "Git auto-commits", architect: "Programático" },
-    { label: "OpenTelemetry", claude: "No", cursor: "No", aider: "No", architect: "Nativo" },
-    { label: "Cost tracking", claude: "Limitado", cursor: "No", aider: "Parcial", architect: "Completo + budget" },
-    { label: "Custom agents", claude: "No", cursor: "No", aider: "No", architect: "Sí (YAML)" },
-    { label: "Open source", claude: "No", cursor: "No", aider: "Sí", architect: "Sí" },
-    { label: "Coste", claude: "$20/mes (Pro)", cursor: "$20/mes", aider: "API costs", architect: "API costs (gratis)" },
-];
+import { ui } from '../../i18n/ui';
+import { t, type Lang } from '../../i18n/utils';
+
+interface Props {
+    lang?: Lang;
+}
+
+const { lang = 'es' } = Astro.props;
+const rows = ui[lang].comparison.rows;
 ---
 
 <section id="comparison" class="comparison-section">
     <div class="comparison-container">
         <div class="section-header">
-            <h2 class="section-title">Por qué Architect</h2>
+            <h2 class="section-title">{t('comparison.title', lang)}</h2>
             <div class="section-line"></div>
         </div>
 
         <div class="comparison-intro">
-            <p>
-                architect no compite con Claude Code ni con Cursor en su terreno. Compite donde ellos
-                no llegan: <strong>ejecución sin supervisión, CI/CD, automatización, scripts.</strong>
-            </p>
+            <p set:html={t('comparison.intro', lang)} />
         </div>
 
         <div class="table-wrapper">
@@ -67,18 +48,13 @@ const rows = [
 
         <div class="quotes-grid">
             <blockquote class="comparison-quote">
-                <p><strong>vs Claude Code:</strong> Claude Code es el mejor agente interactivo en terminal.
-                architect es el mejor agente para automatización. Claude Code es tu copiloto;
-                architect es tu <em>equipo de CI y tu piloto automático</em>.</p>
+                <p set:html={t('comparison.quoteVsClaude', lang)} />
             </blockquote>
             <blockquote class="comparison-quote">
-                <p><strong>vs Cursor:</strong> Cursor vive dentro del IDE. architect vive donde el código
-                se construye y se despliega: en <em>terminales, pipelines, en CI, en scripts y cron jobs</em>.</p>
+                <p set:html={t('comparison.quoteVsCursor', lang)} />
             </blockquote>
             <blockquote class="comparison-quote">
-                <p><strong>vs Aider:</strong> Aider fue pionero en agentes CLI. architect lleva la idea más
-                lejos: parallel runs, pipelines declarativos, guardrails, quality gates, self-evaluation, MCP,
-                y una arquitectura pensada para ejecutarse <em>sin supervisión durante horas</em>.</p>
+                <p set:html={t('comparison.quoteVsAider', lang)} />
             </blockquote>
         </div>
     </div>

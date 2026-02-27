@@ -1,10 +1,17 @@
 ---
 import { ClientRouter } from 'astro:transitions';
 import "../styles/global.css";
+import { t, type Lang } from '../i18n/utils';
+
+interface Props {
+	lang?: Lang;
+}
+
+const { lang = 'es' } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="es" class="scroll-smooth">
+<html lang={lang} class="scroll-smooth">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
@@ -13,7 +20,7 @@ import "../styles/global.css";
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@300;400;500;600&family=Outfit:wght@400;500;700;800&display=swap" rel="stylesheet">
 		<meta name="generator" content={Astro.generator} />
-		<title>Architect | Documentación Oficial</title>
+		<title>{t('layout.title', lang)}</title>
 		<ClientRouter />
 	</head>
 	<body>

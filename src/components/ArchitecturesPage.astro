@@ -1,30 +1,34 @@
 ---
 import { getCollection } from 'astro:content';
 import ArchCard from './ui/ArchCard.astro';
+import { t, getLocalizedPath, type Lang } from '../i18n/utils';
 
-const baseUrl = import.meta.env.BASE_URL;
-const architectures = (await getCollection('architectures'))
+interface Props {
+    lang?: Lang;
+}
+
+const { lang = 'es' } = Astro.props;
+const collectionName = lang === 'en' ? 'architectures-en' : 'architectures';
+const architectures = (await getCollection(collectionName))
     .sort((a, b) => a.data.order - b.data.order);
 ---
 
 <main class="arch-main">
     <div class="arch-container">
-        <a href={`${baseUrl}docs/`} class="arch-back-link">
+        <a href={getLocalizedPath('docs/', lang)} class="arch-back-link">
             <svg class="arch-back-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
             </svg>
-            Volver a Docs
+            {t('archPage.backToDocs', lang)}
         </a>
 
         <div class="arch-header">
-            <h1 class="arch-title">Arquitecturas de Referencia</h1>
+            <h1 class="arch-title">{t('archPage.title', lang)}</h1>
             <div class="arch-line"></div>
         </div>
 
         <p class="arch-intro">
-            10 arquitecturas reales donde architect encaja en sistemas de producción.
-            Cada una incluye diagrama del flujo, configuración YAML, comandos de implementación,
-            y las features de architect que se usan.
+            {t('archPage.intro', lang)}
         </p>
 
         <div class="arch-grid">
@@ -35,7 +39,7 @@ const architectures = (await getCollection('architectures'))
                     domain={arch.data.domain}
                     description={arch.data.description}
                     features={arch.data.features}
-                    href={`${baseUrl}docs/architectures/${arch.slug}/`}
+                    href={getLocalizedPath(`docs/architectures/${arch.slug}/`, lang)}
                 />
             ))}
         </div>

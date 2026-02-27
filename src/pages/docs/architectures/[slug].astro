@@ -18,9 +18,9 @@ const { Content, headings } = await entry.render();
 const baseUrl = import.meta.env.BASE_URL;
 ---
 
-<Layout>
+<Layout lang="es">
     <div class="docs-layout">
-        <Navbar />
+        <Navbar lang="es" />
 
         <div class="docs-container container">
             <DocsSidebar
@@ -28,6 +28,7 @@ const baseUrl = import.meta.env.BASE_URL;
                 title={entry.data.title}
                 backLink={`${baseUrl}docs/architectures/`}
                 backLabel="Volver a Arquitecturas"
+                lang="es"
             />
 
             <main class="docs-content">

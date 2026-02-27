@@ -2,22 +2,27 @@
 import { getEntry } from 'astro:content';
 import Prose from './Prose.astro';
 import UseCasesTOC from './UseCasesTOC.astro';
+import { t, type Lang } from '../i18n/utils';
 
-const entry = await getEntry('pages', 'why-architect');
+interface Props {
+    lang?: Lang;
+}
+
+const { lang = 'es' } = Astro.props;
+const collectionName = lang === 'en' ? 'pages-en' : 'pages';
+const entry = await getEntry(collectionName, 'why-architect');
 const { Content, headings } = await entry.render();
 ---
 
 <section class="why-architect-page">
     <div class="why-hero">
         <div class="section-header">
-            <h1 class="hero-title">Por qué Architect</h1>
+            <h1 class="hero-title">{t('whyArchitect.title', lang)}</h1>
             <div class="section-line"></div>
         </div>
-        <p class="hero-subtitle">
-            <code>architect</code> es la capa de automatización y control que falta entre los agentes de IA y tu pipeline de CI/CD. Claude Code es brillante implementando código. architect se asegura de que ese código pasa tests, cumple guardrails, y se entrega de forma verificable — sin supervisión humana, durante horas si hace falta.
-        </p>
+        <p class="hero-subtitle" set:html={t('whyArchitect.subtitle1', lang)} />
         <p class="hero-subtitle hero-subtitle--secondary">
-            Usa architect con Claude (vía Agent SDK), con GPT-4.1, con DeepSeek, o con tu modelo local. El cerebro cambia, las garantías no.
+            {t('whyArchitect.subtitle2', lang)}
         </p>
     </div>
 
@@ -27,7 +32,7 @@ const { Content, headings } = await entry.render();
                 <Content />
             </Prose>
         </main>
-        <UseCasesTOC headings={headings} />
+        <UseCasesTOC headings={headings} lang={lang} />
     </div>
 </section>
 
