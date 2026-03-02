@@ -3,6 +3,66 @@ title: "Use Cases"
 description: "Practical guide for integrating Architect CLI into real-world workflows"
 ---
 
+# Use Cases — Architect CLI
+
+Practical guide for integrating `architect` into real-world workflows: day-to-day development, CI/CD, DevOps, QA, documentation, and advanced architectures with MCP servers.
+
+---
+
+## Table of Contents
+
+- [What is architect?](#what-is-architect)
+- [Day-to-day development](#day-to-day-development)
+  - [Implementing new features](#implementing-new-features)
+  - [Code refactoring](#code-refactoring)
+  - [Exploring and understanding unfamiliar code](#exploring-and-understanding-unfamiliar-code)
+  - [On-demand code review](#on-demand-code-review)
+  - [Generating documentation from code](#generating-documentation-from-code)
+  - [AI-assisted debugging](#ai-assisted-debugging)
+  - [Project scaffolding](#project-scaffolding)
+- [CI/CD and automation](#cicd-and-automation)
+  - [Automatic Pull Request review](#automatic-pull-request-review)
+  - [Security audit in the pipeline](#security-audit-in-the-pipeline)
+  - [Changelog generation](#changelog-generation)
+  - [Linting autofix in CI](#linting-autofix-in-ci)
+  - [Migration validation](#migration-validation)
+- [QA and Quality](#qa-and-quality)
+  - [Unit test generation](#unit-test-generation)
+  - [Coverage analysis and missing tests](#coverage-analysis-and-missing-tests)
+  - [Quality gate with self-evaluation](#quality-gate-with-self-evaluation)
+  - [API contract review](#api-contract-review)
+- [DevOps](#devops)
+  - [IaC generation and review](#iac-generation-and-review)
+  - [Dockerfile and Helm chart analysis](#dockerfile-and-helm-chart-analysis)
+  - [Security configuration review](#security-configuration-review)
+- [Technical documentation](#technical-documentation)
+  - [API documentation](#api-documentation)
+  - [New developer onboarding](#new-developer-onboarding)
+  - [Architecture decision analysis](#architecture-decision-analysis)
+- [Advanced architectures with MCP](#advanced-architectures-with-mcp)
+  - [Development agent with multiple MCP servers](#development-agent-with-multiple-mcp-servers)
+  - [Architect as an MCP server (code implementer)](#architect-as-an-mcp-server-code-implementer)
+  - [Multi-agent pipeline](#multi-agent-pipeline)
+  - [Integration with LiteLLM Proxy for teams](#integration-with-litellm-proxy-for-teams)
+- [AIOps and MLOps](#aiops-and-mlops)
+  - [ML pipeline review](#ml-pipeline-review)
+  - [Feature engineering code generation](#feature-engineering-code-generation)
+  - [Configuration drift analysis](#configuration-drift-analysis)
+- [Ralph Loop, Pipelines and Parallel (v4-C)](#ralph-loop-pipelines-and-parallel-v4-c)
+  - [Automatic iteration until tests pass](#automatic-iteration-until-tests-pass)
+  - [Complete CI pipeline: implement → test → review](#complete-ci-pipeline-implement--test--review)
+  - [Model competition in parallel](#model-competition-in-parallel)
+  - [Parallel test generation](#parallel-test-generation)
+  - [CI/CD with Ralph Loop and reports](#cicd-with-ralph-loop-and-reports)
+  - [Auto-review in CI](#auto-review-in-ci)
+- [Configuration patterns](#configuration-patterns)
+  - [Configuration for headless CI](#configuration-for-headless-ci)
+  - [Configuration for local development](#configuration-for-local-development)
+  - [Custom agents per team](#custom-agents-per-team)
+- [Reference costs](#reference-costs)
+
+---
+
 ## What is architect?
 
 `architect` is a headless CLI that connects an LLM to filesystem tools and command execution. The user describes a task in natural language, and the agent iterates autonomously: reads code, plans changes, edits files, runs tests, and verifies its own work.
@@ -1095,9 +1155,16 @@ Protect the codebase with deterministic rules that the agent cannot ignore.
 # config-team.yaml
 guardrails:
   enabled: true
-  protected_files:
+  # sensitive_files: blocks READ and WRITE (v1.1.0)
+  # The LLM cannot even read these files (secrets are not leaked to the LLM provider)
+  sensitive_files:
     - ".env*"
     - "*.pem"
+    - "*.key"
+    - "secrets/**"
+  # protected_files: blocks WRITE only
+  # The LLM can read them for context but cannot modify them
+  protected_files:
     - "deploy/**"
     - "Dockerfile"
     - "docker-compose*.yml"
@@ -1130,8 +1197,9 @@ guardrails:
 # The agent works freely but within the guardrails
 architect run "refactor the payments module" \
   --mode yolo -c config-team.yaml
-# -> If it tries to edit .env -> blocked
-# -> If it generates eval() -> blocked
+# -> If it tries to read .env -> blocked (sensitive_files)
+# -> If it tries to edit Dockerfile -> blocked (protected_files)
+# -> If it generates eval() -> blocked (code_rules)
 # -> On completion -> pytest + ruff are mandatory
 ```
 
@@ -1191,3 +1259,440 @@ architect run "add logout endpoint"
 # -> The system prompt includes: "Correction: No, use pnpm, not npm"
 # -> Agent uses pnpm directly
 ```
+
+### Security hooks with pre-hooks
+
+Block actions before they happen.
+
+```bash
+#!/bin/bash
+# scripts/check-no-secrets.sh
+# Pre-hook that blocks if secrets are detected in written files
+if grep -qE "(sk-|AKIA|password\s*=\s*['\"])" "$ARCHITECT_FILE" 2>/dev/null; then
+    echo "File contains possible secrets" >&2
+    exit 2   # BLOCK — the agent receives "Blocked by hook"
+fi
+exit 0       # ALLOW
+```
+
+```yaml
+hooks:
+  pre_tool_use:
+    - name: no-secrets
+      command: "bash scripts/check-no-secrets.sh"
+      matcher: "write_file|edit_file"
+      file_patterns: ["*.py", "*.env", "*.yaml"]
+      timeout: 5
+```
+
+---
+
+## Sessions, Reports and Dry Run
+
+### Long tasks with incremental budget
+
+When a task is too large for a single budget, use sessions to continue where it left off:
+
+```bash
+# First execution — stops due to budget
+architect run "refactor the entire data layer" --mode yolo --budget 1.00
+
+# View sessions
+architect sessions
+# 20260223-143022-a1b2   partial  15  $1.00   refactor the entire data layer
+
+# Continue (restores full context: messages, files, cost)
+architect resume 20260223-143022-a1b2 --budget 2.00
+
+# If interrupted by Ctrl+C, the session is also saved
+# Continue again
+architect resume 20260223-143022-a1b2 --budget 1.00
+```
+
+### Reports in Pull Requests
+
+Generate reports with collapsible sections for GitHub:
+
+```yaml
+# .github/workflows/architect.yml
+name: AI Review with Report
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install
+        run: pip install architect-ai-cli
+
+      - name: AI Review with report
+        env:
+          LITELLM_API_KEY: ${{ secrets.LITELLM_API_KEY }}
+        run: |
+          architect run "review the PR changes" \
+            --mode yolo --quiet \
+            --context-git-diff origin/${{ github.base_ref }} \
+            --report github --report-file pr-report.md \
+            --budget 1.00
+
+      - name: Publish report
+        if: always()
+        run: gh pr comment ${{ github.event.pull_request.number }} --body-file pr-report.md
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+```
+
+The report includes:
+- Summary: task, status, steps, cost
+- Modified files (collapsible)
+- Quality gates (if configured)
+- Step timeline (collapsible)
+- Git diff (collapsible)
+
+### JSON reports for CI pipelines
+
+```bash
+# GitLab CI — report as artifact
+architect-audit:
+  script:
+    - architect run "security audit" \
+        --mode yolo --report json --report-file report.json \
+        --budget 0.50
+    - |
+      # Verify result
+      STATUS=$(jq -r '.status' report.json)
+      FILES=$(jq '.files_modified | length' report.json)
+      echo "Status: $STATUS, Files: $FILES"
+  artifacts:
+    paths: [report.json]
+    expire_in: 1 week
+```
+
+### Dry Run to preview changes
+
+Before executing a large task in production, preview what the agent would do:
+
+```bash
+# See what it would do without executing anything
+architect run "migrate all tests from unittest to pytest" --dry-run
+
+# The agent reads files normally, but writes are simulated
+# At the end it shows an action plan it would execute:
+# Action plan (dry-run):
+# 1. write_file → tests/test_auth.py
+# 2. edit_file → tests/test_utils.py
+# 3. run_command → pytest tests/ -x
+# ...
+
+# If you're satisfied with the plan, execute for real
+architect run "migrate all tests from unittest to pytest" --mode yolo
+```
+
+### CI with automatic resume
+
+Pipeline that automatically retries if execution is partial:
+
+```bash
+#!/bin/bash
+# scripts/ci-with-retry.sh
+
+architect run "$1" \
+  --mode yolo --quiet --json \
+  --budget 2.00 \
+  --exit-code-on-partial \
+  > result.json
+
+EXIT=$?
+if [ "$EXIT" -eq 2 ]; then
+  echo "Partial — attempting to resume..."
+  SESSION=$(jq -r '.session_id // empty' result.json)
+  if [ -n "$SESSION" ]; then
+    architect resume "$SESSION" --budget 1.00 --mode yolo --quiet --json > result2.json
+  fi
+fi
+```
+
+### Periodic session cleanup
+
+In CI, sessions accumulate. Add periodic cleanup:
+
+```bash
+# Weekly cron job
+architect cleanup --older-than 7
+
+# Or in the CI pipeline
+architect cleanup --older-than 30
+```
+
+---
+
+## Ralph Loop, Pipelines and Parallel (v4-C)
+
+### Automatic iteration until tests pass
+
+The Ralph Loop iterates automatically until a set of checks pass. Ideal for "fixing tests" or "implementing until it compiles":
+
+```bash
+# Fix broken tests — the agent iterates until they pass
+architect loop "fix all failing tests in src/auth/" \
+  --check "pytest tests/test_auth.py -x" \
+  --max-iterations 10 \
+  --max-cost 3.0
+
+# Implement and verify quality
+architect loop "implement form validation in src/forms.py" \
+  --check "pytest tests/" \
+  --check "ruff check src/" \
+  --check "mypy src/" \
+  --max-iterations 15
+```
+
+Each iteration uses an agent with **clean context** — it only sees the task and the checks that failed. This prevents context degradation in long tasks.
+
+### Complete CI pipeline: implement → test → review
+
+Define a complete workflow in YAML:
+
+```yaml
+# pipeline-feature.yaml
+name: implement-test-review
+variables:
+  feature: "add health check endpoint"
+
+steps:
+  - name: implement
+    prompt: "Implement: {{feature}}"
+    agent: build
+    checkpoint: true
+
+  - name: test
+    prompt: "Generate complete tests for the changes from the previous step"
+    agent: build
+    checks:
+      - "pytest tests/ -x"
+    checkpoint: true
+
+  - name: lint
+    prompt: "Fix all lint errors"
+    agent: build
+    condition: "ruff check src/ 2>&1 | grep -q 'error'"
+    checks:
+      - "ruff check src/"
+
+  - name: review
+    prompt: "Review the changes made and generate a report"
+    agent: review
+    output_var: review_result
+```
+
+```bash
+# Execute pipeline
+architect pipeline pipeline-feature.yaml
+
+# Resume from the test step (after manual correction)
+architect pipeline pipeline-feature.yaml --from-step test
+
+# Preview without executing
+architect pipeline pipeline-feature.yaml --dry-run
+```
+
+### Model competition in parallel
+
+Execute the same task with different models and compare results:
+
+```bash
+# Three models compete in isolated worktrees
+architect parallel "optimize the project's SQL queries" \
+  --models gpt-4o,claude-sonnet-4-6,deepseek-chat
+
+# Inspect results
+cd .architect-parallel-1 && git diff HEAD~1  # gpt-4o result
+cd .architect-parallel-2 && git diff HEAD~1  # claude result
+cd .architect-parallel-3 && git diff HEAD~1  # deepseek result
+
+# Choose the best and clean up
+architect parallel-cleanup
+```
+
+### Parallel test generation
+
+Split testing work across workers:
+
+```bash
+architect parallel \
+  --task "generate tests for src/auth.py" \
+  --task "generate tests for src/users.py" \
+  --task "generate tests for src/billing.py" \
+  --workers 3 \
+  --budget-per-worker 1.0 \
+  --timeout-per-worker 300
+
+# Clean up worktrees
+architect parallel-cleanup
+```
+
+### CI/CD with Ralph Loop and reports
+
+```yaml
+# .github/workflows/fix-and-report.yml
+- name: Fix tests with Ralph Loop
+  env:
+    LITELLM_API_KEY: ${{ secrets.LITELLM_API_KEY }}
+  run: |
+    architect loop "fix the failing tests" \
+      --check "pytest tests/ -x" \
+      --max-iterations 5 \
+      --max-cost 3.0
+
+- name: Generate report
+  run: |
+    architect run "summarize the changes made" \
+      -a resume --mode yolo \
+      --report github --report-file pr-report.md
+
+- name: Clean up
+  if: always()
+  run: architect parallel-cleanup
+```
+
+### Auto-review in CI
+
+Enable automatic post-build review so an independent reviewer inspects the changes:
+
+```yaml
+# config-ci-review.yaml
+auto_review:
+  enabled: true
+  review_model: claude-sonnet-4-6
+  max_fix_passes: 1
+
+# The flow is automatic:
+# 1. Builder implements → 2. Reviewer reviews (clean context)
+# → 3. If there are issues, builder fixes → 4. Final result
+```
+
+```bash
+architect run "implement feature X" \
+  --mode yolo --budget 3.0 \
+  -c config-ci-review.yaml
+```
+
+---
+
+## Evaluation, Health, Presets and Sub-Agents (v1.0.0)
+
+### Model selection by task type
+
+Use `architect eval` to determine which model is best for your type of task:
+
+```bash
+# Which model is best for refactoring in your codebase?
+architect eval "refactor the auth module using dataclasses" \
+  --models gpt-4o,claude-sonnet-4-6,deepseek-chat \
+  --check "pytest tests/test_auth.py -q" \
+  --check "ruff check src/auth/" \
+  --budget-per-model 1.0 \
+  --report-file eval_refactoring.md
+
+# Compare results and choose the best-performing model
+```
+
+### Code quality monitoring
+
+Add `--health` to measure the impact of changes on quality:
+
+```bash
+# Refactor with impact measurement
+architect run "reduce the cyclomatic complexity of utils.py" \
+  --health --mode yolo
+
+# → On completion:
+# | Metric               | Before | After | Delta |
+# | Average complexity   | 8.2    | 4.1   | -4.1  |
+# | Long functions       | 5      | 1     | -4    |
+```
+
+### Team onboarding with presets
+
+```bash
+# New developer joins the project
+architect init --preset python
+# → .architect.md with team conventions
+# → config.yaml with lint hooks and quality gates
+
+# For projects with sensitive data
+architect init --preset paranoid
+# → confirm-all, strict guardrails, security code rules
+```
+
+### Research delegation to sub-agents
+
+The `build` agent can delegate searches and verifications to sub-agents without contaminating its context:
+
+```bash
+# In a complex task, the main agent can:
+# 1. Delegate exploration to an "explore" sub-agent
+# 2. Implement based on the results
+# 3. Delegate verification to a "test" sub-agent
+# All of this happens automatically via dispatch_subagent
+
+architect run "implement a REST API for user management, \
+  first investigating the existing patterns in the project" \
+  --mode yolo --budget 5.0
+```
+
+### Observability with OpenTelemetry
+
+For teams that want to monitor agent usage:
+
+```yaml
+# config.yaml
+telemetry:
+  enabled: true
+  exporter: otlp
+  endpoint: http://jaeger:4317
+```
+
+```bash
+# Each execution generates traces with:
+# - Total session duration
+# - Tokens consumed per LLM call
+# - Accumulated cost
+# - Tools executed with duration
+
+architect run "implement feature X" -c config.yaml --mode yolo
+# → Traces visible in Jaeger/Grafana
+```
+
+---
+
+## Reference costs
+
+Estimates based on real usage with common models. Costs depend on the model, task complexity, and number of iterations.
+
+| Use case | Model | Typical tokens | Estimated cost |
+|----------|-------|---------------|----------------|
+| Code review (1-5 files) | gpt-4o-mini | 5K–15K | $0.001–0.005 |
+| Code review (1-5 files) | gpt-4o | 5K–15K | $0.005–0.02 |
+| Code review (1-5 files) | claude-sonnet-4-6 | 5K–15K | $0.005–0.02 |
+| Feature planning | gpt-4o | 10K–30K | $0.01–0.05 |
+| Simple implementation (1-3 files) | gpt-4o | 15K–50K | $0.02–0.10 |
+| Implementation with tests | gpt-4o | 30K–80K | $0.05–0.15 |
+| Implementation + self-eval full | gpt-4o | 60K–150K | $0.10–0.30 |
+| Multi-file refactoring | claude-sonnet-4-6 | 40K–100K | $0.05–0.20 |
+| Project summary | gpt-4o-mini | 3K–10K | $0.0005–0.003 |
+| Complete security audit | gpt-4o | 20K–60K | $0.03–0.10 |
+
+**Tips for optimizing costs:**
+- Use `gpt-4o-mini` for reviews and summaries (they don't need advanced editing capabilities).
+- Enable `prompt_caching: true` to reduce 50–90% on repeated calls.
+- Use `--budget` to set hard limits.
+- The `plan` agent is much cheaper than `build` (it only reads, no editing iterations).
+- Hooks (ruff, mypy) add iterations: each detected error is another round trip to the LLM.
+- Local cache (`--cache`) eliminates costs on identical re-executions during development.
