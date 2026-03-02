@@ -5,7 +5,8 @@ export interface VersionConfig {
 }
 
 export const VERSIONS: VersionConfig[] = [
-  { id: 'v1-0-0', label: 'v1.0.0', isLatest: true },
+  { id: 'v1-1-0', label: 'v1.1.0', isLatest: true },
+  { id: 'v1-0-0', label: 'v1.0.0', isLatest: false },
   { id: 'v0-18-0', label: 'v0.18.0', isLatest: false },
   { id: 'v0-17-0', label: 'v0.17.0', isLatest: false },
   { id: 'v0-16-2', label: 'v0.16.2', isLatest: false },
@@ -27,7 +28,7 @@ export function getDocSlug(slug: string): string {
 
 /**
  * Get versions available for a given language.
- * English only has v1.0.0 (latest). Spanish has all versions.
+ * English only shows the latest version. Spanish has all versions.
  */
 export function getVersionsForLang(lang: 'es' | 'en'): VersionConfig[] {
   if (lang === 'en') {

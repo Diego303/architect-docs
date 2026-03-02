@@ -3,6 +3,66 @@ title: "Casos de Uso"
 description: "Guía práctica de integración de Architect CLI en flujos de trabajo reales"
 ---
 
+# Casos de Uso — Architect CLI
+
+Guía práctica de integración de `architect` en flujos de trabajo reales: desarrollo diario, CI/CD, DevOps, QA, documentación y arquitecturas avanzadas con servidores MCP.
+
+---
+
+## Índice
+
+- [¿Qué es architect?](#qué-es-architect)
+- [Desarrollo diario](#desarrollo-diario)
+  - [Implementar funcionalidades nuevas](#implementar-funcionalidades-nuevas)
+  - [Refactorización de código](#refactorización-de-código)
+  - [Explorar y entender código desconocido](#explorar-y-entender-código-desconocido)
+  - [Revisión de código bajo demanda](#revisión-de-código-bajo-demanda)
+  - [Generar documentación desde código](#generar-documentación-desde-código)
+  - [Debugging asistido por IA](#debugging-asistido-por-ia)
+  - [Scaffolding de proyectos](#scaffolding-de-proyectos)
+- [CI/CD y automatización](#cicd-y-automatización)
+  - [Review automática en Pull Requests](#review-automática-en-pull-requests)
+  - [Auditoría de seguridad en pipeline](#auditoría-de-seguridad-en-pipeline)
+  - [Generación de changelogs](#generación-de-changelogs)
+  - [Autofix de linting en CI](#autofix-de-linting-en-ci)
+  - [Validación de migraciones](#validación-de-migraciones)
+- [QA y Calidad](#qa-y-calidad)
+  - [Generación de tests unitarios](#generación-de-tests-unitarios)
+  - [Análisis de cobertura y tests faltantes](#análisis-de-cobertura-y-tests-faltantes)
+  - [Quality gate con self-evaluation](#quality-gate-con-self-evaluation)
+  - [Revisión de contratos de API](#revisión-de-contratos-de-api)
+- [DevOps](#devops)
+  - [Generación y revisión de IaC](#generación-y-revisión-de-iac)
+  - [Análisis de Dockerfiles y Helm charts](#análisis-de-dockerfiles-y-helm-charts)
+  - [Revisión de configuraciones de seguridad](#revisión-de-configuraciones-de-seguridad)
+- [Documentación técnica](#documentación-técnica)
+  - [Documentación de APIs](#documentación-de-apis)
+  - [Onboarding de nuevos desarrolladores](#onboarding-de-nuevos-desarrolladores)
+  - [Análisis de decisiones de arquitectura](#análisis-de-decisiones-de-arquitectura)
+- [Arquitecturas avanzadas con MCP](#arquitecturas-avanzadas-con-mcp)
+  - [Agente de desarrollo con múltiples MCP servers](#agente-de-desarrollo-con-múltiples-mcp-servers)
+  - [Architect como MCP server (implementador de código)](#architect-como-mcp-server-implementador-de-código)
+  - [Pipeline multi-agente](#pipeline-multi-agente)
+  - [Integración con LiteLLM Proxy para equipos](#integración-con-litellm-proxy-para-equipos)
+- [AIOps y MLOps](#aiops-y-mlops)
+  - [Revisión de pipelines de ML](#revisión-de-pipelines-de-ml)
+  - [Generación de código de feature engineering](#generación-de-código-de-feature-engineering)
+  - [Análisis de drift en configuraciones](#análisis-de-drift-en-configuraciones)
+- [Ralph Loop, Pipelines y Parallel (v4-C)](#ralph-loop-pipelines-y-parallel-v4-c)
+  - [Iteración automática hasta que los tests pasen](#iteración-automática-hasta-que-los-tests-pasen)
+  - [Pipeline CI completo: implementar → testear → revisar](#pipeline-ci-completo-implementar--testear--revisar)
+  - [Competición de modelos en paralelo](#competición-de-modelos-en-paralelo)
+  - [Generación de tests en paralelo](#generación-de-tests-en-paralelo)
+  - [CI/CD con Ralph Loop y reportes](#cicd-con-ralph-loop-y-reportes)
+  - [Auto-review en CI](#auto-review-en-ci)
+- [Patrones de configuración](#patrones-de-configuración)
+  - [Configuración para CI headless](#configuración-para-ci-headless)
+  - [Configuración para desarrollo local](#configuración-para-desarrollo-local)
+  - [Agentes custom por equipo](#agentes-custom-por-equipo)
+- [Costes de referencia](#costes-de-referencia)
+
+---
+
 ## ¿Qué es architect?
 
 `architect` es una CLI headless que conecta un LLM a herramientas de sistema de archivos y ejecución de comandos. El usuario describe una tarea en lenguaje natural, y el agente itera de forma autónoma: lee código, planifica cambios, edita archivos, ejecuta tests y verifica su propio trabajo.
@@ -1095,9 +1155,16 @@ Protege el código base con reglas deterministas que el agente no puede ignorar.
 # config-team.yaml
 guardrails:
   enabled: true
-  protected_files:
+  # sensitive_files: bloquea LECTURA y ESCRITURA (v1.1.0)
+  # El LLM no puede ni leer estos archivos (secrets no se filtran al proveedor LLM)
+  sensitive_files:
     - ".env*"
     - "*.pem"
+    - "*.key"
+    - "secrets/**"
+  # protected_files: bloquea solo ESCRITURA
+  # El LLM puede leerlos para contexto pero no modificarlos
+  protected_files:
     - "deploy/**"
     - "Dockerfile"
     - "docker-compose*.yml"
@@ -1130,8 +1197,9 @@ guardrails:
 # El agente trabaja libremente pero dentro de los guardrails
 architect run "refactoriza el módulo de pagos" \
   --mode yolo -c config-team.yaml
-# → Si intenta editar .env → bloqueado
-# → Si genera eval() → bloqueado
+# → Si intenta leer .env → bloqueado (sensitive_files)
+# → Si intenta editar Dockerfile → bloqueado (protected_files)
+# → Si genera eval() → bloqueado (code_rules)
 # → Al completar → pytest + ruff obligatorios
 ```
 
@@ -1364,7 +1432,7 @@ architect cleanup --older-than 30
 
 ---
 
-## Ralph Loop, Pipelines y Parallel
+## Ralph Loop, Pipelines y Parallel (v4-C)
 
 ### Iteración automática hasta que los tests pasen
 
@@ -1517,7 +1585,7 @@ architect run "implementa feature X" \
 
 ---
 
-## Evaluación, Health, Presets y Sub-Agentes
+## Evaluación, Health, Presets y Sub-Agentes (v1.0.0)
 
 ### Selección de modelo por tipo de tarea
 
