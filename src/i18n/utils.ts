@@ -1,4 +1,5 @@
 import { ui, type Lang } from './ui';
+import { VERSIONS } from '../config/versions';
 
 export type { Lang };
 
@@ -84,7 +85,30 @@ export function getLocalizedPath(path: string, lang: Lang): string {
 }
 
 /**
+ * Ensure a path ends with a trailing slash.
+ */
+function ensureTrailingSlash(path: string): string {
+    return path.endsWith('/') ? path : path + '/';
+}
+
+/**
+ * Page-level route mappings for paths that differ between languages.
+ * Doc slugs are NOT mapped here — filenames are identical across languages.
+ */
+const PAGE_PATH_MAP: Record<string, string> = {
+    'casos-de-uso': 'use-cases',
+    'use-cases': 'casos-de-uso',
+};
+
+/**
+ * Get the EN-available version IDs (only versions that have English translations).
+ */
+const EN_VERSION_IDS = new Set(VERSIONS.filter(v => v.isLatest).map(v => v.id));
+
+/**
  * Get the alternate language path for the current URL (for language toggle).
+ * For doc pages, filenames match between languages — only the /en/ prefix changes.
+ * For doc versions without EN translations, redirects to the EN docs index.
  */
 export function getAlternateLangPath(url: URL, targetLang: Lang): string {
     const base = import.meta.env.BASE_URL;
@@ -97,23 +121,30 @@ export function getAlternateLangPath(url: URL, targetLang: Lang): string {
         path = '';
     }
 
-    // Map known ES-only paths to EN equivalents and vice versa
-    const pathMap: Record<string, string> = {
-        'casos-de-uso/': 'use-cases/',
-        'use-cases/': 'casos-de-uso/',
-    };
+    // Normalize: remove trailing slash for consistent matching
+    const cleanPath = path.replace(/\/$/, '');
+
+    // Check if this is a doc page: docs/{version}/{slug}
+    const docMatch = cleanPath.match(/^docs\/(v[\d-]+)\/.+$/);
+
+    if (docMatch && targetLang === 'en') {
+        const versionId = docMatch[1];
+        // If this version has no EN translation, redirect to EN docs index
+        if (!EN_VERSION_IDS.has(versionId)) {
+            return ensureTrailingSlash(`${base}en/docs/`);
+        }
+    }
+
+    // Map page-level routes that differ between languages
+    const firstSegment = cleanPath.split('/')[0];
+    if (PAGE_PATH_MAP[firstSegment]) {
+        path = cleanPath.replace(firstSegment, PAGE_PATH_MAP[firstSegment]);
+    } else {
+        path = cleanPath;
+    }
 
     if (targetLang === 'en') {
-        // ES -> EN: translate known paths
-        if (pathMap[path]) {
-            path = pathMap[path];
-        }
-        return `${base}en/${path}`;
-    } else {
-        // EN -> ES: translate known paths back
-        if (pathMap[path]) {
-            path = pathMap[path];
-        }
-        return `${base}${path}`;
+        return ensureTrailingSlash(`${base}en/${path}`);
     }
+    return ensureTrailingSlash(`${base}${path}`);
 }

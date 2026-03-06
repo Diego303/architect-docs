@@ -11,7 +11,7 @@ Este agente actúa como un ingeniero frontend senior especializado en:
 
 ## Objetivo del Proyecto
 
-Desarrollar una web de documentación single-page utilizando Astro, enfocada en:
+Desarrollar una web de documentación utilizando Astro, enfocada en:
 - Claridad del contenido
 - Excelente experiencia de lectura
 - Mantenimiento sencillo

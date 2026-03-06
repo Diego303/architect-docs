@@ -11,12 +11,6 @@ import ArchBanner from '../../components/ArchBanner.astro';
 const lang = 'es';
 const allDocs = await getCollection('docs');
 
-// DEBUG: Remove after verifying
-console.log('=== DEBUG: All docs ===');
-console.log(`Total docs: ${allDocs.length}`);
-allDocs.forEach(doc => console.log(`  id="${doc.id}" slug="${doc.slug}" title="${doc.data.title}"`));
-console.log('=== END DEBUG ===');
-
 const docsByVersion: Record<string, typeof allDocs> = {};
 for (const version of VERSIONS) {
     docsByVersion[version.id] = allDocs
@@ -25,7 +19,6 @@ for (const version of VERSIONS) {
             if (a.data.order && b.data.order) return a.data.order - b.data.order;
             return a.slug.localeCompare(b.slug);
         });
-    console.log(`DEBUG: Version ${version.id} has ${docsByVersion[version.id].length} docs`);
 }
 ---
 
@@ -68,7 +61,7 @@ for (const version of VERSIONS) {
                         >
                             <Card
                                 title={doc.data.title || getDocSlug(doc.slug)}
-                                href={`${import.meta.env.BASE_URL}docs/${doc.slug}`}
+                                href={`${import.meta.env.BASE_URL}docs/${doc.slug}/`}
                                 iconPath={doc.data.icon}
                                 class="h-full"
                             >

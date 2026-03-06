@@ -63,7 +63,7 @@ for (const version of versions) {
                         >
                             <Card
                                 title={doc.data.title || doc.slug.replace(/^v[\d-]+\//, '')}
-                                href={getLocalizedPath(`docs/${doc.slug}`, lang)}
+                                href={getLocalizedPath(`docs/${doc.slug}/`, lang)}
                                 iconPath={doc.data.icon}
                                 class="h-full"
                             >
