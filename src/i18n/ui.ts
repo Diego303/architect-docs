@@ -20,7 +20,7 @@ export const ui = {
 
         // === Footer ===
         footer: {
-            copyright: '© 2026 Architect Project.',
+            copyright: '© 2026 Architect.',
             tagline: 'Hecho con precisión.',
             createdWith: 'Creado con',
         },
@@ -381,7 +381,7 @@ export const ui = {
 
         // === Footer ===
         footer: {
-            copyright: '© 2026 Architect Project.',
+            copyright: '© 2026 Architect.',
             tagline: 'Built with precision.',
             createdWith: 'Created with',
         },
